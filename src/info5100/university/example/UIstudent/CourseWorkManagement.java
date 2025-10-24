@@ -79,8 +79,6 @@ public void populateStudentAssignmentsTable(StudentProfile studentprofile, Strin
         jButton2 = new javax.swing.JButton();
         ComboBox2 = new javax.swing.JComboBox<>();
 
-        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
         table2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -94,11 +92,8 @@ public void populateStudentAssignmentsTable(StudentProfile studentprofile, Strin
         ));
         jScrollPane1.setViewportView(table2);
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 630, 310));
-
         jLabel1.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
         jLabel1.setText("Assignments");
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 10, -1, -1));
 
         jButton1.setText("View");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -106,7 +101,6 @@ public void populateStudentAssignmentsTable(StudentProfile studentprofile, Strin
                 jButton1ActionPerformed(evt);
             }
         });
-        add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 430, -1, -1));
 
         jButton2.setText("Back");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -114,7 +108,6 @@ public void populateStudentAssignmentsTable(StudentProfile studentprofile, Strin
                 jButton2ActionPerformed(evt);
             }
         });
-        add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 430, -1, -1));
 
         ComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2025Spring", "2025Summer", "2025Fall", "2025Winter", " " }));
         ComboBox2.addActionListener(new java.awt.event.ActionListener() {
@@ -122,7 +115,40 @@ public void populateStudentAssignmentsTable(StudentProfile studentprofile, Strin
                 ComboBox2ActionPerformed(evt);
             }
         });
-        add(ComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 50, -1, -1));
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(240, 240, 240)
+                .addComponent(jLabel1))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(230, 230, 230)
+                .addComponent(ComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 630, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(120, 120, 120)
+                .addComponent(jButton1)
+                .addGap(178, 178, 178)
+                .addComponent(jButton2))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(jLabel1)
+                .addGap(17, 17, 17)
+                .addComponent(ComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(17, 17, 17)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2)))
+        );
     }// </editor-fold>//GEN-END:initComponents
 
     private void ComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboBox2ActionPerformed
