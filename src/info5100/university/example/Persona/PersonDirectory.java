@@ -6,6 +6,7 @@
 package info5100.university.example.Persona;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  *
@@ -21,9 +22,18 @@ public class PersonDirectory {
 
     }
 
-    public Person newPerson(String id) {
+    
+    public Person newPerson(String name) {
 
-        Person p = new Person(id);
+        Person p = new Person(name); 
+        String uniqueId = "U-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        
+       
+        while (isIdExists(uniqueId)) {
+             uniqueId = "U-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        }
+        
+        p.setPersonId(uniqueId); 
         personlist.add(p);
         return p;
     }
@@ -31,12 +41,37 @@ public class PersonDirectory {
     public Person findPerson(String id) {
 
         for (Person p : personlist) {
-
-            if (p.isMatch(id)) {
+         
+            if (p.getPersonId() != null && p.getPersonId().equals(id)) {
                 return p;
             }
         }
-            return null; //not found after going through the whole list
+            return null; 
          }
     
+    public boolean isEmailExists(String email) {
+        if (email == null || email.trim().isEmpty()) {
+            return false; 
+        }
+        String trimmedEmail = email.trim();
+        for (Person p : personlist) {
+            if (p.getEmail() != null && p.getEmail().equalsIgnoreCase(trimmedEmail)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    
+    public boolean isIdExists(String id) {
+        if (id == null) {
+            return false;
+        }
+        for (Person p : personlist) {
+            if (p.getPersonId() != null && p.getPersonId().equals(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

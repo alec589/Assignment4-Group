@@ -11,25 +11,33 @@ package info5100.university.example.Persona;
  */
 public class Person {
     
-    String ID;
+    String ID;    
     String Name;
-    String Email;
+    String Email; 
     
     public Person (String name){
         
         
-        this.Name=name;
+        this.Name = name;
+        
     }
+    
     public String getPersonId(){
         return ID;
+    }
+  
+    public void setPersonId(String id) {
+        this.ID = id;
     }
 
     public String getName() {
         return Name;
     }
 
-        public boolean isMatch(String id){
-        if(getPersonId().equals(id)) return true;
+    public boolean isMatch(String id){
+        if (this.ID != null && this.ID.equals(id)) { // 检查 this.ID 是否为 null
+            return true;
+        }
         return false;
     }
 
@@ -44,7 +52,4 @@ public class Person {
     public void setEmail(String Email) {
         this.Email = Email;
     }
-    
-    
-    
 }
