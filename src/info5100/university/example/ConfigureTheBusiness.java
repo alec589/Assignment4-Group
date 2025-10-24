@@ -147,6 +147,14 @@ public class ConfigureTheBusiness {
           Course electivecourse4 = department.getDegree().addElectiveCourse(course5);
           Course electivecourse5 = department.getDegree().addElectiveCourse(course6);
           Course electivecourse6 = department.getDegree().addElectiveCourse(course7);
+          course1.setSchedule("Mon15:00-18:00");
+          course2.setSchedule("Fri12:00-13:00");
+          course3.setSchedule("Sat12:10-14:00");
+          course4.setSchedule("Tue09:00-10:00");
+          course5.setSchedule("Fri08:00-10:30");
+          course6.setSchedule("Wed12:00-13:50");
+          course7.setSchedule("Thu18:00-20:00");
+          course8.setSchedule("Wed14:00-16:00");
           
           
           // 2025 Spring

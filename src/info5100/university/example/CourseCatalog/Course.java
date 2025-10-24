@@ -17,6 +17,7 @@ public class Course {
     int price = 1500; //per credit hour
     
     String description;
+    String schedule;
 
     public Course( String numb, int ch) {
         this.number=counter++;
@@ -38,7 +39,7 @@ public class Course {
     public int getCredits() {
         return credits;
     
-}
+    }
 
     public String getName() {
         return name;
@@ -54,6 +55,14 @@ public class Course {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(String schedule) {
+        this.schedule = schedule;
     }
 
     
