@@ -100,11 +100,8 @@ CourseSchedule courseSchedule;
 
         jLabel1.setText("jLabel1");
 
-        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
         lblTitle.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
         lblTitle.setText("Course Offering Management");
-        add(lblTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 10, -1, -1));
 
         btnBack.setText("<<< Back");
         btnBack.addActionListener(new java.awt.event.ActionListener() {
@@ -112,13 +109,10 @@ CourseSchedule courseSchedule;
                 btnBackActionPerformed(evt);
             }
         });
-        add(btnBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
 
         lblCourseName.setText("Course Name");
-        add(lblCourseName, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 330, -1, -1));
 
         lblCredits.setText("Credits");
-        add(lblCredits, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 330, -1, -1));
 
         btnCreate.setText("Create ");
         btnCreate.addActionListener(new java.awt.event.ActionListener() {
@@ -126,7 +120,6 @@ CourseSchedule courseSchedule;
                 btnCreateActionPerformed(evt);
             }
         });
-        add(btnCreate, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 320, -1, -1));
 
         btnDelete.setText("Delete");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -134,7 +127,6 @@ CourseSchedule courseSchedule;
                 btnDeleteActionPerformed(evt);
             }
         });
-        add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 360, -1, -1));
 
         btnAssignFaculty.setText("Assign Faculty");
         btnAssignFaculty.addActionListener(new java.awt.event.ActionListener() {
@@ -142,28 +134,18 @@ CourseSchedule courseSchedule;
                 btnAssignFacultyActionPerformed(evt);
             }
         });
-        add(btnAssignFaculty, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 410, -1, -1));
-        add(fieldCourseName, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 330, 78, -1));
-        add(fieldCredits, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 330, 80, -1));
 
         lblTeacher.setText("Teacher");
-        add(lblTeacher, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 410, -1, -1));
 
         cmbTeacher.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        add(cmbTeacher, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 410, 78, -1));
 
         lblSeatNumber.setText("Seat Number");
-        add(lblSeatNumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 460, -1, -1));
-        add(fieldSeatNumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 460, 90, -1));
 
         lblDate.setText("Date");
-        add(lblDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 540, -1, 20));
 
         cmbDate.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" }));
-        add(cmbDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 540, 110, -1));
 
         lblStartTime.setText("StartTime");
-        add(lblStartTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 540, -1, -1));
 
         btnSetRelavantInformation.setText("Set Relavant Information");
         btnSetRelavantInformation.addActionListener(new java.awt.event.ActionListener() {
@@ -171,30 +153,20 @@ CourseSchedule courseSchedule;
                 btnSetRelavantInformationActionPerformed(evt);
             }
         });
-        add(btnSetRelavantInformation, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 450, -1, -1));
-        add(spnStartTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 540, 110, -1));
 
         lblEndTime.setText("EndTime");
-        add(lblEndTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 540, -1, -1));
-        add(spnEndTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 540, 120, -1));
 
         lblBuildingNumber.setText("Building Number");
-        add(lblBuildingNumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 500, -1, -1));
-        add(fieldBuildingNumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 500, 80, -1));
 
         lblClassroomNumber.setText("Classroom Number");
-        add(lblClassroomNumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 500, -1, -1));
 
         lblFloorNumber.setText("Floor Number");
-        add(lblFloorNumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 500, -1, -1));
 
         fieldFloorNumber.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fieldFloorNumberActionPerformed(evt);
             }
         });
-        add(fieldFloorNumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 500, 90, -1));
-        add(fieldClassroomNumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 500, 80, -1));
 
         tblCourseOffering.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -209,10 +181,7 @@ CourseSchedule courseSchedule;
         ));
         jScrollPane2.setViewportView(tblCourseOffering);
 
-        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 780, 210));
-
         lblSemester.setText("Semester");
-        add(lblSemester, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 60, 40));
 
         cmbSemester.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cmbSemester.addActionListener(new java.awt.event.ActionListener() {
@@ -220,9 +189,6 @@ CourseSchedule courseSchedule;
                 cmbSemesterActionPerformed(evt);
             }
         });
-        add(cmbSemester, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 80, 100, -1));
-        add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 373, 580, 20));
-        add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 440, 580, -1));
 
         btnUpdate.setText("Update");
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
@@ -230,11 +196,8 @@ CourseSchedule courseSchedule;
                 btnUpdateActionPerformed(evt);
             }
         });
-        add(btnUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 490, -1, -1));
 
         lblSearchCourse.setText("Search Course");
-        add(lblSearchCourse, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 70, -1, 40));
-        add(fieldSearchCourse, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 80, 90, -1));
 
         btnSearchCourse.setText("Search");
         btnSearchCourse.addActionListener(new java.awt.event.ActionListener() {
@@ -242,7 +205,6 @@ CourseSchedule courseSchedule;
                 btnSearchCourseActionPerformed(evt);
             }
         });
-        add(btnSearchCourse, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 80, -1, -1));
 
         btnSave.setText("Save");
         btnSave.addActionListener(new java.awt.event.ActionListener() {
@@ -250,7 +212,167 @@ CourseSchedule courseSchedule;
                 btnSaveActionPerformed(evt);
             }
         });
-        add(btnSave, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 530, -1, -1));
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(btnBack)
+                .addGap(162, 162, 162)
+                .addComponent(lblTitle))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(lblSemester, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(cmbSemester, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(280, 280, 280)
+                .addComponent(lblSearchCourse)
+                .addGap(15, 15, 15)
+                .addComponent(fieldSearchCourse, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(btnSearchCourse))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 780, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(btnCreate)
+                .addGap(98, 98, 98)
+                .addComponent(lblCourseName)
+                .addGap(31, 31, 31)
+                .addComponent(fieldCourseName, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(62, 62, 62)
+                .addComponent(lblCredits)
+                .addGap(18, 18, 18)
+                .addComponent(fieldCredits, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(btnDelete)
+                .addGap(88, 88, 88)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 580, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(btnAssignFaculty)
+                .addGap(115, 115, 115)
+                .addComponent(lblTeacher)
+                .addGap(14, 14, 14)
+                .addComponent(cmbTeacher, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(190, 190, 190)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 580, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(btnSetRelavantInformation)
+                .addGap(28, 28, 28)
+                .addComponent(lblSeatNumber)
+                .addGap(14, 14, 14)
+                .addComponent(fieldSeatNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addComponent(btnUpdate)
+                .addGap(97, 97, 97)
+                .addComponent(lblBuildingNumber)
+                .addGap(13, 13, 13)
+                .addComponent(fieldBuildingNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(lblFloorNumber)
+                .addGap(12, 12, 12)
+                .addComponent(fieldFloorNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(lblClassroomNumber)
+                .addGap(8, 8, 8)
+                .addComponent(fieldClassroomNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addComponent(btnSave)
+                .addGap(98, 98, 98)
+                .addComponent(lblDate)
+                .addGap(13, 13, 13)
+                .addComponent(cmbDate, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(lblStartTime)
+                .addGap(5, 5, 5)
+                .addComponent(spnStartTime, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(lblEndTime)
+                .addGap(9, 9, 9)
+                .addComponent(spnEndTime, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnBack)
+                    .addComponent(lblTitle))
+                .addGap(37, 37, 37)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblSemester, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblSearchCourse, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cmbSemester, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(fieldSearchCourse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnSearchCourse))))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnCreate)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblCourseName)
+                            .addComponent(fieldCourseName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblCredits)
+                            .addComponent(fieldCredits, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(7, 7, 7)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnDelete)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(13, 13, 13)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(17, 17, 17)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnAssignFaculty)
+                    .addComponent(lblTeacher)
+                    .addComponent(cmbTeacher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(7, 7, 7)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(7, 7, 7)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnSetRelavantInformation)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblSeatNumber)
+                            .addComponent(fieldSeatNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(7, 7, 7)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnUpdate)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblBuildingNumber)
+                            .addComponent(fieldBuildingNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblFloorNumber)
+                            .addComponent(fieldFloorNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblClassroomNumber)
+                            .addComponent(fieldClassroomNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(7, 7, 7)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnSave)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblDate, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblStartTime)
+                            .addComponent(spnStartTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblEndTime)
+                            .addComponent(spnEndTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+        );
     }// </editor-fold>//GEN-END:initComponents
 
     private void fieldFloorNumberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldFloorNumberActionPerformed
