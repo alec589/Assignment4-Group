@@ -360,6 +360,8 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
         
         co.setEnrollmentStatus(isOpen);
         
+        populateTable();
+        
         JOptionPane.showMessageDialog(this, "Successfully Update!", "success", JOptionPane.INFORMATION_MESSAGE);
         
     }//GEN-LAST:event_btnUpdateCourseActionPerformed
