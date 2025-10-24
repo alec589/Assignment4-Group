@@ -575,26 +575,29 @@ public class StudentManagementJPanel extends javax.swing.JPanel {
             if (e.getType() != TableModelEvent.UPDATE) return;
             if (e.getColumn() != 3) return;
 
-            int row = e.getFirstRow();
-            Object v = model.getValueAt(row, 3);
-            StudentAssignment stua = rowBindings.get(row);
+            int first = e.getFirstRow();
+            int last = e.getLastRow();
 
-            if (v == null) {
-                stua.clearScore();
-                model.setValueAt(null, row, 3);
-                return;
+            for (int row = first; row <= last; row++) {
+                Object v = model.getValueAt(row, 3);
+                StudentAssignment stua = rowBindings.get(row);
+
+                if (v == null) {
+                    stua.clearScore();
+                    model.setValueAt(null, row, 3);
+                    continue;
+                }
+
+                double score = (v instanceof Number)
+                        ? ((Number) v).doubleValue()
+                        : Double.parseDouble(v.toString());
+
+                int max = stua.getAssignment().getMaxPoints();
+                if (score < 0) score = 0;
+                if (score > max) score = max;
+
+                stua.setScore(score);
             }
-
-            double score = (v instanceof Number) ?
-                    ((Number) v).doubleValue() :
-                    Double.parseDouble(v.toString());
-
-            int max = stua.getAssignment().getMaxPoints();
-            if (score < 0) score = 0;
-            if (score > max) score = max;
-
-            stua.setScore(score);
-            
         });
         
         tblAssignment.getColumnModel().getColumn(0).setPreferredWidth(180);
