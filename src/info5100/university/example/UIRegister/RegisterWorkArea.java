@@ -6,6 +6,7 @@ package info5100.university.example.UIRegister;
 
 
 import info5100.university.example.Department.Department;
+import info5100.university.example.Persona.RegisterProfile;
 import java.awt.CardLayout;
 import javax.swing.JPanel;
 
@@ -16,13 +17,15 @@ import javax.swing.JPanel;
 public class RegisterWorkArea extends javax.swing.JPanel {
 JPanel mainpanel;
 Department department;
+RegisterProfile rp;
     /**
      * Creates new form RegistrarWorkArea
      */
-    public RegisterWorkArea(JPanel mainpanel,Department department) {
+    public RegisterWorkArea(JPanel mainpanel,Department department,RegisterProfile rp) {
         initComponents();
         this.mainpanel=mainpanel;
         this.department=department;
+        this.rp=rp;
     }
 
     /**
@@ -40,6 +43,7 @@ Department department;
         btnManageProfile = new javax.swing.JButton();
         btnFiancialMonitoring = new javax.swing.JButton();
         btnAnalyticsReport = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         lblTitle.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
         lblTitle.setText("Register Work Area");
@@ -79,6 +83,13 @@ Department department;
             }
         });
 
+        jButton1.setText(">>> Back ");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -95,7 +106,9 @@ Department department;
                     .addComponent(btnStudentRegistration, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(51, 51, 51))
             .addGroup(layout.createSequentialGroup()
-                .addGap(199, 199, 199)
+                .addGap(16, 16, 16)
+                .addComponent(jButton1)
+                .addGap(105, 105, 105)
                 .addComponent(lblTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -103,8 +116,10 @@ Department department;
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(23, 23, 23)
-                .addComponent(lblTitle)
-                .addGap(54, 54, 54)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTitle)
+                    .addComponent(jButton1))
+                .addGap(52, 52, 52)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCourseOfferingManagement)
                     .addComponent(btnStudentRegistration))
@@ -120,48 +135,55 @@ Department department;
 
     private void btnCourseOfferingManagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCourseOfferingManagementActionPerformed
         // TODO add your handling code here:
-     /*   CourseOfferingManagementJPanel comJPanel=new CourseOfferingManagementJPanel( mainpanel, business);
+       CourseOfferingManagementJPanel comJPanel=new CourseOfferingManagementJPanel( mainpanel, department);
         mainpanel.add(" CourseOfferingManagementJPanel",comJPanel);
         
         CardLayout layout = (CardLayout) mainpanel.getLayout();
-            layout.next(mainpanel);*/
+            layout.next(mainpanel);
     }//GEN-LAST:event_btnCourseOfferingManagementActionPerformed
 
     private void btnStudentRegistrationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStudentRegistrationActionPerformed
         // TODO add your handling code here:
-       /*  StudentRegistrationJPanel srJPanel=new StudentRegistrationJPanel( mainpanel, business);
+         StudentRegistrationJPanel srJPanel=new StudentRegistrationJPanel( mainpanel, department);
         mainpanel.add(" StudentRegistrationJPanel",srJPanel);
         
         CardLayout layout = (CardLayout) mainpanel.getLayout();
-            layout.next(mainpanel);*/
+            layout.next(mainpanel);
     }//GEN-LAST:event_btnStudentRegistrationActionPerformed
 
     private void btnManageProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageProfileActionPerformed
         // TODO add your handling code here:
-     /*   ManageProfileJPanel mpJPanel=new ManageProfileJPanel( mainpanel, business);
+        ManageProfileJPanel mpJPanel=new ManageProfileJPanel( mainpanel, department,rp);
         mainpanel.add(" ManageProfileJPanel",mpJPanel);
         
         CardLayout layout = (CardLayout) mainpanel.getLayout();
-            layout.next(mainpanel);*/
+            layout.next(mainpanel);
     }//GEN-LAST:event_btnManageProfileActionPerformed
 
     private void btnFiancialMonitoringActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiancialMonitoringActionPerformed
         // TODO add your handling code here:
-      /*  FinancialMonitoringJPanel fmJPanel=new FinancialMonitoringJPanel( mainpanel, business);
-        mainpanel.add(" FinancialMoitoringJPanel",fmJPanel);
+        FinancialMonitoringJPanel fmJPanel=new FinancialMonitoringJPanel( mainpanel, department);
+        mainpanel.add(" FinancialMonitoringJPanel",fmJPanel);
         
         CardLayout layout = (CardLayout) mainpanel.getLayout();
-            layout.next(mainpanel);*/
+            layout.next(mainpanel);
     }//GEN-LAST:event_btnFiancialMonitoringActionPerformed
 
     private void btnAnalyticsReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalyticsReportActionPerformed
         // TODO add your handling code here:
-       /*  AnalyticsReportJPanel arJPanel=new AnalyticsReportJPanel( mainpanel, business);
+      AnalyticsReportJPanel arJPanel=new AnalyticsReportJPanel( mainpanel, department);
         mainpanel.add(" AnalyticsReportJPanel",arJPanel);
         
         CardLayout layout = (CardLayout) mainpanel.getLayout();
-            layout.next(mainpanel);*/
+            layout.next(mainpanel);
     }//GEN-LAST:event_btnAnalyticsReportActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+           mainpanel.remove(this);
+         CardLayout layout =(CardLayout)mainpanel.getLayout();
+        layout.previous(mainpanel);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -170,6 +192,7 @@ Department department;
     private javax.swing.JButton btnFiancialMonitoring;
     private javax.swing.JButton btnManageProfile;
     private javax.swing.JButton btnStudentRegistration;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel lblTitle;
     // End of variables declaration//GEN-END:variables
 }
