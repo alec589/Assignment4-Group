@@ -153,8 +153,8 @@ StudentProfile studentprofile;
             layout.next(MainPanel);
         }
         if (profile instanceof RegisterProfile) {
-
-            RegisterWorkArea panel = new RegisterWorkArea(MainPanel,department);
+            RegisterProfile rp=(RegisterProfile)profile;
+            RegisterWorkArea panel = new RegisterWorkArea(MainPanel,department,rp);
             MainPanel.add("RegisterWorkArea", panel);
             CardLayout layout = (CardLayout) MainPanel.getLayout();
             layout.next(MainPanel);
