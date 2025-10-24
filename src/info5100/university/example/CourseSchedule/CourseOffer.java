@@ -53,7 +53,7 @@ public class CourseOffer {
         this.dayOfWeek = dayOfWeek;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.timeSchedule= dayOfWeek + " " + startTime + "-" + endTime;
+        this.timeSchedule= dayOfWeek + " " + startTime + "：00-" + endTime+"：00";
     }
 
     public double getTuitionFee() {
