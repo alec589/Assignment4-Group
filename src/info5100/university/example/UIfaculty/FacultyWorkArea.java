@@ -121,23 +121,34 @@ UserAccount currentUser;
 
     private void btnCourseManagmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCourseManagmentActionPerformed
         // TODO add your handling code here:
-        
-        
+        CourseManagementJPanel courseManagementJPanel = new CourseManagementJPanel(mainpanel, department, currentUser);
+        mainpanel.add(courseManagementJPanel);
+        CardLayout layout = (CardLayout)mainpanel.getLayout();
+        layout.next(mainpanel); 
     }//GEN-LAST:event_btnCourseManagmentActionPerformed
 
     private void btnProfileManagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProfileManagementActionPerformed
         // TODO add your handling code here:
-        
+        ProfileManagementJPanel profileManagementJPanel = new ProfileManagementJPanel(mainpanel, department,currentUser);
+        mainpanel.add(profileManagementJPanel);
+        CardLayout layout = (CardLayout)mainpanel.getLayout();
+        layout.next(mainpanel);
     }//GEN-LAST:event_btnProfileManagementActionPerformed
 
     private void btnStudentManagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStudentManagementActionPerformed
         // TODO add your handling code here:
-        
+        StudentManagementJPanel studentManagementJPanel = new StudentManagementJPanel(mainpanel, department, currentUser);
+        mainpanel.add(studentManagementJPanel);
+        CardLayout layout = (CardLayout)mainpanel.getLayout();
+        layout.next(mainpanel);
     }//GEN-LAST:event_btnStudentManagementActionPerformed
 
     private void btnPerformanceReportingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPerformanceReportingActionPerformed
         // TODO add your handling code here:
-        
+        PerformanceReportingJPanel performanceReportingJPanel = new PerformanceReportingJPanel(mainpanel, department, currentUser);
+        mainpanel.add(performanceReportingJPanel);
+        CardLayout layout = (CardLayout)mainpanel.getLayout();
+        layout.next(mainpanel);
     }//GEN-LAST:event_btnPerformanceReportingActionPerformed
 
 
