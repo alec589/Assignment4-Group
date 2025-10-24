@@ -5,8 +5,19 @@
 package info5100.university.example.UIRegister;
 
 
+import info5100.university.example.CourseCatalog.Course;
+import info5100.university.example.CourseSchedule.CourseOffer;
+import info5100.university.example.CourseSchedule.CourseSchedule;
+import info5100.university.example.Department.Calendar;
 import info5100.university.example.Department.Department;
+import info5100.university.example.Persona.Faculty.FacultyProfile;
+import java.awt.CardLayout;
+import java.util.Collection;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -15,6 +26,8 @@ import javax.swing.JPanel;
 public class CourseOfferingManagementJPanel extends javax.swing.JPanel {
 JPanel mainpanel;
 Department department;
+Calendar calendar;
+CourseSchedule courseSchedule;
     /**
      * Creates new form CourseOfferingManagementJPanel
      */
@@ -22,8 +35,21 @@ Department department;
         initComponents();
         this.mainpanel=mainpanel;
         this.department=department;
+        this.calendar=department.getCalendar();
+        populateCmbSemester();
+        populateCmbTeacher();
+        populateSpnStartTime();
+        populateSpnEndTime();
+        //ViewMode();
+        
+    if (cmbSemester.getItemCount() > 0) {
+        cmbSemester.setSelectedIndex(0);
+        populateTableCourseOffering(cmbSemester.getSelectedItem().toString()); 
+    } else {  
+        populateTableCourseOffering(null);
+    }  
+       
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -33,19 +59,715 @@ Department department;
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        jLabel1 = new javax.swing.JLabel();
+        lblTitle = new javax.swing.JLabel();
+        btnBack = new javax.swing.JButton();
+        lblCourseName = new javax.swing.JLabel();
+        lblCredits = new javax.swing.JLabel();
+        btnCreate = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
+        btnAssignFaculty = new javax.swing.JButton();
+        fieldCourseName = new javax.swing.JTextField();
+        fieldCredits = new javax.swing.JTextField();
+        lblTeacher = new javax.swing.JLabel();
+        cmbTeacher = new javax.swing.JComboBox<>();
+        lblSeatNumber = new javax.swing.JLabel();
+        fieldSeatNumber = new javax.swing.JTextField();
+        lblDate = new javax.swing.JLabel();
+        cmbDate = new javax.swing.JComboBox<>();
+        lblStartTime = new javax.swing.JLabel();
+        btnSetRelavantInformation = new javax.swing.JButton();
+        spnStartTime = new javax.swing.JSpinner();
+        lblEndTime = new javax.swing.JLabel();
+        spnEndTime = new javax.swing.JSpinner();
+        lblBuildingNumber = new javax.swing.JLabel();
+        fieldBuildingNumber = new javax.swing.JTextField();
+        lblClassroomNumber = new javax.swing.JLabel();
+        lblFloorNumber = new javax.swing.JLabel();
+        fieldFloorNumber = new javax.swing.JTextField();
+        fieldClassroomNumber = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblCourseOffering = new javax.swing.JTable();
+        lblSemester = new javax.swing.JLabel();
+        cmbSemester = new javax.swing.JComboBox<>();
+        jSeparator1 = new javax.swing.JSeparator();
+        jSeparator2 = new javax.swing.JSeparator();
+        btnUpdate = new javax.swing.JButton();
+        lblSearchCourse = new javax.swing.JLabel();
+        fieldSearchCourse = new javax.swing.JTextField();
+        btnSearchCourse = new javax.swing.JButton();
+        btnSave = new javax.swing.JButton();
+
+        jLabel1.setText("jLabel1");
+
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblTitle.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
+        lblTitle.setText("Course Offering Management");
+        add(lblTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 10, -1, -1));
+
+        btnBack.setText("<<< Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
+        add(btnBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
+
+        lblCourseName.setText("Course Name");
+        add(lblCourseName, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 330, -1, -1));
+
+        lblCredits.setText("Credits");
+        add(lblCredits, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 330, -1, -1));
+
+        btnCreate.setText("Create ");
+        btnCreate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreateActionPerformed(evt);
+            }
+        });
+        add(btnCreate, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 320, -1, -1));
+
+        btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+        add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 360, -1, -1));
+
+        btnAssignFaculty.setText("Assign Faculty");
+        btnAssignFaculty.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAssignFacultyActionPerformed(evt);
+            }
+        });
+        add(btnAssignFaculty, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 410, -1, -1));
+        add(fieldCourseName, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 330, 78, -1));
+        add(fieldCredits, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 330, 80, -1));
+
+        lblTeacher.setText("Teacher");
+        add(lblTeacher, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 410, -1, -1));
+
+        cmbTeacher.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        add(cmbTeacher, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 410, 78, -1));
+
+        lblSeatNumber.setText("Seat Number");
+        add(lblSeatNumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 460, -1, -1));
+        add(fieldSeatNumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 460, 90, -1));
+
+        lblDate.setText("Date");
+        add(lblDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 540, -1, 20));
+
+        cmbDate.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" }));
+        add(cmbDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 540, 110, -1));
+
+        lblStartTime.setText("StartTime");
+        add(lblStartTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 540, -1, -1));
+
+        btnSetRelavantInformation.setText("Set Relavant Information");
+        btnSetRelavantInformation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSetRelavantInformationActionPerformed(evt);
+            }
+        });
+        add(btnSetRelavantInformation, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 450, -1, -1));
+        add(spnStartTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 540, 110, -1));
+
+        lblEndTime.setText("EndTime");
+        add(lblEndTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 540, -1, -1));
+        add(spnEndTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 540, 120, -1));
+
+        lblBuildingNumber.setText("Building Number");
+        add(lblBuildingNumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 500, -1, -1));
+        add(fieldBuildingNumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 500, 80, -1));
+
+        lblClassroomNumber.setText("Classroom Number");
+        add(lblClassroomNumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 500, -1, -1));
+
+        lblFloorNumber.setText("Floor Number");
+        add(lblFloorNumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 500, -1, -1));
+
+        fieldFloorNumber.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fieldFloorNumberActionPerformed(evt);
+            }
+        });
+        add(fieldFloorNumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 500, 90, -1));
+        add(fieldClassroomNumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 500, 80, -1));
+
+        tblCourseOffering.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Course Number", "Course Name", "Teacher", "Credits", "Classroom", "Seat Capaticy", "Time Schedule"
+            }
+        ));
+        jScrollPane2.setViewportView(tblCourseOffering);
+
+        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 780, 210));
+
+        lblSemester.setText("Semester");
+        add(lblSemester, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 60, 40));
+
+        cmbSemester.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbSemester.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbSemesterActionPerformed(evt);
+            }
+        });
+        add(cmbSemester, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 80, 100, -1));
+        add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 373, 580, 20));
+        add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 440, 580, -1));
+
+        btnUpdate.setText("Update");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
+        add(btnUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 490, -1, -1));
+
+        lblSearchCourse.setText("Search Course");
+        add(lblSearchCourse, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 70, -1, 40));
+        add(fieldSearchCourse, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 80, 90, -1));
+
+        btnSearchCourse.setText("Search");
+        btnSearchCourse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchCourseActionPerformed(evt);
+            }
+        });
+        add(btnSearchCourse, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 80, -1, -1));
+
+        btnSave.setText("Save");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
+        add(btnSave, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 530, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
+
+    private void fieldFloorNumberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldFloorNumberActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fieldFloorNumberActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+         mainpanel.remove(this);
+         CardLayout layout =(CardLayout)mainpanel.getLayout();
+        layout.previous(mainpanel);
+    }//GEN-LAST:event_btnBackActionPerformed
+
+    private void btnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateActionPerformed
+        // TODO add your handling code here:
+     
+        //空值检测 
+        if (cmbSemester.getSelectedItem() == null) {
+        JOptionPane.showMessageDialog(this, "Please select a semester first.", "Warning", JOptionPane.WARNING_MESSAGE);
+        return;
+        }         
+        String selectedSemester= cmbSemester.getSelectedItem().toString();
+      
+        CourseSchedule schedule = calendar.getCourseSchedule(selectedSemester);
+        if (schedule == null) {
+        JOptionPane.showMessageDialog(this, "The selected semester schedule does not exist.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+        }
+        
+        String courseName=fieldCourseName.getText();
+        int credits;    
+       
+       if (courseName.isBlank()||fieldCredits.getText().isBlank()||
+              selectedSemester.isBlank()){
+        JOptionPane.showMessageDialog(this,"Course Number, Name, and Credits are required." , "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+       
+       }
+       try{  
+           credits =Integer.parseInt(fieldCredits.getText());
+        }
+        catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(null, "Please check number input","Warning",JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+       
+        Course course = department.getCourseCatalog().getCourseByName(courseName);
+        if (course == null) {
+            
+            course = department.getCoursecatalog().newCourse(courseName, credits);
+        }
+        CourseOffer newOffer = schedule.newCourseOffer(course.getCourseNumber());
+   
+         populateTableCourseOffering(selectedSemester);
+         JOptionPane.showMessageDialog(null, "Successfully create a new courseoffering","Success",JOptionPane.INFORMATION_MESSAGE);
+         fieldCourseName.setText("");
+         
+         fieldCredits.setText("");
+    }//GEN-LAST:event_btnCreateActionPerformed
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        // TODO add your handling code here:
+        
+         if (cmbSemester.getSelectedItem() == null) {
+        JOptionPane.showMessageDialog(this, "Please select a semester first.", "Warning", JOptionPane.WARNING_MESSAGE);
+        return;
+        }         
+        String selectedSemester= cmbSemester.getSelectedItem().toString();
+        int selectedRow=tblCourseOffering.getSelectedRow();
+        if(selectedRow<0){
+            JOptionPane.showMessageDialog(null, "please  selected a  courseoffer from the list","Warning",JOptionPane.WARNING_MESSAGE);
+        }else{
+        int dialogButton=JOptionPane.YES_NO_OPTION;
+        int dialogResult=JOptionPane.showConfirmDialog(null, "Are u sure you want to update courseoffering Information","Warning",dialogButton);
+        if(dialogResult==JOptionPane.YES_OPTION){
+            int courseNumber= (Integer)tblCourseOffering.getValueAt(selectedRow, 0);
+            courseSchedule=department.getCalendar().getCourseSchedule(selectedSemester);
+            CourseOffer co= courseSchedule.getCourseOfferByNumber(courseNumber);
+        fieldCourseName.setText(co.getCourseName()); 
+        fieldCredits.setText(String.valueOf(co.getCreditHours()));
+        cmbTeacher.setSelectedIndex(0);
+        fieldSeatNumber.setText(String.valueOf(co.getSeatlist().size()));
+        fieldBuildingNumber.setText(String.valueOf(co.getBuildingNumber()));
+        fieldFloorNumber.setText(String.valueOf(co.getFloorNumber()));
+        fieldClassroomNumber.setText(String.valueOf(co.getClassroomNumber()));
+        cmbDate.setSelectedItem(co.getDayOfWeek());
+        spnStartTime.setValue(co.getStartTime());
+        spnEndTime.setValue(co.getEndTime());
+        fieldCourseName.setEnabled(false);
+        fieldCredits.setEnabled(false);
+        }
+        }       
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void cmbSemesterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbSemesterActionPerformed
+        // TODO add your handling code here:
+         if (cmbSemester.getSelectedItem() != null) {
+        populateTableCourseOffering(cmbSemester.getSelectedItem().toString());
+    }
+    }//GEN-LAST:event_cmbSemesterActionPerformed
+
+    private void btnAssignFacultyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAssignFacultyActionPerformed
+        // TODO add your handling code here:
+        if (cmbTeacher.getSelectedItem() == null) {
+        JOptionPane.showMessageDialog(this, "Please select a teacher first.", "Warning", JOptionPane.WARNING_MESSAGE);
+        return;
+        }     
+        String facultyName= cmbTeacher.getSelectedItem().toString();
+        
+        FacultyProfile fp =department.getFacultydirectory().findFacultyByName(facultyName);
+        
+        
+        if (cmbSemester.getSelectedItem() == null) {
+        JOptionPane.showMessageDialog(this, "Please select a semester first.", "Warning", JOptionPane.WARNING_MESSAGE);
+        return;
+        }         
+        String selectedSemester= cmbSemester.getSelectedItem().toString();
+        
+        int selectedRow=tblCourseOffering.getSelectedRow();
+        if(selectedRow<0){
+            JOptionPane.showMessageDialog(null, "please  selected a  product from the list","Warning",JOptionPane.WARNING_MESSAGE);
+        }else{
+        int dialogButton=JOptionPane.YES_NO_OPTION;
+        int dialogResult=JOptionPane.showConfirmDialog(null, "Are u sure you want to assign a teacher for the selected courseoffering","Warning",dialogButton);
+        if(dialogResult==JOptionPane.YES_OPTION){
+            int courseNumber= (Integer)tblCourseOffering.getValueAt(selectedRow, 0);
+            courseSchedule=department.getCalendar().getCourseSchedule(selectedSemester);
+            CourseOffer co= courseSchedule.getCourseOfferByNumber(courseNumber);
+            
+            co.AssignAsTeacher(fp);
+            
+            populateTableCourseOffering(selectedSemester);
+            cmbTeacher.setSelectedIndex(0);
+        }
+        }
+    }//GEN-LAST:event_btnAssignFacultyActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+        if (cmbSemester.getSelectedItem() == null) {
+        JOptionPane.showMessageDialog(this, "Please select a semester first.", "Warning", JOptionPane.WARNING_MESSAGE);
+        return;
+        }         
+        String selectedSemester= cmbSemester.getSelectedItem().toString();
+        int selectedRow=tblCourseOffering.getSelectedRow();
+        if(selectedRow<0){
+            JOptionPane.showMessageDialog(null, "please  selected a courseoffer from the list","Warning",JOptionPane.WARNING_MESSAGE);
+        }else{
+        int dialogButton=JOptionPane.YES_NO_OPTION;
+        int dialogResult=JOptionPane.showConfirmDialog(null, "Are u sure you want to delete the selected courseoffering","Warning",dialogButton);
+        if(dialogResult==JOptionPane.YES_OPTION){
+            int courseNumber= (Integer)tblCourseOffering.getValueAt(selectedRow, 0);
+            courseSchedule=department.getCalendar().getCourseSchedule(selectedSemester);
+            CourseOffer co= courseSchedule.getCourseOfferByNumber(courseNumber);
+            courseSchedule.deleteCourseOffer(co);
+            
+            populateTableCourseOffering(selectedSemester);}
+                    
+        }
+ 
+        
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnSetRelavantInformationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSetRelavantInformationActionPerformed
+        // TODO add your handling code here:
+        
+        if (cmbDate.getSelectedItem() == null) {
+        JOptionPane.showMessageDialog(this, "Please select a teacher first.", "Warning", JOptionPane.WARNING_MESSAGE);
+        return;
+        }  
+        String dayOfweek=cmbDate.getSelectedItem().toString();
+        int seatNumber;
+        int buildingNumber;
+        int floorNumber;
+        int classroomNumber;
+        int startTime=(Integer)spnStartTime.getValue();
+        int endTime=(Integer)spnEndTime.getValue();
+        
+        
+        try{  
+           seatNumber =Integer.parseInt(fieldSeatNumber.getText());
+        }
+        catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(null, "Please check number input","Warning",JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+       try{   
+           buildingNumber= Integer.parseInt(fieldBuildingNumber.getText());   
+        }
+        catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(null, "Please check number input","Warning",JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        try{   
+             floorNumber= Integer.parseInt(fieldFloorNumber.getText());
+        }
+        catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(null, "Please check number input","Warning",JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        try{   
+            classroomNumber= Integer.parseInt(fieldClassroomNumber.getText());  
+        }
+        catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(null, "Please check number input","Warning",JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+          
+        if (cmbSemester.getSelectedItem() == null) {
+        JOptionPane.showMessageDialog(this, "Please select a semester first.", "Warning", JOptionPane.WARNING_MESSAGE);
+        return;
+        }         
+        String selectedSemester= cmbSemester.getSelectedItem().toString();
+        int selectedRow=tblCourseOffering.getSelectedRow();
+        if(selectedRow<0){
+            JOptionPane.showMessageDialog(null, "please  selected a courseoffer from the list","Warning",JOptionPane.WARNING_MESSAGE);
+        }else{
+        int dialogButton=JOptionPane.YES_NO_OPTION;
+        int dialogResult=JOptionPane.showConfirmDialog(null, "Are u sure you want to set the location the selected courseoffering","Warning",dialogButton);
+        if(dialogResult==JOptionPane.YES_OPTION){
+            int courseNumber= (Integer)tblCourseOffering.getValueAt(selectedRow, 0);
+            courseSchedule=department.getCalendar().getCourseSchedule(selectedSemester);
+            CourseOffer co= courseSchedule.getCourseOfferByNumber(courseNumber);
+            co.generatSeats(seatNumber);
+            co.setLocation(buildingNumber, floorNumber, classroomNumber);
+            co.setTimeSchedule(dayOfweek, startTime, endTime);
+            
+            populateTableCourseOffering(selectedSemester);
+            
+            fieldSeatNumber.setText("");
+            fieldBuildingNumber.setText("");
+            fieldFloorNumber.setText("");
+            fieldClassroomNumber.setText("");
+            cmbDate.setSelectedIndex(0);
+            spnStartTime.setValue(7);
+            spnEndTime.setValue(7);
+            
+        }
+                    
+        }
+       
+
+               
+    }//GEN-LAST:event_btnSetRelavantInformationActionPerformed
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        // TODO add your handling code here:
+        if (cmbSemester.getSelectedItem() == null) {
+        JOptionPane.showMessageDialog(this, "Please select a semester first.", "Warning", JOptionPane.WARNING_MESSAGE);
+        return;
+        }
+        String selectedSemester= cmbSemester.getSelectedItem().toString();
+        
+        if (cmbTeacher.getSelectedItem() == null) {
+        JOptionPane.showMessageDialog(this, "Please select a teacher first.", "Warning", JOptionPane.WARNING_MESSAGE);
+        return;
+        }    
+        String facultyName= cmbTeacher.getSelectedItem().toString();
+        FacultyProfile fp =department.getFacultydirectory().findFacultyByName(facultyName);
+        
+        if (cmbDate.getSelectedItem() == null) {
+        JOptionPane.showMessageDialog(this, "Please select a teacher first.", "Warning", JOptionPane.WARNING_MESSAGE);
+        return;
+        }  
+        String dayOfweek=cmbDate.getSelectedItem().toString();
+        int seatNumber;
+        int buildingNumber;
+        int floorNumber;
+        int classroomNumber;
+        int startTime=(Integer)spnStartTime.getValue();
+        int endTime=(Integer)spnEndTime.getValue();
+        
+        
+        try{  
+           seatNumber =Integer.parseInt(fieldSeatNumber.getText());
+        }
+        catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(null, "Please check number input","Warning",JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+       try{   
+           buildingNumber= Integer.parseInt(fieldBuildingNumber.getText());   
+        }
+        catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(null, "Please check number input","Warning",JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        try{   
+             floorNumber= Integer.parseInt(fieldFloorNumber.getText());
+        }
+        catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(null, "Please check number input","Warning",JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        try{   
+            classroomNumber= Integer.parseInt(fieldClassroomNumber.getText());  
+        }
+        catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(null, "Please check number input","Warning",JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        int selectedRow=tblCourseOffering.getSelectedRow();
+        if(selectedRow<0){
+            JOptionPane.showMessageDialog(null, "please  selected a courseoffer from the list","Warning",JOptionPane.WARNING_MESSAGE);
+        }else{
+        int dialogButton=JOptionPane.YES_NO_OPTION;
+        int dialogResult=JOptionPane.showConfirmDialog(null, "Are u sure you want to save those changes","Warning",dialogButton);
+        if(dialogResult==JOptionPane.YES_OPTION){
+            int courseNumber= (Integer)tblCourseOffering.getValueAt(selectedRow, 0);
+            courseSchedule=department.getCalendar().getCourseSchedule(selectedSemester);
+            CourseOffer co= courseSchedule.getCourseOfferByNumber(courseNumber);
+            co.AssignAsTeacher(fp);
+            co.generatSeats(seatNumber);
+            co.setLocation(buildingNumber, floorNumber, classroomNumber);
+            co.setTimeSchedule(dayOfweek, startTime, endTime);
+            
+            populateTableCourseOffering(selectedSemester);
+            
+            cmbTeacher.setSelectedIndex(0);
+            fieldSeatNumber.setText("");
+            fieldBuildingNumber.setText("");
+            fieldFloorNumber.setText("");
+            fieldClassroomNumber.setText("");
+            cmbDate.setSelectedIndex(0);
+            spnStartTime.setValue(7);
+            spnEndTime.setValue(7);
+        }
+        }
+    }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void btnSearchCourseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchCourseActionPerformed
+        // TODO add your handling code here:
+        if (cmbSemester.getSelectedItem() == null) {
+        JOptionPane.showMessageDialog(this, "Please select a semester first.", "Warning", JOptionPane.WARNING_MESSAGE);
+        return;
+        }
+        String selectedSemester= cmbSemester.getSelectedItem().toString();
+        
+        
+        String courseName=fieldSearchCourse.getText();
+       if(courseName.isBlank()){
+           JOptionPane.showMessageDialog(null, "Please check the input","Warning",JOptionPane.WARNING_MESSAGE);
+       return;
+       }
+
+        DefaultTableModel model = (DefaultTableModel) tblCourseOffering.getModel();
+         model.setRowCount(0);
+
+        CourseSchedule cs = calendar.getCourseSchedule(selectedSemester);
+        
+        CourseOffer co = cs.getCourseOfferByName(courseName);
+        if (co == null) {
+             JOptionPane.showMessageDialog(this, "Course not found in this semester.", "Warning", JOptionPane.WARNING_MESSAGE);
+              return;
+        }
+        
+                         Object[] row = new Object[7];
+                            row[0] =co.getCourseNumber() ;  
+                            row[1] =co.getCourseName() ;
+                            row[2] = (co.getFacultyassignment() != null &&
+                                     co.getFacultyassignment().getFacultyProfile() != null) 
+                                      ? co.getFacultyassignment().getFacultyProfile().getFirstName(): "Unassigned";
+                            row[3] =co.getCreditHours(); 
+                            row[4] =co.getClassroom()!=null?co.getClassroom():"Unassigned";
+                            
+                            row[5] =co.getSeatlist()!=null?co.getSeatlist().size():"Unassigned";
+                            row[6] =co.getTimeSchedule()!=null?co.getTimeSchedule():"Unassigned";
+
+                            model.addRow(row);
+        
+
+    }//GEN-LAST:event_btnSearchCourseActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAssignFaculty;
+    private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnCreate;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnSave;
+    private javax.swing.JButton btnSearchCourse;
+    private javax.swing.JButton btnSetRelavantInformation;
+    private javax.swing.JButton btnUpdate;
+    private javax.swing.JComboBox<String> cmbDate;
+    private javax.swing.JComboBox<String> cmbSemester;
+    private javax.swing.JComboBox<String> cmbTeacher;
+    private javax.swing.JTextField fieldBuildingNumber;
+    private javax.swing.JTextField fieldClassroomNumber;
+    private javax.swing.JTextField fieldCourseName;
+    private javax.swing.JTextField fieldCredits;
+    private javax.swing.JTextField fieldFloorNumber;
+    private javax.swing.JTextField fieldSearchCourse;
+    private javax.swing.JTextField fieldSeatNumber;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JLabel lblBuildingNumber;
+    private javax.swing.JLabel lblClassroomNumber;
+    private javax.swing.JLabel lblCourseName;
+    private javax.swing.JLabel lblCredits;
+    private javax.swing.JLabel lblDate;
+    private javax.swing.JLabel lblEndTime;
+    private javax.swing.JLabel lblFloorNumber;
+    private javax.swing.JLabel lblSearchCourse;
+    private javax.swing.JLabel lblSeatNumber;
+    private javax.swing.JLabel lblSemester;
+    private javax.swing.JLabel lblStartTime;
+    private javax.swing.JLabel lblTeacher;
+    private javax.swing.JLabel lblTitle;
+    private javax.swing.JSpinner spnEndTime;
+    private javax.swing.JSpinner spnStartTime;
+    private javax.swing.JTable tblCourseOffering;
     // End of variables declaration//GEN-END:variables
+
+
+    private void populateCmbSemester() {
+        Collection<String> semesterNames = calendar.getAllSemesterNames();
+        
+        cmbSemester.removeAllItems();
+        for (String semester : semesterNames) {
+        cmbSemester.addItem(semester);
+    }
+      
+    }
+
+    private void populateTableCourseOffering(String semester) {
+        DefaultTableModel model = (DefaultTableModel)tblCourseOffering.getModel();
+        model.setRowCount(0);
+        
+        if (semester == null) { 
+        return; 
+    }
+        CourseSchedule cs = calendar.getCourseSchedule(semester);
+        
+                       for (CourseOffer co : cs.getSchedule()) {  
+                        
+                         Object[] row = new Object[7];
+                            row[0] =co.getCourseNumber() ;  
+                            row[1] =co.getCourseName() ;
+                            row[2] = (co.getFacultyassignment() != null &&
+                                     co.getFacultyassignment().getFacultyProfile() != null) 
+                                      ? co.getFacultyassignment().getFacultyProfile().getFirstName(): "Unassigned";
+                            row[3] =co.getCreditHours(); 
+                            row[4] =co.getClassroom()!=null?co.getClassroom():"Unassigned";
+                            
+                            row[5] =co.getSeatlist()!=null?co.getSeatlist().size():"Unassigned";
+                            row[6] =co.getTimeSchedule()!=null?co.getTimeSchedule():"Unassigned";
+
+                            model.addRow(row);
+        }
+            
+    }
+
+    private void populateCmbTeacher() {
+        cmbTeacher.removeAllItems();
+        for ( FacultyProfile fp:department.getFacultydirectory().getTeacherlist()) {       
+            String teacherName = fp.getFirstName();
+            cmbTeacher.addItem(teacherName);
+        }
+    
+    }
+
+    private void populateSpnStartTime() {
+        SpinnerNumberModel startTimeModel = new SpinnerNumberModel(7, 0, 23, 1);
+        spnStartTime.setModel(startTimeModel);
+        JSpinner.NumberEditor startEditor = new JSpinner.NumberEditor(spnStartTime, "0");
+        spnStartTime.setEditor(startEditor);
+    }
+
+    private void populateSpnEndTime() {
+        SpinnerNumberModel endTimeModel = new SpinnerNumberModel(7, 0, 23, 1);
+        spnEndTime.setModel(endTimeModel);
+        JSpinner.NumberEditor endEditor = new JSpinner.NumberEditor(spnEndTime, "0");
+        spnEndTime.setEditor(endEditor);
+    }
+
+  /* private void populateTableCourseOfferingBySearchTeacher(String semester) {
+        DefaultTableModel model = (DefaultTableModel)tblCourseOffering.getModel();
+        model.setRowCount(0);
+        String teacherName=fieldSearchTeacher.getText();
+        if (semester == null) { 
+        return; 
+    }
+        CourseSchedule cs = calendar.getCourseSchedule(semester);
+        
+            for (CourseOffer co : cs.getSchedule()) { 
+                 boolean isTeacherMatch = false;
+            if (co.getFacultyassignment() != null &&
+                co.getFacultyassignment().getFacultyProfile() != null) {
+            
+            FacultyProfile faculty = co.getFacultyassignment().getFacultyProfile();
+            String fullName = faculty.getFirstName() + " " + faculty.getLastName();
+ 
+            if (fullName.toLowerCase().contains(teacherName.toLowerCase())) {
+                isTeacherMatch = true;
+            }
+        }
+                         if (isTeacherMatch){ 
+                         Object[] row = new Object[7];
+                            row[0] =co.getCourseNumber() ;  
+                            row[1] =co.getCourseName() ;
+                            row[2] = (co.getFacultyassignment() != null &&
+                                     co.getFacultyassignment().getFacultyProfile() != null) 
+                                      ? co.getFacultyassignment().getFacultyProfile().getFirstName()+" "+co.getFacultyassignment().getFacultyProfile().getLastName(): "Unassigned";
+                            row[3] =co.getCreditHours(); 
+                            row[4] =co.getClassroom()!=null?co.getClassroom():"Unassigned";
+                            
+                            row[5] =co.getSeatlist()!=null?co.getSeatlist().size():"Unassigned";
+                            row[6] =co.getTimeSchedule()!=null?co.getTimeSchedule():"Unassigned";
+
+                            model.addRow(row);
+            }
+        }    
+    }*/
 }

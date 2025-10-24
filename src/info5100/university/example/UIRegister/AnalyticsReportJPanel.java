@@ -5,8 +5,16 @@
 package info5100.university.example.UIRegister;
 
 
+import info5100.university.example.College.College;
+import info5100.university.example.CourseSchedule.CourseLoad;
+import info5100.university.example.CourseSchedule.CourseOffer;
+import info5100.university.example.CourseSchedule.SeatAssignment;
 import info5100.university.example.Department.Department;
+import info5100.university.example.Persona.StudentProfile;
+import java.awt.CardLayout;
+import java.util.Collection;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -15,6 +23,7 @@ import javax.swing.JPanel;
 public class AnalyticsReportJPanel extends javax.swing.JPanel {
 JPanel mainpanel;
 Department department;
+College college;
     /**
      * Creates new form AnalyticsReportJPanel
      */
@@ -22,6 +31,24 @@ Department department;
         initComponents();
          this.mainpanel=mainpanel;
         this.department=department;
+        this.college = department.getCollege();
+        populateSemester();
+        
+        
+        if (cmbSemester.getItemCount() > 0) {
+            
+        cmbSemester.setSelectedIndex(0);
+        String semester=cmbSemester.getSelectedItem().toString();
+        
+        populateTableDepartment(semester);
+        populateTableGPA(semester);
+        populateTableCourse(semester);
+    } else {  
+        populateTableCourse(null);
+        populateTableGPA(null);
+        populateTableDepartment(null);
+    }  
+        
     }
 
     /**
@@ -33,19 +60,239 @@ Department department;
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        jLabel1 = new javax.swing.JLabel();
+        btnBack = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblGPA = new javax.swing.JTable();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblCourse = new javax.swing.JTable();
+        jLabel2 = new javax.swing.JLabel();
+        cmbSemester = new javax.swing.JComboBox<>();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tblDepartment = new javax.swing.JTable();
+
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
+        jLabel1.setText("Analytics Report");
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(306, 13, -1, -1));
+
+        btnBack.setText("<<< Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
+        add(btnBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 20, -1, -1));
+
+        tblGPA.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Course Name", " Total Students", "Average GPA", "Student Number with GPA >=3", "Student Number with GPA<3"
+            }
+        ));
+        jScrollPane2.setViewportView(tblGPA);
+
+        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 410, 760, 150));
+
+        tblCourse.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Course Number", "Course Name", "Enrollment", "Total Seat Number", "Seating occupancy rate"
+            }
+        ));
+        jScrollPane1.setViewportView(tblCourse);
+
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 270, 760, 130));
+
+        jLabel2.setText("Semester");
+        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, -1, 40));
+
+        cmbSemester.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbSemester.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbSemesterActionPerformed(evt);
+            }
+        });
+        add(cmbSemester, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 70, 120, -1));
+
+        tblDepartment.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Department Name", "Enrollment Count"
+            }
+        ));
+        jScrollPane4.setViewportView(tblDepartment);
+
+        add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 760, 140));
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+         mainpanel.remove(this);
+        CardLayout layout =(CardLayout)mainpanel.getLayout();
+        layout.previous(mainpanel);
+    }//GEN-LAST:event_btnBackActionPerformed
+
+    private void cmbSemesterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbSemesterActionPerformed
+        // TODO add your handling code here:
+         if (cmbSemester.getSelectedItem() != null) {
+        String selectedSemester = cmbSemester.getSelectedItem().toString();
+        populateTableDepartment(selectedSemester);
+        populateTableGPA(selectedSemester);
+        populateTableCourse(selectedSemester);
+    }
+    }//GEN-LAST:event_cmbSemesterActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBack;
+    private javax.swing.JComboBox<String> cmbSemester;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JTable tblCourse;
+    private javax.swing.JTable tblDepartment;
+    private javax.swing.JTable tblGPA;
     // End of variables declaration//GEN-END:variables
+
+    private void populateTableGPA(String semester) {
+        DefaultTableModel model = (DefaultTableModel)tblGPA.getModel();
+        model.setRowCount(0);
+        if (semester == null || department.getCalendar().getCourseSchedule(semester) == null) {  
+             return; 
+         }
+        
+         for (CourseOffer co : department.getCalendar().getCourseSchedule(semester).getSchedule()) {  
+             
+             double totalGPA = 0.0;
+             int highGPAStudentCount = 0; // GPA >= 3
+             int lowGPAStudentCount = 0;  // GPA < 3
+             int totalStudents = 0; 
+             
+             
+             for(StudentProfile sp: department.getStudentDirectory().getStudentlist()){    
+                 
+                 SeatAssignment sa = sp.getCourseLoadBySemester(semester).getAssignmentByCourseOffer(co);
+                 
+                 if (sa != null && sa.getSeat().isOccupied()) { 
+                    
+                     
+                     double studentScore = sa.getScore(); 
+                     double studentGPA =convertToGPA(studentScore);
+                     
+                     totalGPA += studentGPA;
+                     totalStudents++; // 统计有成绩的人数
+                     
+                     if (studentGPA >= 3.0) {
+                         highGPAStudentCount++;
+                     } else {
+                         lowGPAStudentCount++;
+                     }
+                 }
+             }
+             
+            
+             double averageGPA = totalStudents > 0 ? totalGPA / totalStudents : 0.0;
+             
+             
+             Object[] row = new Object[5]; 
+             
+             row[0] = co.getCourse().getName(); 
+             row[1] = co.getOcupiedSeatNumber(); 
+             row[2] = String.format("%.2f", averageGPA);
+             row[3] = highGPAStudentCount;
+             row[4] = lowGPAStudentCount; 
+             
+             model.addRow(row);
+         }
+     
+    }
+
+    private void populateTableCourse(String semester) {
+      DefaultTableModel model = (DefaultTableModel)tblCourse.getModel();
+        model.setRowCount(0);
+         if (semester == null) { 
+        return; 
+    }
+         for (CourseOffer co : department.getCalendar().getCourseSchedule(semester).getSchedule()) {  
+                        
+                         Object[] row = new Object[5];
+                            
+                            row[0] =co.getCourseNumber() ;
+                            row[1] = co.getCourseName() ;
+                            row[2] = co.getOcupiedSeatNumber();
+                            row[3] =co.getSeatlist().size();
+                            double percentage = ((double) co.getOcupiedSeatNumber() / co.getSeatlist().size()) * 100;
+                            row[4] = String.format("%.2f%%", percentage);
+                            
+                                 model.addRow(row);
+        }
+    }
+
+    private void populateSemester() {
+       
+        Collection<String> semesterNames = department.getCalendar().getAllSemesterNames();
+        
+        cmbSemester.removeAllItems();
+        for (String semester : semesterNames) {
+        cmbSemester.addItem(semester);   
+    }
+    }
+
+    private void populateTableDepartment(String semester) {
+        DefaultTableModel model = (DefaultTableModel)tblDepartment.getModel();
+        model.setRowCount(0);
+      
+         if (semester == null) { 
+        return; 
+    }
+         for (Department dept : college.getDepartments()){
+            int totalStudent=0;
+            if (dept.getStudentDirectory() == null) continue;
+            for (StudentProfile sp :dept.getStudentDirectory().getStudentlist()){ 
+                if(sp.getCourseLoadBySemester(semester)!=null){
+                    
+            totalStudent ++; 
+                }
+            }
+          Object[] row = new Object[2];
+            row[0] = dept.getName();
+            row[1] = totalStudent;
+             
+            model.addRow(row);
+         }
+    }
+
+    private static double convertToGPA(double score) {
+        if (score >= 93) return 4.0;
+        else if (score >= 90) return 3.7;
+        else if (score >= 87) return 3.3;
+        else if (score >= 83) return 3.0;
+        else if (score >= 80) return 2.7;
+        else if (score >= 77) return 2.3;
+        else if (score >= 73) return 2.0;
+        else if (score >= 70) return 1.7;
+        else if (score >= 67) return 1.3;
+        else if (score >= 63) return 1.0;
+        else if (score >= 60) return 0.7;
+        else return 0.0;    
+    }
 }

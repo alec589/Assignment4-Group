@@ -5,8 +5,16 @@
 package info5100.university.example.UIRegister;
 
 
+import info5100.university.example.College.College;
+import info5100.university.example.CourseSchedule.CourseLoad;
+import info5100.university.example.CourseSchedule.CourseOffer;
+import info5100.university.example.CourseSchedule.SeatAssignment;
 import info5100.university.example.Department.Department;
+import info5100.university.example.Persona.StudentProfile;
+import java.awt.CardLayout;
+import java.util.Collection;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -15,13 +23,28 @@ import javax.swing.JPanel;
 public class FinancialMonitoringJPanel extends javax.swing.JPanel {
 JPanel mainpanel;
 Department department;
+College college;
     /**
      * Creates new form FinancialMonitoringJPanel
      */
     public FinancialMonitoringJPanel(JPanel mainpanel, Department department) {
         initComponents();
-         this.mainpanel=mainpanel;
+        this.mainpanel=mainpanel;
         this.department=department;
+        this.college = department.getCollege();
+        populateCmbSemester();
+        
+       if (cmbSemester.getItemCount() > 0) {
+    cmbSemester.setSelectedIndex(0);
+    populateTableStudent(cmbSemester.getSelectedItem().toString());  
+    populateTableDepartment(cmbSemester.getSelectedItem().toString()) ;
+    
+    } else {  
+        populateTableStudent(null);
+        populateTableDepartment(null);
+      
+    }   
+               
     }
 
     /**
@@ -33,19 +56,230 @@ Department department;
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        lblTitle = new javax.swing.JLabel();
+        btnBack = new javax.swing.JButton();
+        cmbSemester = new javax.swing.JComboBox<>();
+        Semester = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblStudent = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblDepartment = new javax.swing.JTable();
+        lblDepartmentRevenueBreakdown = new javax.swing.JLabel();
+
+        lblTitle.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
+        lblTitle.setText("Financial Monitoring");
+
+        btnBack.setText("<<<Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
+
+        cmbSemester.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbSemester.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbSemesterActionPerformed(evt);
+            }
+        });
+
+        Semester.setText("Semester");
+
+        tblStudent.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Student ID", "Student Name", "Department ", "Paid Tuition", "Unpaid Tuition", "Total Tuition"
+            }
+        ));
+        jScrollPane1.setViewportView(tblStudent);
+
+        tblDepartment.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Department Name", "Collected Tuition ", "Unpaid Tuition Summary", "Total Tuition"
+            }
+        ));
+        jScrollPane2.setViewportView(tblDepartment);
+
+        lblDepartmentRevenueBreakdown.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
+        lblDepartmentRevenueBreakdown.setText("Per-Department Revenue Breakdown");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btnBack)
+                                        .addGap(185, 185, 185)
+                                        .addComponent(lblTitle))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(Semester, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(cmbSemester, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 303, Short.MAX_VALUE))))
+                    .addComponent(jScrollPane2))
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblDepartmentRevenueBreakdown, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(13, 13, 13)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnBack)
+                    .addComponent(lblTitle))
+                .addGap(49, 49, 49)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmbSemester, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Semester))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
+                .addComponent(lblDepartmentRevenueBreakdown)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(217, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+        mainpanel.remove(this);
+        CardLayout layout =(CardLayout)mainpanel.getLayout();
+        layout.previous(mainpanel);
+    }//GEN-LAST:event_btnBackActionPerformed
+
+    private void cmbSemesterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbSemesterActionPerformed
+        // TODO add your handling code here:
+        if (cmbSemester.getSelectedItem() != null) {
+        String selectedSemester = cmbSemester.getSelectedItem().toString();
+        populateTableStudent(selectedSemester);
+        populateTableDepartment(selectedSemester);
+        }
+    }//GEN-LAST:event_cmbSemesterActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Semester;
+    private javax.swing.JButton btnBack;
+    private javax.swing.JComboBox<String> cmbSemester;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblDepartmentRevenueBreakdown;
+    private javax.swing.JLabel lblTitle;
+    private javax.swing.JTable tblDepartment;
+    private javax.swing.JTable tblStudent;
     // End of variables declaration//GEN-END:variables
+
+    private void populateCmbSemester() {
+        Collection<String> semesterNames = department.getCalendar().getAllSemesterNames();
+        cmbSemester.removeAllItems();
+        for (String semester : semesterNames) {
+        cmbSemester.addItem(semester);    
+       
+    }   
+    }
+
+    private void populateTableStudent(String semester) {
+     DefaultTableModel model = (DefaultTableModel)tblStudent.getModel();
+        model.setRowCount(0);  
+        
+        if (semester == null || semester.isBlank()) return;
+        for(StudentProfile sp: department.getStudentDirectory().getStudentlist()){
+            CourseLoad cl = sp.getTranscript().getCourseLoadBySemester(semester);
+             if (cl == null) continue;
+             
+                 double paidTuition=0;
+                 double unpaidTuition = 0;
+                 double totalTuition = 0;
+            for(SeatAssignment sa: cl.getSeatAssignments()){
+               
+                CourseOffer co = sa.getCourseOffer(); 
+                double courseTuition = co.getCourse().getCoursePrice();
+                
+                totalTuition += courseTuition;
+                if (sa.GetCourseStudentScore() > 0) {
+                paidTuition += courseTuition;
+            } else {
+                unpaidTuition += courseTuition;
+            }
+                
+            /*    if (sa.getStatus().equals("unpaid")) {
+                unpaidTuition += courseTuition;
+            } else {
+               
+                 paidTuition += courseTuition;
+            }
+                */
+                
+        }
+                Object[] row = new Object[6];
+                 row[0] =sp.getStudentID();
+                 row[1] =sp.getFirstName()+" "+sp.getLastName();
+                 row[2]=department.getName();
+                 row[3] = String.format("%.2f", paidTuition);
+                 row[4] = String.format("%.2f", unpaidTuition);
+                 row[5] = String.format("%.2f", totalTuition);
+                 
+                 model.addRow(row);
+               
+            
+        }
+}
+    
+
+    private void populateTableDepartment(String semester) {
+        DefaultTableModel model = (DefaultTableModel) tblDepartment.getModel();
+        model.setRowCount(0);
+        
+        for (Department dept : college.getDepartments()) {
+        double collected = 0;
+        double unpaid = 0;
+        double total = 0;
+
+        for (StudentProfile sp : dept.getStudentDirectory().getStudentlist()) {
+            CourseLoad cl = sp.getTranscript().getCourseLoadBySemester(semester);
+            if (cl == null) continue;
+
+            for (SeatAssignment sa : cl.getSeatAssignments()) {
+                CourseOffer co = sa.getCourseOffer(); 
+                double courseTuition = co.getCourse().getCoursePrice();//CoursePrice()=credits * price/per credits
+                total += courseTuition;
+                
+                if (sa.GetCourseStudentScore() > 0)
+                    collected += courseTuition;
+                else
+                    unpaid += courseTuition;
+            }
+        }
+
+        Object[] row = new Object[4];
+        row[0] = dept.getName();
+        row[1] = String.format("%.2f", collected);
+        row[2] = String.format("%.2f", unpaid);
+        row[3] = String.format("%.2f", total);
+        model.addRow(row);
+    }
+    } 
 }
