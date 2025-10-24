@@ -6,6 +6,7 @@ package info5100.university.example.UIfaculty;
 
 
 import info5100.university.example.Department.Department;
+import info5100.university.example.Log;
 import info5100.university.example.Persona.UserAccount;
 import java.awt.CardLayout;
 import javax.swing.JPanel;
@@ -76,6 +77,11 @@ UserAccount currentUser;
         });
 
         btnlogout.setText("Logout");
+        btnlogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnlogoutActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -150,6 +156,15 @@ UserAccount currentUser;
         CardLayout layout = (CardLayout)mainpanel.getLayout();
         layout.next(mainpanel);
     }//GEN-LAST:event_btnPerformanceReportingActionPerformed
+
+    private void btnlogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnlogoutActionPerformed
+        // TODO add your handling code here:
+        Log log = new Log(mainpanel, department);
+        mainpanel.removeAll();
+        mainpanel.add(log);
+        CardLayout layout = (CardLayout)mainpanel.getLayout();
+        layout.next(mainpanel);
+    }//GEN-LAST:event_btnlogoutActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
