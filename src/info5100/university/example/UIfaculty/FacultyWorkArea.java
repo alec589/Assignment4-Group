@@ -159,11 +159,9 @@ UserAccount currentUser;
 
     private void btnlogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnlogoutActionPerformed
         // TODO add your handling code here:
-        Log log = new Log(mainpanel, department);
-        mainpanel.removeAll();
-        mainpanel.add(log);
-        CardLayout layout = (CardLayout)mainpanel.getLayout();
-        layout.next(mainpanel);
+        CardLayout layout = (CardLayout) mainpanel.getLayout();
+        layout.previous(mainpanel);
+        mainpanel.remove(this);
     }//GEN-LAST:event_btnlogoutActionPerformed
 
 

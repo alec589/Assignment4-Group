@@ -400,38 +400,18 @@ public class StudentManagementJPanel extends javax.swing.JPanel {
         String semester = (String) cmbSemester.getSelectedItem();
         String courseName = (String) cmbCourse.getSelectedItem();
 
-        if (semester == null || courseName == null) {
-            JOptionPane.showMessageDialog(this, "Please select both semester and course.");
-            return;
-        }
-        
-        CourseSchedule cs = department.getCalendar().getCourseSchedule(semester);
-        if (cs == null) {
-            JOptionPane.showMessageDialog(this, "No course schedule found for this semester.");
-            return;
-        }
-        
-        CourseOffer co = cs.getCourseOfferByName(courseName);
-        if (co == null) {
-            JOptionPane.showMessageDialog(this, "Course not found in this semester.");
-            return;
-        }
+        for (StudentProfile sp : department.getStudentDirectory().getStudentlist()) {
+            CourseLoad cl = sp.getCourseLoadBySemester(semester);
+            if (cl == null) continue;
 
-        ArrayList<Seat> seatList = co.getSeatlist();
-        
-        for (Seat s : seatList){
-            StudentProfile sp = s.getStudentProfile();
-            
-            if (sp == null) {
-                continue;
+            for (SeatAssignment sa : cl.getSeatAssignments()) {
+                CourseOffer co = sa.getCourseOffer();
+                if (co == null) continue;
+                if (co.getCourseName().equals(courseName)) {
+                    model.addRow(new Object[]{sp, sp.getFirstName(), sp.getLastName()});
+                    break;
+                }
             }
-            
-            Object[] row = new Object[3];
-            row[0] = sp;
-            row[1] = sp.getFirstName().trim();
-            row[2] = sp.getLastName().trim();
-            
-            model.addRow(row);
         }
               
     }//GEN-LAST:event_btnViewStudentActionPerformed
