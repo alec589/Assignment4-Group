@@ -29,14 +29,12 @@ public class AdminAnalyticsDashboardJPanel extends javax.swing.JPanel {
      */
     public AdminAnalyticsDashboardJPanel(Department department) {
         this.department = department;
-        initComponents(); // 初始化所有组件 (包括您新添加的)
+        initComponents(); 
         
-        populateSemesterCombo(); // *** 2. (新增) 填充学期下拉菜单 ***
-        
-        // *** 3. (新增) 启动时加载默认数据 ***
-        // 自动加载默认选定学期的数据
+        populateSemesterCombo(); 
+
         if (jComboBox1.getItemCount() > 0) {
-            jComboBox1.setSelectedIndex(0); // 默认选中第一项
+            jComboBox1.setSelectedIndex(0); 
         } else {
             // 如果没有学期，也运行一次以显示0
             refreshAllData();
@@ -45,21 +43,17 @@ public class AdminAnalyticsDashboardJPanel extends javax.swing.JPanel {
 
     
     private void refreshAllData() {
-        // 从您的 jComboBox1 获取选定的学期
         String selectedSemester = (String) jComboBox1.getSelectedItem();
-        
-        // (修复问题1) 填充顶部的4个统计标签
+     
         populateSummaryMetrics(selectedSemester); 
-        
-        // 填充角色表 (tblSummary)
+
         populateRoleTable(); 
-        
-        // (解决问题2) 填充新课程表 (tblCourseEnrollment)
+    
         populateCourseEnrollmentTable(selectedSemester); 
     }
     
     private void populateSemesterCombo() {
-        jComboBox1.removeAllItems(); // 清空设计器里的 "Item 1" 等
+        jComboBox1.removeAllItems(); // clean
         Calendar calendar = department.getCalendar();
         if (calendar != null && calendar.getAllSemesterNames() != null) {
             Collection<String> semesterNames = calendar.getAllSemesterNames();
@@ -69,11 +63,9 @@ public class AdminAnalyticsDashboardJPanel extends javax.swing.JPanel {
         }
     }
 
-    /**
-     * *** 6. (新增 - 解决问题2) 填充课程注册人数表格 (tblCourseEnrollment) ***
-     */
+  
     private void populateCourseEnrollmentTable(String semester) {
-        // 使用您在设计器中命名的 tblCourseEnrollment
+        
         DefaultTableModel model = (DefaultTableModel) tblCourseEnrollment.getModel();
         model.setRowCount(0);
         
@@ -85,12 +77,12 @@ public class AdminAnalyticsDashboardJPanel extends javax.swing.JPanel {
         CourseSchedule schedule = department.getCalendar().getCourseSchedule(semester);
         
         if (schedule != null && schedule.getSchedule() != null) {
-             // 更新您在设计器中添加的标题
+            
              lblCourseEnrollmentTitle.setText("Enrolled Students per Course (" + semester + ")");
             for (CourseOffer co : schedule.getSchedule()) {
                 model.addRow(new Object[]{
                     co.getCourseName(), 
-                    co.getOcupiedSeatNumber() // 获取已注册人数
+                    co.getOcupiedSeatNumber() 
                 });
             }
         } else {
@@ -102,10 +94,7 @@ public class AdminAnalyticsDashboardJPanel extends javax.swing.JPanel {
         tblCourseEnrollment.repaint();
     }
 
-    /**
-     * *** 7. (已重构) 此方法现在只填充顶部的4个统计标签 (修复问题1) ***
-     * (您原来的 populateSummaryTable 方法被拆分成了这个和 populateRoleTable)
-     */
+
     private void populateSummaryMetrics(String semester) {
         
         int totalStudents = 0;
@@ -113,7 +102,7 @@ public class AdminAnalyticsDashboardJPanel extends javax.swing.JPanel {
         int totalRegistrar = 0;
         int totalAdmin = 0;
 
-        // 计算总用户数 (逻辑不变)
+     
         if (department.getUseraccountdirectory() != null) {
             for (UserAccount ua : department.getUseraccountdirectory().getUserAccountDirectory()) {
                 String role = ua.getRole().toLowerCase();
@@ -124,7 +113,7 @@ public class AdminAnalyticsDashboardJPanel extends javax.swing.JPanel {
             }
         }
 
-        // *** 修复问题1：按学期统计开设课程数 ***
+
         int totalCoursesOfferedThisSemester = 0;
         if (semester != null) {
             CourseSchedule schedule = department.getCalendar().getCourseSchedule(semester);
@@ -132,14 +121,11 @@ public class AdminAnalyticsDashboardJPanel extends javax.swing.JPanel {
                 totalCoursesOfferedThisSemester = schedule.getSchedule().size();
             }
         }
-        // *** 修复结束 ***
-
-        // 计算总注册学生数 (逻辑不变)
+       
         int totalEnrolledStudents = (department.getStudentdirectory() != null)
                 ? department.getStudentdirectory().getStudentlist().size()
                 : 0;
 
-        // 计算总收入 (逻辑不变)
         double totalTuitionRevenue = 0.0;
         if (department.getStudentdirectory() != null) {
             for (StudentProfile sp : department.getStudentdirectory().getStudentlist()) {
@@ -153,8 +139,7 @@ public class AdminAnalyticsDashboardJPanel extends javax.swing.JPanel {
                 }
             }
         }
-        
-        // 更新顶部的标签 (使用您在设计器中的命名)
+  
         lblTotalUsersValue.setText(String.valueOf(totalStudents + totalFaculty + totalRegistrar + totalAdmin));
         lblTotalCoursesValue.setText(String.valueOf(totalCoursesOfferedThisSemester)); // *** 使用修复后的变量 ***
         lblTotalStudentsValue.setText(String.valueOf(totalEnrolledStudents));
@@ -164,9 +149,7 @@ public class AdminAnalyticsDashboardJPanel extends javax.swing.JPanel {
         System.out.println("Total Tuition Revenue = $" + String.format("%,.2f", totalTuitionRevenue));
     }
 
-    /**
-     * *** 8. (已重构) 此方法现在只填充角色总结表格 (tblSummary) ***
-     */
+   
     private void populateRoleTable() {
         DefaultTableModel model = (DefaultTableModel) tblSummary.getModel();
         model.setRowCount(0);
@@ -204,7 +187,7 @@ public class AdminAnalyticsDashboardJPanel extends javax.swing.JPanel {
             }
         }
 
-        // 填充表格
+        // full the form
         model.addRow(new Object[]{"Student", totalStudents, totalEnrolledStudents, totalStudents - totalEnrolledStudents});
         model.addRow(new Object[]{"Faculty", totalFaculty, totalFaculty, 0});
         model.addRow(new Object[]{"Registrar", totalRegistrar, totalRegistrar, 0});
