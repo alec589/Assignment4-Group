@@ -24,10 +24,11 @@
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="88" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="btnManageRegistrar1" min="-2" pref="170" max="-2" attributes="0"/>
-                          <Component id="btnRegisterPerson1" alignment="0" min="-2" pref="170" max="-2" attributes="0"/>
-                          <Component id="btnManageAccounts1" min="-2" pref="170" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="btnManageRegistrar1" pref="170" max="32767" attributes="0"/>
+                          <Component id="btnRegisterPerson1" alignment="0" pref="170" max="32767" attributes="0"/>
+                          <Component id="btnManageAccounts1" pref="170" max="32767" attributes="0"/>
+                          <Component id="btnManageProfile" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="138" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
@@ -61,7 +62,9 @@
                   <Component id="btnManageRegistrar1" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnAnalytics1" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="120" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+              <Component id="btnManageProfile" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="71" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -121,6 +124,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAnalytics1ActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnManageProfile">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Manage Profile"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnManageProfileActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

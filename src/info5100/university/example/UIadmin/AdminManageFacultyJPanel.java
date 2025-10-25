@@ -10,6 +10,10 @@ import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.*;
+import info5100.university.example.CourseSchedule.CourseOffer;
+import info5100.university.example.CourseSchedule.CourseSchedule;
+import info5100.university.example.Department.Calendar;
+import javax.swing.DefaultComboBoxModel;
 /**
  *
  * @author 陈凯璐
@@ -24,7 +28,7 @@ public class AdminManageFacultyJPanel extends javax.swing.JPanel {
         this.department = department; 
         initComponents();
         populateTable(); 
-        setupTableSorter();
+        setupTableSorter(); // setupTableSorter 现在只设置 Sorter，不添加多余的监听器
     }
     
     public void populateTable() {
@@ -38,7 +42,7 @@ public class AdminManageFacultyJPanel extends javax.swing.JPanel {
 
     for (FacultyProfile fp : department.getFacultydirectory().getTeacherlist()) {
         if (fp != null && fp.getPerson() != null) {
-            String id = String.valueOf(fp.getID());
+            String id = String.valueOf(fp.getID()); // 存为 String
             String name = fp.getPerson().getName();
             String email = fp.getEmail() != null ? fp.getEmail() : "N/A";
             String position = fp.getPosition() != null ? fp.getPosition() : "N/A";
@@ -54,34 +58,6 @@ public class AdminManageFacultyJPanel extends javax.swing.JPanel {
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>((DefaultTableModel) tblFaculty.getModel());
         tblFaculty.setRowSorter(sorter);
 
-        btnSearch.addActionListener(e -> {
-            String type = ((String) cmbSearchType.getSelectedItem()).trim();
-            String keyword = txtSearch.getText().trim().toLowerCase();
-
-            if (keyword.isEmpty()) {
-                sorter.setRowFilter(null);
-                return;
-            }
-
-            int colIndex;
-            switch (type) {
-                case "Faculty ID": colIndex = 0; break;
-                case "Name": colIndex = 1; break;
-                case "Email": colIndex = 2; break;
-                case "Department": colIndex = 3; break;
-                case "Status": colIndex = 4; break;
-                default: colIndex = 1; break;
-            }
-
-            final int colIndexFinal = colIndex;
-            sorter.setRowFilter(new RowFilter<DefaultTableModel, Object>() {
-                @Override
-                public boolean include(RowFilter.Entry<? extends DefaultTableModel, ? extends Object> entry) {
-                    Object val = entry.getValue(colIndexFinal);
-                    return val != null && val.toString().toLowerCase().contains(keyword);
-                }
-            });
-        });
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -102,6 +78,7 @@ public class AdminManageFacultyJPanel extends javax.swing.JPanel {
         btnEdit = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
         btnBack = new javax.swing.JButton();
+        btnAssignCourse = new javax.swing.JButton();
 
         lblTitle.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 14)); // NOI18N
         lblTitle.setText("Manage Faculty");
@@ -159,6 +136,13 @@ public class AdminManageFacultyJPanel extends javax.swing.JPanel {
             }
         });
 
+        btnAssignCourse.setText("Assign Course");
+        btnAssignCourse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAssignCourseActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -177,16 +161,19 @@ public class AdminManageFacultyJPanel extends javax.swing.JPanel {
                         .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnSearch))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(78, 78, 78)
-                        .addComponent(btnEdit)
-                        .addGap(41, 41, 41)
-                        .addComponent(btnDelete)
-                        .addGap(41, 41, 41)
-                        .addComponent(btnBack)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addGap(40, 40, 40)
+                            .addComponent(btnEdit)
+                            .addGap(32, 32, 32)
+                            .addComponent(btnAssignCourse)
+                            .addGap(31, 31, 31)
+                            .addComponent(btnDelete)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnBack))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addGap(31, 31, 31)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(113, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -206,20 +193,34 @@ public class AdminManageFacultyJPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEdit)
                     .addComponent(btnDelete)
-                    .addComponent(btnBack))
+                    .addComponent(btnBack)
+                    .addComponent(btnAssignCourse))
                 .addContainerGap(105, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         // TODO add your handling code here:
-         int selectedRow = tblFaculty.getSelectedRow();
+        int selectedRow = tblFaculty.getSelectedRow();
     if (selectedRow < 0) {
         JOptionPane.showMessageDialog(this, "Please select a faculty member to edit.", "Warning", JOptionPane.WARNING_MESSAGE);
         return;
     }
 
-    int facultyId = (int) tblFaculty.getValueAt(selectedRow, 0);
+    // *** 修复：将 String 类型的 ID 转换为 int ***
+    int facultyId;
+    try {
+        String facultyIdStr = (String) tblFaculty.getValueAt(selectedRow, 0);
+        facultyId = Integer.parseInt(facultyIdStr);
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Invalid Faculty ID in table: " + tblFaculty.getValueAt(selectedRow, 0));
+        return;
+    } catch (ClassCastException e) {
+         JOptionPane.showMessageDialog(this, "Error casting Faculty ID. Expected String but found different type.");
+         return;
+    }
+    // *** 修复结束 ***
+
     FacultyProfile faculty = department.getFacultydirectory().findFacultyById(facultyId);
 
     if (faculty == null) {
@@ -241,7 +242,7 @@ public class AdminManageFacultyJPanel extends javax.swing.JPanel {
     faculty.setOfficeLocation(newOffice);
 
     JOptionPane.showMessageDialog(this, "Faculty information updated successfully!");
-    populateTable(); 
+    populateTable();
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
@@ -308,8 +309,93 @@ public class AdminManageFacultyJPanel extends javax.swing.JPanel {
     });
     }//GEN-LAST:event_btnSearchActionPerformed
 
+    private void btnAssignCourseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAssignCourseActionPerformed
+        // TODO add your handling code here:
+        int selectedRow = tblFaculty.getSelectedRow();
+        if (selectedRow < 0) {
+            JOptionPane.showMessageDialog(this, "Please select a faculty member first.", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // 1. 获取选定的 FacultyProfile
+        int facultyId;
+        try {
+             String facultyIdStr = (String) tblFaculty.getValueAt(selectedRow, 0);
+             facultyId = Integer.parseInt(facultyIdStr);
+        } catch (NumberFormatException | ClassCastException e) {
+              JOptionPane.showMessageDialog(this, "Invalid Faculty ID format in table.");
+              return;
+        }
+
+        FacultyProfile selectedFaculty = department.getFacultydirectory().findFacultyById(facultyId);
+        if (selectedFaculty == null) {
+            JOptionPane.showMessageDialog(this, "Selected faculty not found in directory.");
+            return;
+        }
+
+        // 2. 创建对话框组件
+        JComboBox<String> semesterComboBox = new JComboBox<>();
+        JComboBox<CourseOffer> courseComboBox = new JComboBox<>();
+
+        // 3. 填充学期下拉框
+        Calendar calendar = department.getCalendar();
+        DefaultComboBoxModel<String> semesterModel = new DefaultComboBoxModel<>();
+        if(calendar.getAllSemesterNames() == null || calendar.getAllSemesterNames().isEmpty()){
+            JOptionPane.showMessageDialog(this, "No semesters found in the calendar.");
+            return;
+        }
+        for (String semesterName : calendar.getAllSemesterNames()) {
+            semesterModel.addElement(semesterName);
+        }
+        semesterComboBox.setModel(semesterModel);
+
+        // 4. 添加学期选择事件监听器以更新课程列表
+        semesterComboBox.addActionListener(e -> {
+            String selectedSemester = (String) semesterComboBox.getSelectedItem();
+            if (selectedSemester != null) {
+                CourseSchedule schedule = calendar.getCourseSchedule(selectedSemester);
+                DefaultComboBoxModel<CourseOffer> courseModel = new DefaultComboBoxModel<>();
+                if (schedule != null) {
+                    for (CourseOffer co : schedule.getSchedule()) {
+                        // CourseOffer.toString() 默认显示课程编号 (course number)
+                        courseModel.addElement(co); 
+                    }
+                }
+                courseComboBox.setModel(courseModel);
+            }
+        });
+
+         // 5. 初始填充课程列表（如果学期有默认选项）
+         if (semesterComboBox.getItemCount() > 0) {
+             semesterComboBox.setSelectedIndex(0); // 这将自动触发上面的 ActionListener
+         }
+
+        // 6. 显示对话框
+        Object[] message = {
+            "Select Semester:", semesterComboBox,
+            "Select Course Offering (by Course Number):", courseComboBox
+        };
+
+        int option = JOptionPane.showConfirmDialog(this, message, "Assign Course to " + selectedFaculty.getPerson().getName(), JOptionPane.OK_CANCEL_OPTION);
+
+        // 7. 执行分配
+        if (option == JOptionPane.OK_OPTION) {
+            CourseOffer selectedCourseOffer = (CourseOffer) courseComboBox.getSelectedItem();
+            if (selectedCourseOffer != null) {
+                // 执行分配
+                selectedCourseOffer.AssignAsTeacher(selectedFaculty);
+                JOptionPane.showMessageDialog(this, "Faculty " + selectedFaculty.getPerson().getName() + " assigned to course " + selectedCourseOffer.getCourseName() + " successfully.");
+                // 可以在此刷新（如果需要）
+                // populateTable(); 
+            } else {
+                JOptionPane.showMessageDialog(this, "No course selected or no courses available for the selected semester.");
+            }
+        }
+    }//GEN-LAST:event_btnAssignCourseActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAssignCourse;
     private javax.swing.JButton btnBack;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnEdit;
