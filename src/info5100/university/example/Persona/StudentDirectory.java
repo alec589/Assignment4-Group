@@ -16,7 +16,6 @@ public class StudentDirectory {
 
     Department department;
     ArrayList<StudentProfile> studentlist;
-
     public StudentDirectory(Department d) {
 
         department = d;
@@ -50,6 +49,19 @@ public class StudentDirectory {
             }
         }
             return null; //not found after going through the whole list
+         }
+    public ArrayList<StudentProfile> findStudentListByName(String name) {
+        ArrayList<StudentProfile> result = new ArrayList<>();
+        if (name == null || name.isEmpty()) {
+        return new ArrayList<>();
+    }
+        for (StudentProfile sp : studentlist) {
+
+            if (sp.isMatchName(name)) {
+                result.add(sp);
+            }
+        }
+            return result;
          }
 
     public ArrayList<StudentProfile> getStudentlist() {
