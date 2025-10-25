@@ -32,24 +32,24 @@ public class AdminPersonRegistrationJPanel extends javax.swing.JPanel {
      
   private void handleAddPerson() {
     String name = txtName.getText().trim();
-    String email = txtEmail.getText().trim(); // *** 新增：获取Email文本 ***
+    String email = txtEmail.getText().trim(); // get Email
     String role = (String) cmbRole.getSelectedItem();
 
-    // *** 修改：检查 Name 和 Email 均不能为空 ***
+    // Name 和 Email 均不能为空 
     if (name.isEmpty() || email.isEmpty()) {
         JOptionPane.showMessageDialog(this, "Please enter the full name and email!", "Warning", JOptionPane.WARNING_MESSAGE);
         return;
     }
     
-    // *** 新增：检查 Email 是否已存在 (假设 PersonDirectory.isEmailExists 已经实现) ***
+    // 检查 Email 是否已存在
     if (personDirectory.isEmailExists(email)) {
         JOptionPane.showMessageDialog(this, "This email address is already registered!", "Warning", JOptionPane.WARNING_MESSAGE);
         return;
     }
 
 
-    Person newPerson = personDirectory.newPerson(name); // 此时 Person ID 已在 newPerson 内部生成
-    newPerson.setEmail(email); // *** 新增：将 Email 设置到 Person 对象 ***
+    Person newPerson = personDirectory.newPerson(name); 
+    newPerson.setEmail(email); 
 
     Profile profile;
     switch (role) {
@@ -64,8 +64,8 @@ public class AdminPersonRegistrationJPanel extends javax.swing.JPanel {
             break;
         default:
             JOptionPane.showMessageDialog(this, "Unknown role: " + role);
-             // 失败回滚 (可选但推荐):
-             // personDirectory.removePerson(newPerson); // 假设 PersonDirectory 有 removePerson 方法
+             
+            
             return;
     }
 
@@ -73,12 +73,12 @@ public class AdminPersonRegistrationJPanel extends javax.swing.JPanel {
     String defaultPassword = "changeme";
     department.getUseraccountdirectory().addUserAccount(profile, username, defaultPassword);
 
-    // *** 修改：更新状态标签以显示新 ID 和 Email ***
+   
     // 使用 HTML 来换行显示
     lblStatus.setText("<html>✔ Registered '" + newPerson.getName() + "' (ID: " + newPerson.getPersonId() + ") as " + role + "<br>(Username: " + username + ")</html>");
     
     txtName.setText("");
-    txtEmail.setText(""); // *** 新增：清空 Email 文本框 ***
+    txtEmail.setText(""); 
     cmbRole.setSelectedIndex(0);
 }
 

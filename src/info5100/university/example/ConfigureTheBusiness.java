@@ -281,6 +281,38 @@ public class ConfigureTheBusiness {
           cl031.setTranscript(t03);
           cl033.setTranscript(t03);
           cl035.setTranscript(t03);
+          
+          // transcrip4
+          Transcript t04 = stu4.getTranscript();
+          CourseLoad cl041 = t04.newCourseLoad(springSchedule.getSemester());
+          CourseLoad cl043 = t04.newCourseLoad(summerSchedule.getSemester());
+          CourseLoad cl045 = t04.newCourseLoad(fallSchedule.getSemester());
+          
+          SeatAssignment sa041 = cl041.newSeatAssignment(spring_course1, stu4);
+          SeatAssignment sa042 = cl041.newSeatAssignment(spring_course2, stu4);
+          SeatAssignment sa043 = cl043.newSeatAssignment(summer_course1, stu4);
+          SeatAssignment sa044 = cl043.newSeatAssignment(summer_course2, stu4);
+          SeatAssignment sa045 = cl045.newSeatAssignment(fall_course1, stu4);
+          SeatAssignment sa046 = cl045.newSeatAssignment(fall_course2, stu4);
+          cl041.setTranscript(t04);
+          cl043.setTranscript(t04);
+          cl045.setTranscript(t04);
+          
+          // transcrip5
+          Transcript t05 = stu5.getTranscript();
+          CourseLoad cl051 = t05.newCourseLoad(springSchedule.getSemester());
+          CourseLoad cl053 = t05.newCourseLoad(summerSchedule.getSemester());
+          CourseLoad cl055 = t05.newCourseLoad(fallSchedule.getSemester());
+          
+          SeatAssignment sa051 = cl051.newSeatAssignment(spring_course1, stu5);
+          SeatAssignment sa052 = cl051.newSeatAssignment(spring_course2, stu5);
+          SeatAssignment sa053 = cl053.newSeatAssignment(summer_course1, stu5);
+          SeatAssignment sa054 = cl053.newSeatAssignment(summer_course2, stu5);
+          SeatAssignment sa055 = cl055.newSeatAssignment(fall_course1, stu5);
+          SeatAssignment sa056 = cl055.newSeatAssignment(fall_course2, stu5);
+          cl051.setTranscript(t05);
+          cl053.setTranscript(t05);
+          cl055.setTranscript(t05);
          
           
          
