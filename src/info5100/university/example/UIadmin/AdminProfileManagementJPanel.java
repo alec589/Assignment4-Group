@@ -33,12 +33,12 @@ public class AdminProfileManagementJPanel extends javax.swing.JPanel {
     private void loadProfileData() {
         Person person = adminProfile.getPerson();
         if (person != null) {
-            // 从 Person 对象加载数据并填充
+
             txtID.setText(person.getPersonId());
             txtName.setText(person.getName());
             txtEmail.setText(person.getEmail());
             
-            // 将 ID 设为不可编辑，因为它是系统生成的
+            // 将 ID 设为不可编辑，由系统生成的
             txtID.setEditable(false);
         }
     }
@@ -156,14 +156,14 @@ public class AdminProfileManagementJPanel extends javax.swing.JPanel {
 
         String oldEmail = person.getEmail() != null ? person.getEmail() : "";
         if (!newEmail.equalsIgnoreCase(oldEmail)) {
-            // Email 变了，检查是否重复
+            // 检查email是否重复
             if (department.getPersondirectory().isEmailExists(newEmail)) {
                 JOptionPane.showMessageDialog(this, "This email address is already in use by another person.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
         }
 
-        // 保存更改
+        // save
         person.setName(newName);
         person.setEmail(newEmail);
         
@@ -173,9 +173,9 @@ public class AdminProfileManagementJPanel extends javax.swing.JPanel {
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // TODO add your handling code here:
-        mainCardLayoutJPanel.remove(this); // 从 CardLayout 中移除当前面板
+        mainCardLayoutJPanel.remove(this); 
         CardLayout layout = (CardLayout) mainCardLayoutJPanel.getLayout();
-        layout.previous(mainCardLayoutJPanel); // 显示前一个面板
+        layout.previous(mainCardLayoutJPanel); 
     }//GEN-LAST:event_btnBackActionPerformed
 
 
