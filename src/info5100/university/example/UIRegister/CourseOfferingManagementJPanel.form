@@ -88,9 +88,10 @@
                               <Component id="fieldSeatNumber" min="-2" pref="90" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                               <Component id="btnUpdate" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="97" pref="97" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="btnSave" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
                               <Component id="lblBuildingNumber" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="13" pref="13" max="-2" attributes="0"/>
                               <Component id="fieldBuildingNumber" min="-2" pref="80" max="-2" attributes="0"/>
@@ -104,9 +105,7 @@
                               <Component id="fieldClassroomNumber" min="-2" pref="80" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                              <Component id="btnSave" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="98" pref="98" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="200" max="-2" attributes="0"/>
                               <Component id="lblDate" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="13" pref="13" max="-2" attributes="0"/>
                               <Component id="cmbDate" min="-2" pref="110" max="-2" attributes="0"/>
@@ -189,37 +188,29 @@
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace min="7" pref="7" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="btnUpdate" min="-2" max="-2" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="lblBuildingNumber" min="-2" max="-2" attributes="0"/>
-                          <Component id="fieldBuildingNumber" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblFloorNumber" min="-2" max="-2" attributes="0"/>
-                          <Component id="fieldFloorNumber" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblClassroomNumber" min="-2" max="-2" attributes="0"/>
-                          <Component id="fieldClassroomNumber" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="lblBuildingNumber" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnUpdate" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnSave" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
+                  <Component id="fieldBuildingNumber" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblFloorNumber" min="-2" max="-2" attributes="0"/>
+                  <Component id="fieldFloorNumber" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblClassroomNumber" min="-2" max="-2" attributes="0"/>
+                  <Component id="fieldClassroomNumber" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="7" pref="7" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="btnSave" min="-2" max="-2" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="lblDate" min="-2" pref="20" max="-2" attributes="0"/>
-                          <Component id="cmbDate" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblStartTime" min="-2" max="-2" attributes="0"/>
-                          <Component id="spnStartTime" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblEndTime" min="-2" max="-2" attributes="0"/>
-                          <Component id="spnEndTime" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
+                  <Component id="lblDate" min="-2" pref="20" max="-2" attributes="0"/>
+                  <Component id="cmbDate" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblStartTime" min="-2" max="-2" attributes="0"/>
+                  <Component id="spnStartTime" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblEndTime" min="-2" max="-2" attributes="0"/>
+                  <Component id="spnEndTime" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
