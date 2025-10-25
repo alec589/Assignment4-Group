@@ -12,6 +12,7 @@ import info5100.university.example.Department.Calendar;
 import info5100.university.example.Department.Department;
 import info5100.university.example.Persona.Faculty.FacultyProfile;
 import java.awt.CardLayout;
+import java.util.ArrayList;
 import java.util.Collection;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -733,12 +734,12 @@ CourseSchedule courseSchedule;
 
         CourseSchedule cs = calendar.getCourseSchedule(selectedSemester);
         
-        CourseOffer co = cs.getCourseOfferByName(courseName);
-        if (co == null) {
+        ArrayList<CourseOffer> colist = cs.getCourseOfferListByName(courseName);
+        if (colist == null) {
              JOptionPane.showMessageDialog(this, "Course not found in this semester.", "Warning", JOptionPane.WARNING_MESSAGE);
               return;
         }
-        
+            for(CourseOffer co:colist){
                          Object[] row = new Object[7];
                             row[0] =co.getCourseNumber() ;  
                             row[1] =co.getCourseName() ;
@@ -752,7 +753,7 @@ CourseSchedule courseSchedule;
                             row[6] =co.getTimeSchedule()!=null?co.getTimeSchedule():"Unassigned";
 
                             model.addRow(row);
-        
+            }
 
     }//GEN-LAST:event_btnSearchCourseActionPerformed
 
