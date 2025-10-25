@@ -204,7 +204,7 @@ public class AdminManageUserAccountsJPanel extends javax.swing.JPanel {
                 return;
             }
 
-            // ✅ 暂时仅在表格更新，后续可写回到 UserAccountDirectory
+         
             DefaultTableModel model = (DefaultTableModel) tblUserAccounts.getModel();
             String userId = "U" + String.format("%03d", model.getRowCount() + 1);
             model.addRow(new Object[]{userId, username, cmbRole.getSelectedItem(), cmbStatus.getSelectedItem()});
