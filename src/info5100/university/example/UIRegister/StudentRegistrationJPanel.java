@@ -11,6 +11,7 @@ import info5100.university.example.CourseSchedule.SeatAssignment;
 import info5100.university.example.Department.Department;
 import info5100.university.example.Persona.StudentProfile;
 import java.awt.CardLayout;
+import java.util.ArrayList;
 import java.util.Collection;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -247,17 +248,19 @@ Department department;
         JOptionPane.showMessageDialog(null, "please input the name", "Warning", JOptionPane.WARNING_MESSAGE);
         return;
         }
-        StudentProfile sp=department.getStudentDirectory().findStudentByName(name);
-        if(sp!=null){
+        
+        ArrayList<StudentProfile> splist=department.getStudentDirectory().findStudentListByName(name);
+        if(splist!=null){
         DefaultTableModel model = (DefaultTableModel)tblStudent.getModel();
         model.setRowCount(0);
+        for(StudentProfile sp:splist){
         Object[] row = new Object[4];
                  row[0] =sp;
                  row[1] =sp.getFirstName()+" "+sp.getLastName();
                  row[2] = sp.getCourseLoadBySemester(cmbSemester.getSelectedItem().toString()).getsemestercreditshours();
                
                          model.addRow(row);
-        
+        }
         }
         
             
