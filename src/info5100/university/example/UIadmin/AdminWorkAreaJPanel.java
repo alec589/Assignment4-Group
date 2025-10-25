@@ -9,6 +9,7 @@ import info5100.university.example.Department.Department;
 import info5100.university.example.Persona.AdmainProfile;
 import java.awt.*;
 import javax.swing.*;
+import info5100.university.example.UIadmin.AdminProfileManagementJPanel;
 
 /**
  *
@@ -19,14 +20,13 @@ public class AdminWorkAreaJPanel extends javax.swing.JPanel {
     
     private JPanel mainCardLayoutJPanel; 
     private Department department;
-
-    // 修改构造函数签名
+  
     public AdminWorkAreaJPanel(JPanel mainCardLayoutJPanel, Department department,AdmainProfile ap) {
-        this.mainCardLayoutJPanel = mainCardLayoutJPanel; // <-- 保存外层 CardLayout Panel 的引用
+        this.mainCardLayoutJPanel = mainCardLayoutJPanel; 
         this.department = department;
         this.admainprofile = ap;
         initComponents();
-        // setupMainPanel(); // <-- 删除这一行
+       
     }
     
     
@@ -47,6 +47,7 @@ public class AdminWorkAreaJPanel extends javax.swing.JPanel {
         btnManageRegistrar1 = new javax.swing.JButton();
         lblTitle1 = new javax.swing.JLabel();
         btnAnalytics1 = new javax.swing.JButton();
+        btnManageProfile = new javax.swing.JButton();
 
         btnManageAccounts1.setText("Manage User Accounts");
         btnManageAccounts1.addActionListener(new java.awt.event.ActionListener() {
@@ -93,6 +94,13 @@ public class AdminWorkAreaJPanel extends javax.swing.JPanel {
             }
         });
 
+        btnManageProfile.setText("Manage Profile");
+        btnManageProfile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnManageProfileActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -104,10 +112,11 @@ public class AdminWorkAreaJPanel extends javax.swing.JPanel {
                         .addComponent(lblTitle1))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(88, 88, 88)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnManageRegistrar1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnRegisterPerson1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnManageAccounts1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnManageRegistrar1, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+                            .addComponent(btnRegisterPerson1, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+                            .addComponent(btnManageAccounts1, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+                            .addComponent(btnManageProfile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(138, 138, 138)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(btnManageStudents1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -132,39 +141,73 @@ public class AdminWorkAreaJPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnManageRegistrar1)
                     .addComponent(btnAnalytics1))
-                .addContainerGap(120, Short.MAX_VALUE))
+                .addGap(26, 26, 26)
+                .addComponent(btnManageProfile)
+                .addContainerGap(71, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnManageAccounts1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageAccounts1ActionPerformed
         // TODO add your handling code here:
+        AdminManageUserAccountsJPanel panel = new AdminManageUserAccountsJPanel(department);
+        mainCardLayoutJPanel.add("AdminManageUserAccountsJPanel", panel);
+        CardLayout layout = (CardLayout) mainCardLayoutJPanel.getLayout();
+        layout.show(mainCardLayoutJPanel, "AdminManageUserAccountsJPanel");
        
     }//GEN-LAST:event_btnManageAccounts1ActionPerformed
 
     private void btnManageFaculty1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageFaculty1ActionPerformed
         // TODO add your handling code here:
-      
+        AdminManageFacultyJPanel panel = new AdminManageFacultyJPanel(department);
+        panel.populateTable(); 
+        mainCardLayoutJPanel.add("AdminManageFacultyJPanel", panel);
+        CardLayout layout = (CardLayout) mainCardLayoutJPanel.getLayout();
+        layout.show(mainCardLayoutJPanel, "AdminManageFacultyJPanel");
     }//GEN-LAST:event_btnManageFaculty1ActionPerformed
 
     private void btnRegisterPerson1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterPerson1ActionPerformed
         // TODO add your handling code here:
-        
+        AdminPersonRegistrationJPanel personRegPanel =
+            new AdminPersonRegistrationJPanel(mainCardLayoutJPanel, department);
+
+         mainCardLayoutJPanel.add("AdminPersonRegistrationJPanel", personRegPanel);
+         CardLayout layout = (CardLayout) mainCardLayoutJPanel.getLayout();
+         layout.show(mainCardLayoutJPanel, "AdminPersonRegistrationJPanel");
     }//GEN-LAST:event_btnRegisterPerson1ActionPerformed
 
     private void btnManageRegistrar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageRegistrar1ActionPerformed
         // TODO add your handling code here:
-       
+        AdminManageRegistrarJPanel panel = new AdminManageRegistrarJPanel(department);
+         panel.populateTable(); 
+         mainCardLayoutJPanel.add("AdminManageRegistrarJPanel", panel);
+         CardLayout layout = (CardLayout) mainCardLayoutJPanel.getLayout();
+         layout.show(mainCardLayoutJPanel, "AdminManageRegistrarJPanel");
     }//GEN-LAST:event_btnManageRegistrar1ActionPerformed
 
     private void btnManageStudents1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageStudents1ActionPerformed
         // TODO add your handling code here:
-       
+         AdminManageStudentsJPanel panel = new AdminManageStudentsJPanel(department);
+         panel.populateTable(); 
+         mainCardLayoutJPanel.add("AdminManageStudentsJPanel", panel);
+         CardLayout layout = (CardLayout) mainCardLayoutJPanel.getLayout();
+         layout.show(mainCardLayoutJPanel, "AdminManageStudentsJPanel");
     }//GEN-LAST:event_btnManageStudents1ActionPerformed
 
     private void btnAnalytics1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalytics1ActionPerformed
         // TODO add your handling code here:
-        
+         AdminAnalyticsDashboardJPanel panel = new AdminAnalyticsDashboardJPanel(department);
+         mainCardLayoutJPanel.add("AdminAnalyticsDashboardJPanel", panel);
+         CardLayout layout = (CardLayout) mainCardLayoutJPanel.getLayout();
+         layout.show(mainCardLayoutJPanel, "AdminAnalyticsDashboardJPanel");
     }//GEN-LAST:event_btnAnalytics1ActionPerformed
+
+    private void btnManageProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageProfileActionPerformed
+        // TODO add your handling code here:
+        AdminProfileManagementJPanel panel = new AdminProfileManagementJPanel(mainCardLayoutJPanel, department, admainprofile);
+        mainCardLayoutJPanel.add("AdminProfileManagementJPanel", panel);
+        CardLayout layout = (CardLayout) mainCardLayoutJPanel.getLayout();
+        layout.show(mainCardLayoutJPanel, "AdminProfileManagementJPanel");
+    }//GEN-LAST:event_btnManageProfileActionPerformed
 
 
     
@@ -172,6 +215,7 @@ public class AdminWorkAreaJPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnAnalytics1;
     private javax.swing.JButton btnManageAccounts1;
     private javax.swing.JButton btnManageFaculty1;
+    private javax.swing.JButton btnManageProfile;
     private javax.swing.JButton btnManageRegistrar1;
     private javax.swing.JButton btnManageStudents1;
     private javax.swing.JButton btnRegisterPerson1;

@@ -14,7 +14,6 @@ public class AdminPersonRegistrationJPanel extends javax.swing.JPanel {
     private Department department;  
     private JPanel workAreaPanel;
 
-
     /**
      * Creates new form AdminPersonRegistrationJPanel
      */
@@ -31,16 +30,26 @@ public class AdminPersonRegistrationJPanel extends javax.swing.JPanel {
     });
 }
      
-     private void handleAddPerson() {
+  private void handleAddPerson() {
     String name = txtName.getText().trim();
+    String email = txtEmail.getText().trim(); // *** 新增：获取Email文本 ***
     String role = (String) cmbRole.getSelectedItem();
 
-    if (name.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Please enter the full name!", "Warning", JOptionPane.WARNING_MESSAGE);
+    // *** 修改：检查 Name 和 Email 均不能为空 ***
+    if (name.isEmpty() || email.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Please enter the full name and email!", "Warning", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+    
+    // *** 新增：检查 Email 是否已存在 (假设 PersonDirectory.isEmailExists 已经实现) ***
+    if (personDirectory.isEmailExists(email)) {
+        JOptionPane.showMessageDialog(this, "This email address is already registered!", "Warning", JOptionPane.WARNING_MESSAGE);
         return;
     }
 
-    Person newPerson = personDirectory.newPerson(name);
+
+    Person newPerson = personDirectory.newPerson(name); // 此时 Person ID 已在 newPerson 内部生成
+    newPerson.setEmail(email); // *** 新增：将 Email 设置到 Person 对象 ***
 
     Profile profile;
     switch (role) {
@@ -55,6 +64,8 @@ public class AdminPersonRegistrationJPanel extends javax.swing.JPanel {
             break;
         default:
             JOptionPane.showMessageDialog(this, "Unknown role: " + role);
+             // 失败回滚 (可选但推荐):
+             // personDirectory.removePerson(newPerson); // 假设 PersonDirectory 有 removePerson 方法
             return;
     }
 
@@ -62,8 +73,12 @@ public class AdminPersonRegistrationJPanel extends javax.swing.JPanel {
     String defaultPassword = "changeme";
     department.getUseraccountdirectory().addUserAccount(profile, username, defaultPassword);
 
-    lblStatus.setText("✔ Registered '" + newPerson.getName() + "' as " + role + " (username: " + username + ")");
+    // *** 修改：更新状态标签以显示新 ID 和 Email ***
+    // 使用 HTML 来换行显示
+    lblStatus.setText("<html>✔ Registered '" + newPerson.getName() + "' (ID: " + newPerson.getPersonId() + ") as " + role + "<br>(Username: " + username + ")</html>");
+    
     txtName.setText("");
+    txtEmail.setText(""); // *** 新增：清空 Email 文本框 ***
     cmbRole.setSelectedIndex(0);
 }
 
@@ -72,7 +87,6 @@ public class AdminPersonRegistrationJPanel extends javax.swing.JPanel {
     int suffix = department.getUseraccountdirectory().getUserAccountDirectory().size() + 1;
     return base + suffix;
 }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -91,6 +105,8 @@ public class AdminPersonRegistrationJPanel extends javax.swing.JPanel {
         btnBack = new javax.swing.JButton();
         cmbRole = new javax.swing.JComboBox<>();
         lblStatus = new javax.swing.JLabel();
+        lblEmail = new javax.swing.JLabel();
+        txtEmail = new javax.swing.JTextField();
 
         lblTitle.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 14)); // NOI18N
         lblTitle.setText("Person Registration");
@@ -121,6 +137,14 @@ public class AdminPersonRegistrationJPanel extends javax.swing.JPanel {
 
         cmbRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Student", "Faculty", "Registrar" }));
 
+        lblEmail.setText("Email");
+
+        txtEmail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtEmailActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -140,11 +164,13 @@ public class AdminPersonRegistrationJPanel extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(lblName)
-                                    .addComponent(lblRole))
+                                    .addComponent(lblRole)
+                                    .addComponent(lblEmail))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(txtName)
-                                    .addComponent(cmbRole, 0, 109, Short.MAX_VALUE)))))
+                                    .addComponent(cmbRole, 0, 109, Short.MAX_VALUE)
+                                    .addComponent(txtEmail)))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(23, 23, 23)
                         .addComponent(lblStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -163,8 +189,15 @@ public class AdminPersonRegistrationJPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmbRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblRole))
-                .addGap(33, 33, 33)
-                .addComponent(lblStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(33, 33, 33)
+                        .addComponent(lblStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblEmail))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdd)
@@ -189,15 +222,21 @@ public class AdminPersonRegistrationJPanel extends javax.swing.JPanel {
         layout.previous(workAreaPanel);
     }//GEN-LAST:event_btnBackActionPerformed
 
+    private void txtEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmailActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtEmailActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnBack;
     private javax.swing.JComboBox<String> cmbRole;
+    private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblName;
     private javax.swing.JLabel lblRole;
     private javax.swing.JLabel lblStatus;
     private javax.swing.JLabel lblTitle;
+    private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtName;
     // End of variables declaration//GEN-END:variables
 }
