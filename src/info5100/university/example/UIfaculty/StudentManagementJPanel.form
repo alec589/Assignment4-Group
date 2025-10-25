@@ -59,7 +59,7 @@
                                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                           <Component id="fieldMissing" alignment="0" pref="121" max="32767" attributes="0"/>
                                           <Component id="fieldCompleted" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="fieldCurrentGrade" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="fieldCurrentGPA" alignment="0" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
@@ -177,7 +177,7 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="103" alignment="1" groupAlignment="3" attributes="0">
                               <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="fieldCurrentGrade" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="fieldCurrentGPA" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="103" alignment="1" groupAlignment="3" attributes="0">
                               <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -320,10 +320,10 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel7">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Current Grade"/>
+        <Property name="text" type="java.lang.String" value="Current GPA"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="fieldCurrentGrade">
+    <Component class="javax.swing.JTextField" name="fieldCurrentGPA">
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel9">
       <Properties>

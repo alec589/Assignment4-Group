@@ -16,6 +16,7 @@ import info5100.university.example.Persona.Faculty.FacultyAssignment;
 import info5100.university.example.Persona.Faculty.FacultyProfile;
 import info5100.university.example.Persona.Faculty.StudentAssignment;
 import info5100.university.example.Persona.StudentProfile;
+import info5100.university.example.Persona.Transcript;
 import info5100.university.example.Persona.UserAccount;
 import java.awt.CardLayout;
 import java.awt.Dimension;
@@ -83,7 +84,7 @@ public class StudentManagementJPanel extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
         fieldMissing = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        fieldCurrentGrade = new javax.swing.JTextField();
+        fieldCurrentGPA = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         fieldCumGPA = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
@@ -152,7 +153,7 @@ public class StudentManagementJPanel extends javax.swing.JPanel {
 
         jLabel6.setText("Missing");
 
-        jLabel7.setText("Current Grade");
+        jLabel7.setText("Current GPA");
 
         jLabel9.setText("Term GPA");
 
@@ -272,7 +273,7 @@ public class StudentManagementJPanel extends javax.swing.JPanel {
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addComponent(fieldMissing, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
                                             .addComponent(fieldCompleted)
-                                            .addComponent(fieldCurrentGrade))))
+                                            .addComponent(fieldCurrentGPA))))
                                 .addGap(19, 19, 19)
                                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -362,7 +363,7 @@ public class StudentManagementJPanel extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel7)
-                                .addComponent(fieldCurrentGrade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(fieldCurrentGPA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel11)
                                 .addComponent(fieldCredit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -454,40 +455,39 @@ public class StudentManagementJPanel extends javax.swing.JPanel {
         StudentProfile selectedStudent = (StudentProfile) tblStudent.getValueAt(selectedRow, 0);
         SeatAssignment sa = selectedStudent.getTranscript().getCourseLoadBySemester(semester).findSeatAssignmentByCourseName(courseName);
         
-        int completed = 0;
-        int missing = 0;
         double totalWeighted = 0.0;
         double totalWeight = 0.0;
-                
+        int completed = 0;
+        int missing = 0;
+
         for (StudentAssignment stua : sa.getAssignmentRecords().values()){
             Double score = stua.getScore();
             Assignment a = stua.getAssignment();
-                
-            if (score == null){
-                missing ++;
-                continue;
+            if (score == null) { 
+                missing++; 
+                continue; 
             }
 
-            if ( score >= 60.0) {
-                completed++;
-                double weight = a.getWeight();
-                double pct = score / a.getMaxPoints();
-                totalWeighted += pct*weight;
-                totalWeight += weight;
-                    
-            } else {
-                    missing++;
-            }
+            double max = a.getMaxPoints();
+            double weight = a.getWeight();
+            if (max <= 0 || weight <= 0) continue;
+
+            completed++;
+            double pct = score / max;
+            totalWeighted += pct * weight;
+            totalWeight += weight;
         }
-            
+
         Double finalCourseScore = null;
         if (totalWeight > 0) {
             finalCourseScore = totalWeighted / totalWeight * 100.0;
         }
- 
+
         fieldCompleted.setText(String.valueOf(completed));
         fieldMissing.setText(String.valueOf(missing));
-        fieldCurrentGrade.setText(String.format("%.1f", finalCourseScore));
+        
+        double finalGPA = SeatAssignment.convertToGPA(finalCourseScore);
+        fieldCurrentGPA.setText(String.format("%.1f", finalGPA));
         
     }//GEN-LAST:event_btnProgressActionPerformed
 
@@ -503,29 +503,39 @@ public class StudentManagementJPanel extends javax.swing.JPanel {
         }
         
         StudentProfile selectedStudent = (StudentProfile) tblStudent.getValueAt(selectedRow, 0);
-        SeatAssignment sa = selectedStudent.getTranscript().getCourseLoadBySemester(semester).findSeatAssignmentByCourseName(courseName);
+        Transcript t = selectedStudent.getTranscript();
+        CourseLoad cl = t.getCourseLoadBySemester(semester);
         
-        double termScore = sa.calculateFinalCourseScore();
-        double termGPA = SeatAssignment.convertToGPA(termScore);
-        fieldTermGPA.setText(String.valueOf(termGPA));
-        
-        double totalGPA = 0.0;  
-        int totalCredits = 0;
+        double termQP = 0.0;
+        int termCredits = 0;
 
-        for (SeatAssignment saCumGPA : selectedStudent.getCourseList()) { 
-            Double finalScore = sa.calculateFinalCourseScore(); 
-            if (finalScore == null) continue;  
-
-            double gpa = SeatAssignment.convertToGPA(finalScore);
-            int credits = sa.getSeat().getCourseCredits();  
-
-            totalGPA += gpa * credits;
-            totalCredits += credits;
+        for (SeatAssignment seatAssignment : cl.getSeatAssignments()) {
+            Double finalScore = seatAssignment.calculateFinalCourseScore();
+            if (finalScore == null) continue;
+            double finalGPA = SeatAssignment.convertToGPA(finalScore);
+            int credits = seatAssignment.getSeat().getCourseOffer().getCourse().getCredits();
+            termQP += finalGPA * credits;
+            termCredits += credits;
         }
+        double termGPA = termCredits == 0 ? 0.0 : termQP / termCredits;
+        fieldTermGPA.setText(String.format("%.1f", termGPA));
+        
+        double totalQP = 0.0;  
+        int totalCR = 0;
 
-        Double cumGPA = totalGPA / totalCredits;
-        fieldCumGPA.setText(cumGPA == null ? "-" : String.format("%.1f", cumGPA));
-        fieldCredit.setText(String.valueOf(totalCredits));
+        for (CourseLoad eachCL : t.getCourseloadlist().values()) {
+            for (SeatAssignment sa : eachCL.getSeatAssignments()) {
+                Double fs = sa.calculateFinalCourseScore();
+                if (fs == null) continue;
+                double gp = SeatAssignment.convertToGPA(fs);
+                int cr = sa.getSeat().getCourseOffer().getCourse().getCredits();
+                totalQP += gp * cr;
+                totalCR += cr;
+            }
+        }
+        double cumGPA = totalCR == 0 ? 0.0 : totalQP / totalCR;
+        fieldCumGPA.setText(String.format("%.1f", cumGPA));
+        fieldCredit.setText(String.valueOf(totalCR));
         
         
     }//GEN-LAST:event_btnTranscriptActionPerformed
@@ -755,7 +765,7 @@ public class StudentManagementJPanel extends javax.swing.JPanel {
     private javax.swing.JTextField fieldCompleted;
     private javax.swing.JTextField fieldCredit;
     private javax.swing.JTextField fieldCumGPA;
-    private javax.swing.JTextField fieldCurrentGrade;
+    private javax.swing.JTextField fieldCurrentGPA;
     private javax.swing.JTextField fieldFinalLetterGrade;
     private javax.swing.JTextField fieldMissing;
     private javax.swing.JTextField fieldRank;

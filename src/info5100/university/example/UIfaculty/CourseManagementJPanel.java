@@ -91,7 +91,7 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
         fieldSyllabusPath = new javax.swing.JTextField();
         btnView = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        fieldSchedule = new javax.swing.JTextField();
 
         jLabel1.setText("Semester:");
 
@@ -206,7 +206,7 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(fieldDes, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
-                                    .addComponent(jTextField1))))
+                                    .addComponent(fieldSchedule))))
                         .addGap(34, 34, 34)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -291,7 +291,7 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(fieldSchedule, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel9)
@@ -320,6 +320,7 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
         String des = (String)tblCourseDetail.getValueAt(selectedRow, 2);
         String capacity = String.valueOf(tblCourseDetail.getValueAt(selectedRow, 3));
         String status = (String)tblCourseDetail.getValueAt(selectedRow, 4);
+        String schedule = (String)tblCourseDetail.getValueAt(selectedRow, 5);
         
         if(status.equals("open")){
             btnYes.setSelected(true);
@@ -331,6 +332,7 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
         fieldTitle.setText(title);
         fieldDes.setText(des);
         fieldCapacity.setText(capacity);
+        fieldSchedule.setText(schedule);
     }//GEN-LAST:event_btnViewCourseActionPerformed
 
     private void btnUpdateCourseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateCourseActionPerformed
@@ -339,6 +341,7 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
         String title = fieldTitle.getText();
         String des = fieldDes.getText();
         int capacity = Integer.parseInt(fieldCapacity.getText());
+        String schedule = fieldSchedule.getText();
         boolean isOpen;
         
         if (btnYes.isSelected()){
@@ -369,6 +372,8 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
         co.generatSeats(capacity);
         
         co.setEnrollmentStatus(isOpen);
+        
+        co.getCourse().setSchedule(schedule);
         
         populateTable();
         
@@ -462,6 +467,7 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
     private javax.swing.JTextField fieldCapacity;
     private javax.swing.JTextField fieldDes;
     private javax.swing.JTextField fieldID;
+    private javax.swing.JTextField fieldSchedule;
     private javax.swing.JTextField fieldSyllabusPath;
     private javax.swing.JTextField fieldTitle;
     private javax.swing.Box.Filler filler1;
@@ -476,7 +482,6 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTable tblCourseDetail;
     // End of variables declaration//GEN-END:variables
 
@@ -506,7 +511,7 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
             if (co.getFacultyProfile() == null) continue;
             if (!co.getFacultyProfile().equals (fp)) continue;
             
-            Object[] row = new Object[5];
+            Object[] row = new Object[6];
             row[0] = co.getCourseNumber();
             row[1] = co.getCourseName();
             row[2] = co.getCourse().getDescription();
@@ -515,6 +520,7 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
             row[3] = seatList.size();
             
             row[4] = co.isEnrollmentStatus()? "open" : "closed";
+            row[5] = co.getCourse().getSchedule();
             
             model.addRow(row);
         }
