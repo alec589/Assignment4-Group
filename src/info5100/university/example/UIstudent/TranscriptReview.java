@@ -164,7 +164,7 @@ StudentProfile studentprofile;
            Object[] row = new Object[4];
            row[0] = sa.getCourseOffer().getCourseNumber();
            row[1] = sa.getCourseOffer().getCourseName();
-           row[2] = sa.convertToGPA(sa.getScore());
+           row[2] = sa.convertToGPA(sa.calculateFinalCourseScore());
          
           model.addRow(row);
         }

@@ -96,11 +96,12 @@ public class SeatAssignment {
         return score;
     }
     
-    public void setScore(double score) {
+    public double setScore(double score) {
         this.score = score;
         this.letterGrade = convertToLetter(score);
         this.grade = convertToGPA(score);
         this.pass = score >= 60;
+        return score;
     }
 
     public static String convertToLetter(double score) {               // Lu: make sure it is static

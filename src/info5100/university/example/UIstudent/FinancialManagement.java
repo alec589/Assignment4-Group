@@ -40,7 +40,7 @@ StudentProfile studentprofile;
         for(  SeatAssignment sa : courseload.getSeatAssignments()){ 
            Object[] row = new Object[4];
            row[0] = sa.getCourseOffer().getCourseName();
-           row[1] = sa.getCourseOffer().getTuitionFee();
+           row[1] = sa.getCourseOffer().getCourse().getCoursePrice();
            row[2] = sa.getStatus();
            row[3] = sa;
           model.addRow(row);
@@ -65,6 +65,11 @@ StudentProfile studentprofile;
         jButton4 = new javax.swing.JButton();
 
         jButton1.setText("Back");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2025Spring", "2025Summer", "2025Fall", "2025Winter", " " }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
@@ -189,6 +194,13 @@ StudentProfile studentprofile;
         studentprofile.updateBalance(sa.getCourseOffer().getTuitionFee(), "refund", "tuition",sa);
         courseload.dropCourse(sa);
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        CardLayout layout = (CardLayout) mainpanel.getLayout();
+        layout.previous(mainpanel);
+        mainpanel.remove(this);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
