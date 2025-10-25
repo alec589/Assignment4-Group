@@ -47,7 +47,7 @@ public class ConfigureTheBusiness {
           Person person006 = persondirectory.newPerson("Anna Shnider");
           Person person007 = persondirectory.newPerson("Laura Brown");
           Person person008 = persondirectory.newPerson("Jack While");
-          Person person009 = persondirectory.newPerson("Fidelity");
+          Person person009 = persondirectory.newPerson("Cecilia Lee");
           Person person0010 = persondirectory.newPerson("Mark King");
           // 11-20 are faculties
           Person person0011 = persondirectory.newPerson("Kevin Hill");
@@ -71,7 +71,7 @@ public class ConfigureTheBusiness {
           Person person0028 = persondirectory.newPerson("Michael Davis");
           Person person0029 = persondirectory.newPerson("Eric Ross");
           Person person0030 = persondirectory.newPerson("Justin Foster");
-          Person person0031 = persondirectory.newPerson("Lucy While");    
+          Person person0031 = persondirectory.newPerson("Lucy White");    
           
           StudentDirectory studentdirectory = department.getStudentdirectory();
           StudentProfile stu1 = studentdirectory.newStudentProfile(person001);
@@ -89,12 +89,12 @@ public class ConfigureTheBusiness {
           stu2.setFirstName("Gina");stu2.setLastName(" Montana");
           stu3.setFirstName("Adam ");stu3.setLastName("Rollen");
           stu4.setFirstName("Amy ");stu4.setLastName("Scott");
-          stu5.setFirstName("Jim Dellon");stu5.setLastName("Dellon");
+          stu5.setFirstName("Jim");stu5.setLastName("Dellon");
           stu6.setFirstName("Anna ");stu6.setLastName("Shnider");
           stu7.setFirstName("Laura ");stu7.setLastName("Brown");
           stu8.setFirstName("Jack ");stu8.setLastName("While");
-          stu9.setFirstName("Fidelity");stu9.setLastName("Fidelity");
-          stu10.setFirstName("Mark King");stu10.setLastName(" King");
+          stu9.setFirstName("Cecilia");stu9.setLastName("Lee");
+          stu10.setFirstName("Mark");stu10.setLastName(" King");
           
           FacultyDirectory facultyDirectory =department.getFacultydirectory();
           FacultyProfile fa01 = facultyDirectory.newFacultyProfile(person0011);
