@@ -254,22 +254,35 @@ StudentProfile studentprofile;
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
         int selectedRow = Table1.getSelectedRow();
-        if (selectedRow >=0) {
-          CourseOffer selectedcourse = (CourseOffer) Table1.getValueAt(selectedRow, 0);
-          String selectedsemster = (String) ComboBox1.getSelectedItem().toString();
-          CourseLoad currentCourseLoad = studentprofile.getCourseLoadBySemester(selectedsemster);
-          SeatAssignment sa = currentCourseLoad.newSeatAssignment(selectedcourse, studentprofile);
-        if (sa != null && currentCourseLoad.getsemestercreditshours()<=8 ) {
-          
-            JOptionPane.showMessageDialog(null, "Enroll successfully", "information",JOptionPane.INFORMATION_MESSAGE);
+        if (selectedRow >= 0) {
+        CourseOffer selectedcourse = (CourseOffer) Table1.getValueAt(selectedRow, 0);
+        String selectedsemster = (String) ComboBox1.getSelectedItem().toString();
+        CourseLoad currentCourseLoad = studentprofile.getCourseLoadBySemester(selectedsemster);
+      
+        if (selectedcourse.isEnrollmentStatus() == true) {
            
+           SeatAssignment sa = currentCourseLoad.newSeatAssignment(selectedcourse, studentprofile);
+            
+           
+            if (sa != null && currentCourseLoad.getsemestercreditshours() <= 8) {
+              
+                JOptionPane.showMessageDialog(null, "Enroll successfull!", "information", JOptionPane.INFORMATION_MESSAGE);
+              
+            } else {
+               
+                JOptionPane.showMessageDialog(null,  "Registration failed: The course is full, or you are not allowed to register for more than 8 credits this semester.", "warning", JOptionPane.WARNING_MESSAGE);
+            }
+
         } else {
-           
-      JOptionPane.showMessageDialog(null, "Enroll failed: The course is full or students are not allowed to take more than 8 credits hours of course per semester.", "warning",JOptionPane.WARNING_MESSAGE);
+          
+            JOptionPane.showMessageDialog(null,  "Registration failed: This course is currently not available for enrollment.", "warning", JOptionPane.WARNING_MESSAGE);
         }
+
     } else {
-        JOptionPane.showMessageDialog(null, "Please select an course from the list to enroll", "warning",JOptionPane.WARNING_MESSAGE);
+    
+        JOptionPane.showMessageDialog(null, "Please select a course from the list and register for it.", "warning", JOptionPane.WARNING_MESSAGE);
     }
+
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
