@@ -24,7 +24,6 @@ public class CourseSchedule {
         semester = s;
         coursecatalog = cc;
         schedule = new ArrayList();
-
     }
 
     public CourseOffer newCourseOffer(int  n) {
@@ -62,7 +61,19 @@ public class CourseSchedule {
         }
         return null;
     }
-
+    
+    public ArrayList<CourseOffer> getCourseOfferListByName(String name) {
+         ArrayList<CourseOffer> result = new ArrayList<>();
+        if (name == null || name.isEmpty()) {
+        return new ArrayList<>();
+    }
+        for (CourseOffer co : schedule) {
+            if (co.getCourseName().toLowerCase().contains(name.toLowerCase())) {
+                 result.add(co);
+            }
+        }
+        return result;
+    }
     public int calculateTotalRevenues() {
         int sum = 0;
         for (CourseOffer co : schedule) {
