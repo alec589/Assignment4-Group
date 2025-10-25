@@ -167,14 +167,14 @@ public class ConfigureTheBusiness {
           spring_course1.AssignAsTeacher(fa01);                                                                       // spring01 - fa01
           spring_course1.setLocation(211, 1, 102);
           spring_course1.setTimeSchedule("Monday", 8, 10);
-          spring_course1.setEnrollmentStatus(true);
+          spring_course1.setEnrollmentStatus(false);
           
           CourseOffer spring_course2 = springSchedule.newCourseOffer(course2.getCourseNumber());
           spring_course2.generatSeats(40);
           spring_course2.AssignAsTeacher(fa02);                                                                       // spring02 - fa02
           spring_course2.setLocation(316, 1, 105);
           spring_course2.setTimeSchedule("Thursday", 7, 9);
-          spring_course2.setEnrollmentStatus(true);
+          spring_course2.setEnrollmentStatus(false);
           
           // 2025 Summer
           CourseSchedule summerSchedule = new CourseSchedule("2025Summer", coursecatalog);
@@ -221,14 +221,14 @@ public class ConfigureTheBusiness {
           winter_course1.AssignAsTeacher(fa01);                                                                     // winter01 - fa01
           winter_course1.setTimeSchedule("Saturday", 15, 16);
           winter_course1.setLocation(111, 2, 205);
-          winter_course1.setEnrollmentStatus(false);
+          winter_course1.setEnrollmentStatus(true);
           
           CourseOffer winter_course2 = winterSchedule.newCourseOffer(course8.getCourseNumber());
           winter_course2.generatSeats(30);
           winter_course2.AssignAsTeacher(fa02);                                                                     // winter02 - fa02
           winter_course2.setLocation(761, 6, 605); 
           winter_course2.setTimeSchedule("Sunday", 15, 17);
-          winter_course2.setEnrollmentStatus(false);
+          winter_course2.setEnrollmentStatus(true);
           
           
           // configure trancript and courseload, connect student
