@@ -13,6 +13,8 @@ import info5100.university.example.Department.Department;
 import info5100.university.example.Persona.StudentProfile;
 import java.awt.CardLayout;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 
@@ -302,15 +304,19 @@ College college;
          for (Department dept : college.getDepartments()){
             int totalStudent=0;
             if (dept.getStudentDirectory() == null) continue;
+            //set保证集合不重复
+            Set<String> uniqueStudents = new HashSet<>();
+            
             for (StudentProfile sp :dept.getStudentDirectory().getStudentlist()){ 
-                if(sp.getCourseLoadBySemester(semester)!=null){
-                    
-            totalStudent ++; 
+                CourseLoad cl = sp.getCourseLoadBySemester(semester);
+                if(cl!=null && !cl.getSeatAssignments().isEmpty()){
+                    uniqueStudents.add(sp.getPerson().getPersonId());
+                
                 }
             }
           Object[] row = new Object[2];
             row[0] = dept.getName();
-            row[1] = totalStudent;
+            row[1] = uniqueStudents.size();
              
             model.addRow(row);
          }
