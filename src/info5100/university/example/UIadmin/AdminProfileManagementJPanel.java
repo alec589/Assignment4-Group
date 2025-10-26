@@ -23,10 +23,13 @@ public class AdminProfileManagementJPanel extends javax.swing.JPanel {
      * Creates new form AdminProfileManagementJPanel
      */
     public AdminProfileManagementJPanel(JPanel mainCardLayoutJPanel, Department department, AdmainProfile adminProfile) {
+        
+        initComponents(); 
+        
         this.mainCardLayoutJPanel = mainCardLayoutJPanel;
         this.department = department;
         this.adminProfile = adminProfile;
-        initComponents(); 
+        
         loadProfileData(); 
     }
     
@@ -34,11 +37,10 @@ public class AdminProfileManagementJPanel extends javax.swing.JPanel {
         Person person = adminProfile.getPerson();
         if (person != null) {
 
-            txtID.setText(person.getPersonId());
+            txtID.setText("1");
             txtName.setText(person.getName());
-            txtEmail.setText(person.getEmail());
+            txtEmail.setText("admin@northeastern.edu");
             
-            // 将 ID 设为不可编辑，由系统生成的
             txtID.setEditable(false);
         }
     }
@@ -173,9 +175,9 @@ public class AdminProfileManagementJPanel extends javax.swing.JPanel {
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // TODO add your handling code here:
-        mainCardLayoutJPanel.remove(this); 
         CardLayout layout = (CardLayout) mainCardLayoutJPanel.getLayout();
-        layout.previous(mainCardLayoutJPanel); 
+        layout.previous(mainCardLayoutJPanel);
+        mainCardLayoutJPanel.remove(this);
     }//GEN-LAST:event_btnBackActionPerformed
 
 

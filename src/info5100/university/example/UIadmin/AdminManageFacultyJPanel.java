@@ -23,15 +23,18 @@ import javax.swing.DefaultComboBoxModel;
  */
 public class AdminManageFacultyJPanel extends javax.swing.JPanel {
     private Department department;
+    private JPanel mainpanel;
 
     /**
      * Creates new form AdminManageFacultyJPanel
      */
-    public AdminManageFacultyJPanel(Department department) {
-        this.department = department; 
+    public AdminManageFacultyJPanel(Department department, JPanel mainpanel) {
+         
         initComponents();
+        this.department = department;
+        this.mainpanel = mainpanel;
         populateTable(); 
-        setupTableSorter(); // setupTableSorter 现在只设置 Sorter，不添加多余的监听器
+        setupTableSorter(); 
     }
     
     public void populateTable() {
@@ -363,50 +366,48 @@ public class AdminManageFacultyJPanel extends javax.swing.JPanel {
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // TODO add your handling code here:
-        Container parent = this.getParent();
-        if (parent.getLayout() instanceof CardLayout) {
-            CardLayout layout = (CardLayout) parent.getLayout();
-            layout.previous(parent);
-        }
+        CardLayout layout = (CardLayout) mainpanel.getLayout();
+        layout.previous(mainpanel);
+        mainpanel.remove(this);
     
     }//GEN-LAST:event_btnBackActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) tblFaculty.getModel();
-    TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
-    tblFaculty.setRowSorter(sorter);
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+        tblFaculty.setRowSorter(sorter);
 
-    String type = ((String) cmbSearchType.getSelectedItem()).trim();
-    String keyword = txtSearch.getText().trim().toLowerCase();
+        String type = ((String) cmbSearchType.getSelectedItem()).trim();
+        String keyword = txtSearch.getText().trim().toLowerCase();
 
-    if (keyword.isEmpty()) {
-        sorter.setRowFilter(null);
-        JOptionPane.showMessageDialog(this, "Please enter a keyword to search!");
-        return;
-    }
-
-    int colIndex = -1;
-    for (int i = 0; i < tblFaculty.getColumnCount(); i++) {
-        String columnName = tblFaculty.getColumnName(i).trim().toLowerCase();
-        if (columnName.contains(type.toLowerCase().replace(" ", ""))) {
-            colIndex = i;
-            break;
+        if (keyword.isEmpty()) {
+            sorter.setRowFilter(null);
+            JOptionPane.showMessageDialog(this, "Please enter a keyword to search!");
+            return;
         }
-    }
 
-    if (colIndex == -1) {
-        colIndex = 1;
-    }
-
-    final int colIndexFinal = colIndex;
-    sorter.setRowFilter(new RowFilter<DefaultTableModel, Object>() {
-        @Override
-        public boolean include(RowFilter.Entry<? extends DefaultTableModel, ? extends Object> entry) {
-            Object val = entry.getValue(colIndexFinal);
-            return val != null && val.toString().toLowerCase().contains(keyword);
+        int colIndex = -1;
+        for (int i = 0; i < tblFaculty.getColumnCount(); i++) {
+            String columnName = tblFaculty.getColumnName(i).trim().toLowerCase();
+            if (columnName.contains(type.toLowerCase().replace(" ", ""))) {
+                colIndex = i;
+                break;
+            }
         }
-    });
+
+        if (colIndex == -1) {
+            colIndex = 1;
+        }
+
+        final int colIndexFinal = colIndex;
+        sorter.setRowFilter(new RowFilter<DefaultTableModel, Object>() {
+            @Override
+            public boolean include(RowFilter.Entry<? extends DefaultTableModel, ? extends Object> entry) {
+                Object val = entry.getValue(colIndexFinal);
+                return val != null && val.toString().toLowerCase().contains(keyword);
+            }
+        });
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnAssignCourseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAssignCourseActionPerformed

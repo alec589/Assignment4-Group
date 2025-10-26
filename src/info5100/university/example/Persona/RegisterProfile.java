@@ -14,11 +14,15 @@ public class RegisterProfile extends Profile{
     String phoneNumber;
     String email;
     String offerHour;
+    int ID;
+    static int count=0;
     
      public RegisterProfile(Person p){
      
       super(p);
         person = p;   
+        count++;
+        ID = count;
      }
      
      public String getrole(){
@@ -67,5 +71,14 @@ public class RegisterProfile extends Profile{
     public void setOfferHour(String offerHour) {
         this.offerHour = offerHour;
     }
-       
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+      
+    
 }

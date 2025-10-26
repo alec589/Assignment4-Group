@@ -15,14 +15,16 @@ import javax.swing.table.*;
  */
 public class AdminManageStudentsJPanel extends javax.swing.JPanel {
     private Department department;
-
+    private JPanel mainpanel;
 
     /**
      * Creates new form AdminManageStudentsJPanel
      */
-     public AdminManageStudentsJPanel(Department department) {
-        this.department = department;
+     public AdminManageStudentsJPanel(Department department, JPanel mainpanel) {
+        
         initComponents();
+        this.department = department;
+        this.mainpanel = mainpanel;
         populateTable();
         setupTableSorter();
     }
@@ -38,18 +40,14 @@ public class AdminManageStudentsJPanel extends javax.swing.JPanel {
 
         for (StudentProfile sp : department.getStudentdirectory().getStudentlist()) {
             if (sp != null && sp.getPerson() != null) {
-                String id = sp.getPerson().getPersonId();
+                int id = sp.getStudentID();
                 String name = sp.getPerson().getName();
-                String email = "N/A";
-                if (sp.getPerson().getEmail() != null && !sp.getPerson().getEmail().trim().isEmpty()) {
-                    email = sp.getPerson().getEmail();
-                }
 
                 String deptName = department.getName() != null ? department.getName() : "N/A";
 
                 String status = sp.getTuitionBalance() > 0 ? "Active" : "Inactive";
 
-                model.addRow(new Object[]{id, name, email, deptName, status});
+                model.addRow(new Object[]{id, name, deptName, status});
             }
         }
 
@@ -99,17 +97,17 @@ public class AdminManageStudentsJPanel extends javax.swing.JPanel {
 
         tblStudents.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Student ID", "Name", "Email", "Department", "Status"
+                "Student ID", "Name", "Department", "Status"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -361,11 +359,9 @@ switch (type) {
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // TODO add your handling code here:
-        Container parent = this.getParent();
-    if (parent.getLayout() instanceof CardLayout) {
-        CardLayout layout = (CardLayout) parent.getLayout();
-        layout.previous(parent);
-    }
+        CardLayout layout = (CardLayout) mainpanel.getLayout();
+        layout.previous(mainpanel);
+        mainpanel.remove(this);
     }//GEN-LAST:event_btnBackActionPerformed
 
 
