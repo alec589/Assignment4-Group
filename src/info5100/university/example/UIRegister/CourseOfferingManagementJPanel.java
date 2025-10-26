@@ -456,7 +456,7 @@ CourseSchedule courseSchedule;
         CourseSchedule schedule = calendar.getCourseSchedule(selectedSemester);
         for (CourseOffer cof : schedule.getSchedule()) {
         if (!cof.isEnrollmentStatus()) {
-        JOptionPane.showMessageDialog(this,  "This semester was closed ,it can be updated.",  "Warning", JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(this,  "This semester was closed ,it can not be updated.",  "Warning", JOptionPane.WARNING_MESSAGE);
         return;
     }
         }
