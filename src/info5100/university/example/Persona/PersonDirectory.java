@@ -74,4 +74,12 @@ public class PersonDirectory {
         }
         return false;
     }
+    
+    public boolean removePerson(Person personToRemove) {
+        if (personToRemove == null || personlist == null) {
+            return false;
+        }
+        // Use ArrayList's remove method on the internal list
+        return personlist.remove(personToRemove); 
+    }
 }

@@ -5,9 +5,11 @@
 package info5100.university.example.UIadmin;
 
 import info5100.university.example.Department.Department;
+import info5100.university.example.Persona.Person;
 import info5100.university.example.Persona.Profile;
 import info5100.university.example.Persona.UserAccount;
 import info5100.university.example.Persona.RegisterProfile; 
+import info5100.university.example.Persona.UserAccountDirectory;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
@@ -232,17 +234,120 @@ public class AdminManageRegistrarJPanel extends javax.swing.JPanel {
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
-         int row = tblRegistrar.getSelectedRow();
-        if (row < 0) {
-            JOptionPane.showMessageDialog(this, "Please select a registrar to delete.");
+         int selectedRow = tblRegistrar.getSelectedRow();
+        if (selectedRow < 0) {
+            JOptionPane.showMessageDialog(this, "Please select a registrar to delete.", "Warning", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this registrar?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
+        // 1. Get Registrar's Person ID from the selected table row 
+        //    (populateTable adds rp.getPerson().getPersonId() to column 0)
+        String registrarPersonId;
+        try {
+            // Use convertRowIndexToModel for safety with sorting/filtering
+            registrarPersonId = (String) tblRegistrar.getValueAt(tblRegistrar.convertRowIndexToModel(selectedRow), 0);
+            if (registrarPersonId == null || registrarPersonId.trim().isEmpty()) {
+                 throw new Exception("Registrar Person ID is empty in the selected row.");
+            }
+        } catch (Exception e) {
+              JOptionPane.showMessageDialog(this, "Error retrieving Registrar ID from table: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+              return;
+        }
+
+        // 2. Find the RegisterProfile object using the Person ID
+        //    (RegisterDirectory.findRegisterProfile searches by Person ID)
+        RegisterProfile registerToDelete = department.getRegisterdirectory().findRegisterProfile(registrarPersonId);
+        if (registerToDelete == null) {
+            JOptionPane.showMessageDialog(this, "Selected registrar not found in the directory. Maybe already deleted?", "Error", JOptionPane.ERROR_MESSAGE);
+            populateTable(); // Refresh table
+            return;
+        }
+        
+        // 3. Get the associated Person object
+        Person personToDelete = registerToDelete.getPerson();
+        if (personToDelete == null) {
+             JOptionPane.showMessageDialog(this, "Error: Registrar profile is not linked to a person.", "Error", JOptionPane.ERROR_MESSAGE);
+             return; 
+        }
+
+        // 4. Find the associated UserAccount object
+        UserAccount accountToDelete = null;
+        UserAccountDirectory uaDirectory = department.getUseraccountdirectory();
+        if (uaDirectory != null && uaDirectory.getUserAccountDirectory() != null) {
+            for (UserAccount ua : uaDirectory.getUserAccountDirectory()) {
+                // Use the correct method name getAssociatedPersonProfile()
+                if (ua.getAssociatedPersonProfile() == registerToDelete) { 
+                    accountToDelete = ua;
+                    break; 
+                }
+            }
+        }
+
+        // 5. Show confirmation dialog
+        int confirm = JOptionPane.showConfirmDialog(
+            this, 
+            "Are you sure you want to permanently delete registrar '" + personToDelete.getName() + "'?\nThis will also delete their associated user account (if one exists).", 
+            "Confirm Deletion", 
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.WARNING_MESSAGE
+        );
+
+        // 6. If confirmed, perform the deletions from all relevant directories
         if (confirm == JOptionPane.YES_OPTION) {
-            DefaultTableModel model = (DefaultTableModel) tblRegistrar.getModel();
-            int modelRow = tblRegistrar.convertRowIndexToModel(row);
-            model.removeRow(modelRow);
+            boolean accountRemoved = false;
+            boolean registrarRemoved = false;
+            boolean personRemoved = false;
+
+            // Delete User Account (if found)
+            if (accountToDelete != null) {
+                // Relies on removeUserAccount(UserAccount) existing in UserAccountDirectory
+                accountRemoved = department.getUseraccountdirectory().removeUserAccount(accountToDelete); 
+                if (!accountRemoved) {
+                     System.err.println("Warning: Could not remove user account for " + personToDelete.getName());
+                } else {
+                     System.out.println("User account for " + personToDelete.getName() + " removed.");
+                }
+            } else {
+                 System.out.println("Info: No user account found associated with registrar " + personToDelete.getName() + " to delete.");
+                 accountRemoved = true; // No account existed, consider it 'removed'
+            }
+
+            // Delete Register Profile
+            // Directly remove from the list (Ideally, RegisterDirectory should have a remove method)
+            registrarRemoved = department.getRegisterdirectory().getRegisterlist().remove(registerToDelete); // Assumes getRegisterlist() exists
+             if (!registrarRemoved) {
+                  System.err.println("Error: Could not remove registrar profile for " + personToDelete.getName());
+             } else {
+                  System.out.println("Registrar profile for " + personToDelete.getName() + " removed.");
+             }
+
+            // Delete Person object
+            // Relies on the public removePerson method in PersonDirectory
+            personRemoved = department.getPersondirectory().removePerson(personToDelete); 
+             if (!personRemoved) {
+                  // This might fail if the Person is still linked elsewhere (e.g., if they were also a Student/Faculty?)
+                  // For now, we just log it. A more robust system might prevent deletion or handle shared Person objects differently.
+                  System.err.println("Error: Could not remove person object for " + personToDelete.getName() + ". Is it linked elsewhere?");
+             } else {
+                  System.out.println("Person object for " + personToDelete.getName() + " removed.");
+             }
+
+
+            // 7. Refresh the table to reflect the deletion
+            populateTable();
+            
+            // 8. Show final status message
+            // Note: We check registrarRemoved and personRemoved mainly, as account might not exist
+            if (registrarRemoved && personRemoved) { 
+                 JOptionPane.showMessageDialog(this, "Registrar '" + personToDelete.getName() + "' and associated data deleted successfully.", "Deletion Successful", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                 // Give a more specific message if only Person removal failed
+                 if (!personRemoved && registrarRemoved) {
+                      JOptionPane.showMessageDialog(this, "Registrar profile and user account removed, but the base Person record could not be deleted (possibly linked elsewhere).", "Partial Deletion", JOptionPane.WARNING_MESSAGE);
+                 } else {
+                      JOptionPane.showMessageDialog(this, "An error occurred during deletion. Some data might not have been removed. Please check logs.", "Deletion Error", JOptionPane.ERROR_MESSAGE);
+                 }
+            }
         }
        
     }//GEN-LAST:event_btnDeleteActionPerformed

@@ -48,6 +48,7 @@ public class AdminWorkAreaJPanel extends javax.swing.JPanel {
         lblTitle1 = new javax.swing.JLabel();
         btnAnalytics1 = new javax.swing.JButton();
         btnManageProfile = new javax.swing.JButton();
+        btnLogOut = new javax.swing.JButton();
 
         btnManageAccounts1.setText("Manage User Accounts");
         btnManageAccounts1.addActionListener(new java.awt.event.ActionListener() {
@@ -101,6 +102,13 @@ public class AdminWorkAreaJPanel extends javax.swing.JPanel {
             }
         });
 
+        btnLogOut.setText("Log out");
+        btnLogOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogOutActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -121,7 +129,8 @@ public class AdminWorkAreaJPanel extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(btnManageStudents1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnManageFaculty1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnAnalytics1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE))))
+                            .addComponent(btnAnalytics1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
+                            .addComponent(btnLogOut, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(27, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -142,7 +151,9 @@ public class AdminWorkAreaJPanel extends javax.swing.JPanel {
                     .addComponent(btnManageRegistrar1)
                     .addComponent(btnAnalytics1))
                 .addGap(26, 26, 26)
-                .addComponent(btnManageProfile)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnManageProfile)
+                    .addComponent(btnLogOut))
                 .addContainerGap(71, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -209,10 +220,18 @@ public class AdminWorkAreaJPanel extends javax.swing.JPanel {
         layout.show(mainCardLayoutJPanel, "AdminProfileManagementJPanel");
     }//GEN-LAST:event_btnManageProfileActionPerformed
 
+    private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
+        // TODO add your handling code here:
+        CardLayout layout = (CardLayout) mainCardLayoutJPanel.getLayout();
+        mainCardLayoutJPanel.remove(this); 
+        layout.show(mainCardLayoutJPanel, "Log");
+    }//GEN-LAST:event_btnLogOutActionPerformed
+
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAnalytics1;
+    private javax.swing.JButton btnLogOut;
     private javax.swing.JButton btnManageAccounts1;
     private javax.swing.JButton btnManageFaculty1;
     private javax.swing.JButton btnManageProfile;

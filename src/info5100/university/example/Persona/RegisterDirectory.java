@@ -40,6 +40,21 @@ public class RegisterDirectory {
             return null; //not found after going through the whole list
          }
     
+    public RegisterProfile findRegisterProfile(String personId) {
+        if (personId == null || personId.trim().isEmpty() || registerlist == null) {
+            return null; 
+        }
+
+        for (RegisterProfile rp : registerlist) {
+            Person person = rp.getPerson();
+           
+            if (person != null && personId.equals(person.getPersonId())) {
+                return rp; // Found the matching profile
+            }
+        }
+        return null; 
+    }
+    
     public ArrayList<RegisterProfile> getRegisterlist() {
     return registerlist;
 }

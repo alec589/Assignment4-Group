@@ -83,5 +83,13 @@ public class UserAccountDirectory {
     public ArrayList<UserAccount> getUserAccountDirectory() {
         return UserAccountDirectory;
     }
-      
+    
+    public boolean removeUserAccount(UserAccount accountToRemove) {
+        // Use the correct variable name 'UserAccountDirectory' (capitalized)
+        if (accountToRemove == null || UserAccountDirectory == null) { 
+            return false;
+        }
+        // Use the correct variable name 'UserAccountDirectory' (capitalized)
+        return UserAccountDirectory.remove(accountToRemove); 
+    }
 }

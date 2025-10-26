@@ -243,19 +243,119 @@ switch (type) {
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
-        int row = tblStudents.getSelectedRow();
-        if (row < 0) {
-            JOptionPane.showMessageDialog(this, "Please select a student to delete.");
+        int selectedRow = tblStudents.getSelectedRow();
+        if (selectedRow < 0) {
+            JOptionPane.showMessageDialog(this, "Please select a student to delete.", "Warning", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        int confirm = JOptionPane.showConfirmDialog(this,
-                "Are you sure you want to delete this student?",
-                "Confirm Delete", JOptionPane.YES_NO_OPTION);
+        // 1. Get Student's Person ID from the selected table row
+        //    (Assuming populateTable adds sp.getPerson().getPersonId() to column 0 as String)
+        String studentPersonId;
+        try {
+            // Use convertRowIndexToModel for safety with sorting/filtering
+            studentPersonId = (String) tblStudents.getValueAt(tblStudents.convertRowIndexToModel(selectedRow), 0);
+             if (studentPersonId == null || studentPersonId.trim().isEmpty()) {
+                 throw new Exception("Student Person ID is empty in the selected row.");
+             }
+        } catch (Exception e) {
+              JOptionPane.showMessageDialog(this, "Error retrieving Student ID from table: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+              return;
+        }
 
+        // 2. Find the StudentProfile object using the Person ID
+        //    (StudentDirectory uses findStudent(personId))
+        StudentProfile studentToDelete = department.getStudentdirectory().findStudent(studentPersonId);  // Use findStudent, not findStudentProfile
+        if (studentToDelete == null) {
+            JOptionPane.showMessageDialog(this, "Selected student not found in the directory. Maybe already deleted?", "Error", JOptionPane.ERROR_MESSAGE);
+            populateTable(); // Refresh table
+            return;
+        }
+        
+        // 3. Get the associated Person object
+        Person personToDelete = studentToDelete.getPerson();
+        if (personToDelete == null) {
+             JOptionPane.showMessageDialog(this, "Error: Student profile is not linked to a person.", "Error", JOptionPane.ERROR_MESSAGE);
+             return; 
+        }
+
+        // 4. Find the associated UserAccount object
+        UserAccount accountToDelete = null;
+        UserAccountDirectory uaDirectory = department.getUseraccountdirectory();
+        if (uaDirectory != null && uaDirectory.getUserAccountDirectory() != null) {
+            for (UserAccount ua : uaDirectory.getUserAccountDirectory()) {
+                // Use the correct method name getAssociatedPersonProfile()
+                if (ua.getAssociatedPersonProfile() == studentToDelete) { 
+                    accountToDelete = ua;
+                    break; 
+                }
+            }
+        }
+        // *** Finding logic done ***
+
+        // 5. Show confirmation dialog
+        int confirm = JOptionPane.showConfirmDialog(
+            this, 
+            "Are you sure you want to permanently delete student '" + personToDelete.getName() + "'?\nThis will also delete their associated user account (if one exists).", 
+            "Confirm Deletion", 
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.WARNING_MESSAGE
+        );
+
+        // 6. If confirmed, perform the deletions from all relevant directories
         if (confirm == JOptionPane.YES_OPTION) {
-            DefaultTableModel model = (DefaultTableModel) tblStudents.getModel();
-            model.removeRow(tblStudents.convertRowIndexToModel(row));
+            boolean accountRemoved = false;
+            boolean studentRemoved = false;
+            boolean personRemoved = false;
+
+            // Delete User Account (if found)
+            if (accountToDelete != null) {
+                // Relies on removeUserAccount(UserAccount) existing in UserAccountDirectory
+                accountRemoved = department.getUseraccountdirectory().removeUserAccount(accountToDelete); 
+                if (!accountRemoved) {
+                     System.err.println("Warning: Could not remove user account for student " + personToDelete.getName());
+                } else {
+                     System.out.println("User account for student " + personToDelete.getName() + " removed.");
+                }
+            } else {
+                 System.out.println("Info: No user account found associated with student " + personToDelete.getName() + " to delete.");
+                 accountRemoved = true; // No account existed, consider it 'removed'
+            }
+
+            // Delete Student Profile
+            // Directly remove from the list (Ideally, StudentDirectory should have a remove method)
+            studentRemoved = department.getStudentdirectory().getStudentlist().remove(studentToDelete); // Assumes getStudentlist() returns the ArrayList
+             if (!studentRemoved) {
+                  System.err.println("Error: Could not remove student profile for " + personToDelete.getName());
+             } else {
+                 System.out.println("Student profile for " + personToDelete.getName() + " removed.");
+             }
+
+            // Delete Person object
+            // Relies on the public removePerson method in PersonDirectory
+            personRemoved = department.getPersondirectory().removePerson(personToDelete); 
+             if (!personRemoved) {
+                  // Log potential issue if Person couldn't be removed (might be shared?)
+                  System.err.println("Error: Could not remove person object for " + personToDelete.getName() + ". Is it linked elsewhere?");
+             } else {
+                  System.out.println("Person object for " + personToDelete.getName() + " removed.");
+             }
+
+
+            // 7. Refresh the table to reflect the deletion
+            populateTable();
+            
+            // 8. Show final status message
+            
+            if (studentRemoved && personRemoved) { 
+                 JOptionPane.showMessageDialog(this, "Student '" + personToDelete.getName() + "' and associated data deleted successfully.", "Deletion Successful", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                 if (!personRemoved && studentRemoved) {
+                     JOptionPane.showMessageDialog(this, "Student profile and user account removed, but the base Person record could not be deleted (possibly linked elsewhere).", "Partial Deletion", JOptionPane.WARNING_MESSAGE);
+                 } else {
+                     JOptionPane.showMessageDialog(this, "An error occurred during deletion. Some data might not have been removed. Please check logs.", "Deletion Error", JOptionPane.ERROR_MESSAGE);
+                 }
+            }
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 

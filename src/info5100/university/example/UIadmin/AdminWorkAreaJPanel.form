@@ -35,6 +35,7 @@
                           <Component id="btnManageStudents1" alignment="0" max="32767" attributes="0"/>
                           <Component id="btnManageFaculty1" alignment="0" max="32767" attributes="0"/>
                           <Component id="btnAnalytics1" alignment="0" pref="173" max="32767" attributes="0"/>
+                          <Component id="btnLogOut" alignment="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -63,7 +64,10 @@
                   <Component id="btnAnalytics1" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
-              <Component id="btnManageProfile" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="btnManageProfile" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnLogOut" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace pref="71" max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -132,6 +136,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnManageProfileActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnLogOut">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Log out"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLogOutActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
