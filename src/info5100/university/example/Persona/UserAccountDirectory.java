@@ -92,4 +92,17 @@ public class UserAccountDirectory {
         // Use the correct variable name 'UserAccountDirectory' (capitalized)
         return UserAccountDirectory.remove(accountToRemove); 
     }
+    
+    public UserAccount findUserAccountByUsername(String username) {
+        if (username == null || UserAccountDirectory == null) { 
+            return null;
+        }
+        for (UserAccount useraccount : UserAccountDirectory) { 
+            // Use getUserLoginName() based on your populateTable code
+            if (useraccount.getUserLoginName() != null && useraccount.getUserLoginName().equals(username)) { 
+                return useraccount;
+            }
+        }
+        return null; // Not found
+    }
 }

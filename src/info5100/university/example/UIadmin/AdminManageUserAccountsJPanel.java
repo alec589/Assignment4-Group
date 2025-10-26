@@ -261,10 +261,10 @@ public class AdminManageUserAccountsJPanel extends javax.swing.JPanel {
             return;
         }
 
+        // 1. Get Username from the selected table row (Column 0)
         String usernameToDelete;
         try {
-            
-            usernameToDelete = (String) tblUserAccounts.getValueAt(tblUserAccounts.convertRowIndexToModel(selectedRow), 0);
+            usernameToDelete = (String) tblUserAccounts.getValueAt(tblUserAccounts.convertRowIndexToModel(selectedRow), 1);
              if (usernameToDelete == null || usernameToDelete.trim().isEmpty()) {
                  throw new Exception("Username is empty in the selected row.");
              }
@@ -273,17 +273,21 @@ public class AdminManageUserAccountsJPanel extends javax.swing.JPanel {
               return;
         }
 
-        UserAccount accountToDelete = department.getUseraccountdirectory().findUserAccount(usernameToDelete); 
-        if (accountToDelete == null) {
-          
+        // *** Use the CORRECT method to find by USERNAME ***
+        UserAccount accountToDelete = department.getUseraccountdirectory().findUserAccountByUsername(usernameToDelete); 
+        // *** FIND CALL CORRECTED ***
+
+        // Null check after finding
+        if (accountToDelete == null) { 
             JOptionPane.showMessageDialog(this, "Selected user account ('" + usernameToDelete + "') not found in the directory. Maybe already deleted?", "Error", JOptionPane.ERROR_MESSAGE);
-            populateTable(); // Refresh table
-            return;
+            populateTable(); 
+            return; 
         }
         
-       
+        // Get associated name for confirmation (should be safe now)
         String associatedName = accountToDelete.getPersonName(); 
 
+        // Show confirmation dialog
         int confirm = JOptionPane.showConfirmDialog(
             this, 
             "Are you sure you want to permanently delete the user account for '" + usernameToDelete + "' (" + associatedName + ")?", 
@@ -292,18 +296,22 @@ public class AdminManageUserAccountsJPanel extends javax.swing.JPanel {
             JOptionPane.WARNING_MESSAGE
         );
 
+        // If confirmed, perform deletion
         if (confirm == JOptionPane.YES_OPTION) {
             boolean accountRemoved = false;
 
+            // Delete User Account using the removeUserAccount method
+            // This relies on removeUserAccount(UserAccount) existing in UserAccountDirectory
             accountRemoved = department.getUseraccountdirectory().removeUserAccount(accountToDelete); 
             
+            // Refresh the table
             populateTable();
             
+            // Show final status message
             if (accountRemoved) { 
                  System.out.println("User account '" + usernameToDelete + "' removed successfully.");
                  JOptionPane.showMessageDialog(this, "User account '" + usernameToDelete + "' deleted successfully.", "Deletion Successful", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                 // This might happen if the account was deleted between find and remove, or if remove failed
                  System.err.println("Error: Could not remove user account '" + usernameToDelete + "'.");
                  JOptionPane.showMessageDialog(this, "An error occurred trying to delete user account '" + usernameToDelete + "'.", "Deletion Error", JOptionPane.ERROR_MESSAGE);
             }
