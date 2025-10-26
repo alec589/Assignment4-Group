@@ -29,8 +29,9 @@ StudentProfile studentprofile;
         this.mainpanel=mainpanel;
         this.department=department;
         this.studentprofile = studentprofile;
-        overallgpa.setText(String.valueOf((double)studentprofile.getTranscript().getStudentTotalScore()));
-        
+        double gpa1 = (double)studentprofile.getTranscript().getStudentTotalScore();
+        String formattedGpa1 = String.format("%.1f", gpa1);
+        overallgpa.setText(formattedGpa1);  
     }
 
     /**
@@ -168,8 +169,10 @@ StudentProfile studentprofile;
          
           model.addRow(row);
         }
-        termgpa.setText(String.valueOf((double) courseload.getqualitypoints() / courseload.gettotalhours()));
-        txtas.setText(courseload.convertToLetter(courseload.getqualitypoints() / courseload.gettotalhours()));
+       double gpa = (double) courseload.getqualitypoints() / courseload.gettotalhours();
+       String formattedGpa = String.format("%.1f", gpa);
+       termgpa.setText(formattedGpa);
+       txtas.setText(courseload.convertToLetter(courseload.getqualitypoints() / courseload.gettotalhours()));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

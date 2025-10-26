@@ -164,7 +164,9 @@ public void populateStudentAssignmentsTable(StudentProfile studentprofile, Strin
         layout.previous(mainpanel);
         mainpanel.remove(this);
     }//GEN-LAST:event_jButton2ActionPerformed
-
+    public String getSelectedSemester() {
+    return (String) ComboBox2.getSelectedItem();
+    }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
           int selectedRow = table2.getSelectedRow();
@@ -178,7 +180,7 @@ public void populateStudentAssignmentsTable(StudentProfile studentprofile, Strin
             return;
         }
         SeatAssignment selectedSeatAssignment = currentCourseLoad.findSeatAssignmentByCourseName(courseName);
-            AssignmentDetail  panel = new AssignmentDetail(mainpanel,department, selectedassignment,studentprofile,selectedSeatAssignment);
+            AssignmentDetail  panel = new AssignmentDetail(mainpanel,department, selectedassignment,studentprofile,selectedSeatAssignment,this);
             mainpanel.add("AssignmentDetail", panel);
             CardLayout layout = (CardLayout) mainpanel.getLayout();
             layout.next(mainpanel);

@@ -37,10 +37,11 @@ public class AssignmentDetail extends javax.swing.JPanel {
    ImageIcon logoImage;
    StudentProfile studentProfile;
    SeatAssignment seatAssignment;
+   CourseWorkManagement parentPanel;
     /**
      * Creates new form AssignmentDetail
      */
-    public AssignmentDetail(JPanel mainpanel,Department department,Assignment assignment,StudentProfile studentProfile, SeatAssignment seatAssignment) {
+    public AssignmentDetail(JPanel mainpanel,Department department,Assignment assignment,StudentProfile studentProfile, SeatAssignment seatAssignment,CourseWorkManagement parentPanel) {
         initComponents();
         this.mainpanel=mainpanel;
         this.department=department;
@@ -52,6 +53,7 @@ public class AssignmentDetail extends javax.swing.JPanel {
         fileChooser.setFileFilter(pngFilter);
         this.studentProfile = studentProfile;
         this.seatAssignment = seatAssignment;
+        this.parentPanel = parentPanel;
     }
 
     /**
@@ -167,6 +169,11 @@ public class AssignmentDetail extends javax.swing.JPanel {
          CardLayout layout = (CardLayout) mainpanel.getLayout();
          layout.previous(mainpanel);  
          mainpanel.remove(this); 
+         if (parentPanel != null) {
+         String selectedSemester = (String) parentPanel.getSelectedSemester();
+         parentPanel.populateStudentAssignmentsTable(parentPanel.studentprofile, selectedSemester);
+    }
+
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
