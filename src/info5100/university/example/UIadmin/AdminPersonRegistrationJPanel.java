@@ -13,21 +13,21 @@ public class AdminPersonRegistrationJPanel extends javax.swing.JPanel {
     private PersonDirectory personDirectory;
     private Department department;  
     private JPanel workAreaPanel;
+    
 
     /**
      * Creates new form AdminPersonRegistrationJPanel
      */
     public AdminPersonRegistrationJPanel(JPanel workAreaPanel, Department department) {
-    this.workAreaPanel = workAreaPanel;
-    this.department = department;
-    this.personDirectory = department.getPersondirectory(); 
-    initComponents();
+        
+        initComponents();
+        this.workAreaPanel = workAreaPanel;
+        this.department = department;
+        this.personDirectory = department.getPersondirectory(); 
 
-    btnAdd.addActionListener(e -> handleAddPerson());
-    btnBack.addActionListener(e -> {
-        CardLayout layout = (CardLayout) workAreaPanel.getLayout();
-        layout.previous(workAreaPanel);
-    });
+
+        
+        
 }
      
   private void handleAddPerson() {
@@ -74,7 +74,7 @@ public class AdminPersonRegistrationJPanel extends javax.swing.JPanel {
     department.getUseraccountdirectory().addUserAccount(profile, username, defaultPassword);
 
    
-    // 使用 HTML 来换行显示
+    
     lblStatus.setText("<html>✔ Registered '" + newPerson.getName() + "' (ID: " + newPerson.getPersonId() + ") as " + role + "<br>(Username: " + username + ")</html>");
     
     txtName.setText("");
@@ -158,10 +158,6 @@ public class AdminPersonRegistrationJPanel extends javax.swing.JPanel {
                         .addGap(55, 55, 55)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnAdd)
-                                .addGap(39, 39, 39)
-                                .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(lblName)
                                     .addComponent(lblRole)
@@ -170,11 +166,15 @@ public class AdminPersonRegistrationJPanel extends javax.swing.JPanel {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(txtName)
                                     .addComponent(cmbRole, 0, 109, Short.MAX_VALUE)
-                                    .addComponent(txtEmail)))))
+                                    .addComponent(txtEmail)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnAdd)
+                                .addGap(46, 46, 46)
+                                .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
+                        .addGap(46, 46, 46)
                         .addComponent(lblStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(148, Short.MAX_VALUE))
+                .addContainerGap(125, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -189,20 +189,17 @@ public class AdminPersonRegistrationJPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmbRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblRole))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(33, 33, 33)
-                        .addComponent(lblStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblEmail))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblEmail))
+                .addGap(18, 18, 18)
+                .addComponent(lblStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdd)
                     .addComponent(btnBack))
-                .addContainerGap(127, Short.MAX_VALUE))
+                .addContainerGap(67, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -220,6 +217,7 @@ public class AdminPersonRegistrationJPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         CardLayout layout = (CardLayout) workAreaPanel.getLayout();
         layout.previous(workAreaPanel);
+        workAreaPanel.remove(this);
     }//GEN-LAST:event_btnBackActionPerformed
 
     private void txtEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmailActionPerformed

@@ -281,7 +281,8 @@ public class PerformanceReportingJPanel extends javax.swing.JPanel {
         // tuition
         Course c = co.getCourse();
         int unitPrice = c.getCoursePrice();
-        int totalTuition = enrollCount * unitPrice;
+        int credits = c.getCredits();
+        int totalTuition = enrollCount * unitPrice *credits;
         fieldTuition.setText(String.valueOf(totalTuition));
         
     }//GEN-LAST:event_btnGenerateActionPerformed

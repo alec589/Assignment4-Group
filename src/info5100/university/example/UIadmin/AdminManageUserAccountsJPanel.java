@@ -17,13 +17,16 @@ import javax.swing.table.*;
 public class AdminManageUserAccountsJPanel extends javax.swing.JPanel {
         
     private Department department;
+    private JPanel mainpanel;
 
     /**
      * Creates new form AdminManageUserAccountsJPanel
      */
-    public AdminManageUserAccountsJPanel(Department department) {
-        this.department = department;
+    public AdminManageUserAccountsJPanel(Department department, JPanel mainpanel) {
+        
         initComponents();
+        this.department = department;
+        this.mainpanel = mainpanel;
         populateTable();
     }
     
@@ -38,7 +41,7 @@ public class AdminManageUserAccountsJPanel extends javax.swing.JPanel {
 
         for (UserAccount ua : department.getUseraccountdirectory().getUserAccountDirectory()) {
             if (ua != null) {
-                String id = ua.GetPersonID();
+                int id = ua.getID();
                 String username = ua.getUserLoginName();
                 String role = ua.getRole();
                 String status = "Active";
@@ -268,11 +271,9 @@ public class AdminManageUserAccountsJPanel extends javax.swing.JPanel {
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // TODO add your handling code here:
-        Container parent = this.getParent();
-        if (parent.getLayout() instanceof CardLayout) {
-            CardLayout layout = (CardLayout) parent.getLayout();
-            layout.previous(parent);
-        }
+        CardLayout layout = (CardLayout) mainpanel.getLayout();
+        layout.previous(mainpanel);
+        mainpanel.remove(this);
     }//GEN-LAST:event_btnBackActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed

@@ -160,7 +160,7 @@ public class AdminWorkAreaJPanel extends javax.swing.JPanel {
 
     private void btnManageAccounts1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageAccounts1ActionPerformed
         // TODO add your handling code here:
-        AdminManageUserAccountsJPanel panel = new AdminManageUserAccountsJPanel(department);
+        AdminManageUserAccountsJPanel panel = new AdminManageUserAccountsJPanel(department, mainCardLayoutJPanel);
         mainCardLayoutJPanel.add("AdminManageUserAccountsJPanel", panel);
         CardLayout layout = (CardLayout) mainCardLayoutJPanel.getLayout();
         layout.show(mainCardLayoutJPanel, "AdminManageUserAccountsJPanel");
@@ -169,7 +169,7 @@ public class AdminWorkAreaJPanel extends javax.swing.JPanel {
 
     private void btnManageFaculty1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageFaculty1ActionPerformed
         // TODO add your handling code here:
-        AdminManageFacultyJPanel panel = new AdminManageFacultyJPanel(department);
+        AdminManageFacultyJPanel panel = new AdminManageFacultyJPanel(department, mainCardLayoutJPanel);
         panel.populateTable(); 
         mainCardLayoutJPanel.add("AdminManageFacultyJPanel", panel);
         CardLayout layout = (CardLayout) mainCardLayoutJPanel.getLayout();
@@ -188,7 +188,7 @@ public class AdminWorkAreaJPanel extends javax.swing.JPanel {
 
     private void btnManageRegistrar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageRegistrar1ActionPerformed
         // TODO add your handling code here:
-        AdminManageRegistrarJPanel panel = new AdminManageRegistrarJPanel(department);
+        AdminManageRegistrarJPanel panel = new AdminManageRegistrarJPanel(department, mainCardLayoutJPanel);
          panel.populateTable(); 
          mainCardLayoutJPanel.add("AdminManageRegistrarJPanel", panel);
          CardLayout layout = (CardLayout) mainCardLayoutJPanel.getLayout();
@@ -197,7 +197,7 @@ public class AdminWorkAreaJPanel extends javax.swing.JPanel {
 
     private void btnManageStudents1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageStudents1ActionPerformed
         // TODO add your handling code here:
-         AdminManageStudentsJPanel panel = new AdminManageStudentsJPanel(department);
+         AdminManageStudentsJPanel panel = new AdminManageStudentsJPanel(department, mainCardLayoutJPanel);
          panel.populateTable(); 
          mainCardLayoutJPanel.add("AdminManageStudentsJPanel", panel);
          CardLayout layout = (CardLayout) mainCardLayoutJPanel.getLayout();
@@ -206,7 +206,7 @@ public class AdminWorkAreaJPanel extends javax.swing.JPanel {
 
     private void btnAnalytics1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalytics1ActionPerformed
         // TODO add your handling code here:
-         AdminAnalyticsDashboardJPanel panel = new AdminAnalyticsDashboardJPanel(department);
+         AdminAnalyticsDashboardJPanel panel = new AdminAnalyticsDashboardJPanel(department, mainCardLayoutJPanel);
          mainCardLayoutJPanel.add("AdminAnalyticsDashboardJPanel", panel);
          CardLayout layout = (CardLayout) mainCardLayoutJPanel.getLayout();
          layout.show(mainCardLayoutJPanel, "AdminAnalyticsDashboardJPanel");

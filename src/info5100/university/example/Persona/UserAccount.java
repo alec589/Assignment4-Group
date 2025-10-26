@@ -22,10 +22,15 @@ public class UserAccount {
     Profile profile;
     String UserName;
     String UserPassword;
+    int ID;
+    static int count=0;
+    
     public UserAccount(Profile profile,String username, String userpassword){
         this.profile = profile;
-         UserName = username;
+        UserName = username;
         UserPassword =userpassword;
+        count++;
+        ID = count;
     }
 
    public String GetPersonID(){
@@ -66,5 +71,14 @@ public class UserAccount {
     public void setUserPassword(String UserPassword) {
         this.UserPassword = UserPassword;
     }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
         
+    
 }

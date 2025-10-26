@@ -20,13 +20,15 @@ import java.awt.*;
  */
 public class AdminManageRegistrarJPanel extends javax.swing.JPanel {
     private Department department;
-
+    private JPanel mainpanel;
     /**
      * Creates new form AdminManageRegistrarJPanel
      */
-    public AdminManageRegistrarJPanel(Department department) {
-        this.department = department;
+    public AdminManageRegistrarJPanel(Department department, JPanel mainpanel) {
+        
         initComponents();
+        this.department = department;
+        this.mainpanel = mainpanel;
         populateTable(); 
     }
     
@@ -42,9 +44,9 @@ public class AdminManageRegistrarJPanel extends javax.swing.JPanel {
     for (RegisterProfile rp : department.getRegisterdirectory().getRegisterlist()) {
 
         if (rp != null && rp.getPerson() != null) {
-            String id = rp.getPerson().getPersonId();
+            int id = rp.getID();
             String name = rp.getPerson().getName();
-            String email = rp.getPerson().getEmail() != null ? rp.getPerson().getEmail() : "N/A";
+            String email = rp.getEmail() != null ? rp.getEmail() : "N/A";
             String dept = department.getName() != null ? department.getName() : "N/A";
             String status = "Active";
             model.addRow(new Object[]{id, name, email, dept, status});
@@ -354,11 +356,9 @@ public class AdminManageRegistrarJPanel extends javax.swing.JPanel {
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // TODO add your handling code here:
-        Container parent = this.getParent();
-        if (parent.getLayout() instanceof CardLayout) {
-            CardLayout layout = (CardLayout) parent.getLayout();
-            layout.previous(parent);
-        }
+        CardLayout layout = (CardLayout) mainpanel.getLayout();
+        layout.previous(mainpanel);
+        mainpanel.remove(this);
     }//GEN-LAST:event_btnBackActionPerformed
 
 
