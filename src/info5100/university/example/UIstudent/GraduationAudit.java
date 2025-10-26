@@ -89,12 +89,12 @@ StudentProfile studentprofile;
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        ArrayList<SeatAssignment> sas = new ArrayList<>();
-        if(department.getDegree().validateCoreClasses(sas)==true ||department.getDegree().getcredishours(studentprofile) >= 32){
+        ArrayList<SeatAssignment> sas = studentprofile.getTranscript().getCourseList();
+        if(department.getDegree().validateCoreClasses(sas) &&department.getDegree().getcredishours(studentprofile) >= 32){
              JOptionPane.showMessageDialog(null, "Congratulations! The student has met all the graduation requirements.", "warning",JOptionPane.WARNING_MESSAGE);
-        }else{if(department.getDegree().getcredishours(studentprofile) <= 32){
+        }else{if(department.getDegree().getcredishours(studentprofile) < 32){
              JOptionPane.showMessageDialog(null, "can't graduate because of credits hours", "warning",JOptionPane.WARNING_MESSAGE);
-        }if(department.getDegree().validateCoreClasses(sas)==true==false){
+        }if(!department.getDegree().validateCoreClasses(sas)){
             JOptionPane.showMessageDialog(null, "can't graduate because of a lack of corecourse", "warning",JOptionPane.WARNING_MESSAGE);
         }}
     }//GEN-LAST:event_jButton1ActionPerformed
