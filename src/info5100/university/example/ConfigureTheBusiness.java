@@ -554,6 +554,15 @@ public class ConfigureTheBusiness {
           UserAccountDirectory useraccountdirectory = department.getUseraccountdirectory();
           UserAccount   useraccount1 = useraccountdirectory.addUserAccount(stu1, "student1", "123456");
           UserAccount   useraccount2 = useraccountdirectory.addUserAccount(stu2, "student2", "123456");
+          UserAccount   useraccount21 = useraccountdirectory.addUserAccount(stu3, "student3", "123456");
+          UserAccount   useraccount22 = useraccountdirectory.addUserAccount(stu4, "student4", "123456");
+          UserAccount   useraccount5 = useraccountdirectory.addUserAccount(stu5, "student5", "123456");
+          UserAccount   useraccount6 = useraccountdirectory.addUserAccount(stu6, "student6", "123456");
+          UserAccount   useraccount7 = useraccountdirectory.addUserAccount(stu7, "student7", "123456");
+          UserAccount   useraccount8 = useraccountdirectory.addUserAccount(stu8, "student8", "123456");
+          UserAccount   useraccount9 = useraccountdirectory.addUserAccount(stu9, "student9", "123456");
+          UserAccount   useraccount10 = useraccountdirectory.addUserAccount(stu10, "student10", "123456"); 
+          
           UserAccount   useraccount3 = useraccountdirectory.addUserAccount(reg1, "register1", "123456");
           // 11-20 are faculty accounts
           UserAccount   useraccount11 = useraccountdirectory.addUserAccount(fa01, "faculty1", "123456");
