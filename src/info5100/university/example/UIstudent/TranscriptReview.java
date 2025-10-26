@@ -162,11 +162,15 @@ StudentProfile studentprofile;
         model.setRowCount(0);
         CourseLoad courseload = studentprofile.getCourseLoadBySemester(selectedsemster);
         for(  SeatAssignment sa : courseload.getSeatAssignments()){ 
-           Object[] row = new Object[4];
+           Object[] row = new Object[3];
            row[0] = sa.getCourseOffer().getCourseNumber();
            row[1] = sa.getCourseOffer().getCourseName();
-           row[2] = sa.convertToGPA(sa.calculateFinalCourseScore());
-         
+          Double finalScore = sa.calculateFinalCourseScore();
+        if (finalScore != null) {
+            row[2] = sa.convertToGPA(finalScore.doubleValue());
+        } else {
+            row[2] = "未评分"; 
+        }
           model.addRow(row);
         }
        double gpa = (double) courseload.getqualitypoints() / courseload.gettotalhours();
