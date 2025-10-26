@@ -13,11 +13,15 @@ import info5100.university.example.Department.Department;
 import info5100.university.example.Persona.Faculty.FacultyProfile;
 import info5100.university.example.Persona.UserAccount;
 import java.awt.CardLayout;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Level;
@@ -92,6 +96,7 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
         btnView = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         fieldSchedule = new javax.swing.JTextField();
+        btnRefresh = new javax.swing.JButton();
 
         jLabel1.setText("Semester:");
 
@@ -177,6 +182,13 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
 
         jLabel2.setText("Schedule");
 
+        btnRefresh.setText("Refresh");
+        btnRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -212,18 +224,17 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
                             .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(btnUpload)
-                                                .addGap(37, 37, 37)
-                                                .addComponent(btnRemove))
-                                            .addComponent(fieldSyllabusPath)))
+                                        .addComponent(btnUpload)
+                                        .addGap(37, 37, 37)
+                                        .addComponent(btnRemove))
+                                    .addComponent(fieldSyllabusPath)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(105, 105, 105)
-                                        .addComponent(btnView))))))
+                                        .addComponent(btnView, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(39, 39, 39)
+                                        .addComponent(btnRefresh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
@@ -246,7 +257,7 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnNo)
                             .addComponent(btnUpdateCourse))))
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addGap(27, 27, 27))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -272,7 +283,9 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
                         .addGap(36, 36, 36)
                         .addComponent(fieldSyllabusPath, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnView))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnView)
+                            .addComponent(btnRefresh)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -301,7 +314,7 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnViewCourse)
                             .addComponent(btnUpdateCourse))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                .addGap(44, 44, 44)
                 .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -394,69 +407,98 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
 
     private void btnUploadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUploadActionPerformed
         // TODO add your handling code here:
+        int ID = Integer.parseInt(fieldID.getText());
+        String semester = (String) cmbSemester.getSelectedItem();
+        CourseOffer co = department.getCalendar().getCourseSchedule(semester).getCourseOfferByNumber(ID);
+        
+        if (co == null) {
+            JOptionPane.showMessageDialog(this, "Select a course first");
+            return;
+        }
+
         JFileChooser chooser = new JFileChooser();
-        chooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("PDF Files", "pdf"));
-        chooser.setAcceptAllFileFilterUsed(false);
+        int r = chooser.showOpenDialog(this);
+        if (r != JFileChooser.APPROVE_OPTION) return;
 
-        int ret = chooser.showOpenDialog(this);
-        if (ret != JFileChooser.APPROVE_OPTION) return;
+        File src = chooser.getSelectedFile();
+        String fileName = src.getName();
 
-        java.io.File file = chooser.getSelectedFile();
+        File dir = new File("data/syllabus");
+        if (!dir.exists()) dir.mkdirs();
+
+        File dest = new File(dir, System.currentTimeMillis() + "_" + fileName);
+
         try {
-            java.nio.file.Path targetDir  = java.nio.file.Paths.get("data", "syllabus");
-            java.nio.file.Files.createDirectories(targetDir);
-
-            String targetName            = file.getName();
-            java.nio.file.Path targetPath= targetDir.resolve(targetName);
-
-            java.nio.file.Files.copy(file.toPath(), targetPath,
-                    java.nio.file.StandardCopyOption.REPLACE_EXISTING);
-
-            JOptionPane.showMessageDialog(this, "Syllabus uploaded: " + targetPath);
-
-            fieldSyllabusPath.setText(targetPath.toString());
-
-        } catch (Exception ex) {
-            java.util.logging.Logger.getLogger(this.getName())
-                    .log(java.util.logging.Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(this, "Upload failed: " + ex.getMessage(),
-                    "Error", JOptionPane.ERROR_MESSAGE);
+            Files.copy(src.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            co.setSyllabusFilePath(dest.getAbsolutePath());
+            fieldSyllabusPath.setText(dest.getAbsolutePath());
+            JOptionPane.showMessageDialog(this, "Syllabus uploaded and linked");
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Upload failed: " + ex.getMessage());
         }
     
     }//GEN-LAST:event_btnUploadActionPerformed
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
         // TODO add your handling code here:
-        String path = fieldSyllabusPath.getText();
+        int ID = Integer.parseInt(fieldID.getText());
+        String semester = (String) cmbSemester.getSelectedItem();
+        CourseOffer co = department.getCalendar().getCourseSchedule(semester).getCourseOfferByNumber(ID);
+        if (co == null) {
+            JOptionPane.showMessageDialog(this, "Select a course first");
+            return;
+        }
+
+        String path = co.getSyllabusFilePath();
         if (path == null || path.isEmpty()) {
             JOptionPane.showMessageDialog(this, "No syllabus to remove.");
             return;
         }
 
+        int ans = JOptionPane.showConfirmDialog(
+                this,
+                "Remove syllabus?\n" + path,
+                "Confirm",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.WARNING_MESSAGE);
+        if (ans != JOptionPane.OK_OPTION) return;
+
         try {
-            java.nio.file.Path targetPath = java.nio.file.Paths.get(path);
-            java.nio.file.Files.deleteIfExists(targetPath);
+            java.nio.file.Files.deleteIfExists(java.nio.file.Paths.get(path));
+        } catch (Exception ignore) {}
 
-            fieldSyllabusPath.setText(""); 
-            JOptionPane.showMessageDialog(this, "Syllabus removed.");
-
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Failed to remove: " + ex.getMessage(),
-                    "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        co.setSyllabusFilePath(null);
+        fieldSyllabusPath.setText("");
+        JOptionPane.showMessageDialog(this, "Syllabus removed.");
     }//GEN-LAST:event_btnRemoveActionPerformed
 
     private void btnViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewActionPerformed
         // TODO add your handling code here:
-        String p = fieldSyllabusPath.getText();
-        if (p == null || p.isEmpty()) return;
-        try { java.awt.Desktop.getDesktop().open(java.nio.file.Paths.get(p).toFile()); }
-        catch (Exception ex) { javax.swing.JOptionPane.showMessageDialog(this, "Open failed: " + ex.getMessage()); }
+        int ID = Integer.parseInt(fieldID.getText());
+        String semester = (String) cmbSemester.getSelectedItem();
+        CourseOffer co = department.getCalendar().getCourseSchedule(semester).getCourseOfferByNumber(ID);
+        
+        if (co == null || !co.hasSyllabus()) {
+            JOptionPane.showMessageDialog(this, "No syllabus found for this course");
+            return;
+        }
+
+        try {
+            Desktop.getDesktop().open(new File(co.getSyllabusFilePath()));
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Cannot open file: " + ex.getMessage());
+        }
     }//GEN-LAST:event_btnViewActionPerformed
+
+    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
+        // TODO add your handling code here:
+        fieldSyllabusPath.setText("");
+    }//GEN-LAST:event_btnRefreshActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton btnNo;
+    private javax.swing.JButton btnRefresh;
     private javax.swing.JButton btnRemove;
     private javax.swing.JButton btnUpdateCourse;
     private javax.swing.JButton btnUpload;

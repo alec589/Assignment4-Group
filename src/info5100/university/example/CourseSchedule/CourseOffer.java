@@ -28,6 +28,7 @@ public class CourseOffer {
     String timeSchedule;
     boolean enrollmentStatus;
     double tuitionFee;
+    String syllabusFilePath;
     
     public CourseOffer(Course c) {
         course = c;
@@ -210,5 +211,16 @@ public class CourseOffer {
     public int getEndTime() {
         return endTime;
     }
+
+    public String getSyllabusFilePath() {
+        return syllabusFilePath;
+    }
+
+    public void setSyllabusFilePath(String syllabusFilePath) {
+        this.syllabusFilePath = syllabusFilePath;
+    }
     
+    public boolean hasSyllabus() {
+        return syllabusFilePath != null && !syllabusFilePath.isEmpty();
+    }
 }
