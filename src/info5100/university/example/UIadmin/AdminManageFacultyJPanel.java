@@ -22,7 +22,7 @@ import javax.swing.DefaultComboBoxModel;
  * @author 陈凯璐
  */
 public class AdminManageFacultyJPanel extends javax.swing.JPanel {
-    private Department department;
+    Department department;
     private JPanel mainpanel;
 
     /**
@@ -51,9 +51,9 @@ public class AdminManageFacultyJPanel extends javax.swing.JPanel {
             String id = String.valueOf(fp.getID()); // 存为 String
             String name = fp.getPerson().getName();
             String email = fp.getEmail() != null ? fp.getEmail() : "N/A";
-            String position = fp.getPosition() != null ? fp.getPosition() : "N/A";
+            String depart = department.getName() != null ? department.getName() : "N/A";
             String status = "Active";
-            model.addRow(new Object[]{id, name, email, position, status});
+            model.addRow(new Object[]{id, name, email, depart, status});
         }
     }
 

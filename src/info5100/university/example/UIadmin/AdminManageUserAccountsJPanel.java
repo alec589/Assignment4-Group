@@ -209,7 +209,8 @@ public class AdminManageUserAccountsJPanel extends javax.swing.JPanel {
 
          
             DefaultTableModel model = (DefaultTableModel) tblUserAccounts.getModel();
-            String userId = "U" + String.format("%03d", model.getRowCount() + 1);
+            
+            String userId = String.valueOf(model.getRowCount() + 1);
             model.addRow(new Object[]{userId, username, cmbRole.getSelectedItem(), cmbStatus.getSelectedItem()});
             JOptionPane.showMessageDialog(this, "User created successfully!");
         }
