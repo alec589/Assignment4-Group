@@ -1,12 +1,12 @@
-Digital University System with Role-Based Access Control
+#Digital University System with Role-Based Access Control
 
-🚀 项目概览 (Project Overview)
+##🚀 项目概览 (Project Overview)
 
 本项目实现了一个数字大学系统 (Digital University System)，该系统支持多用户角色，并集成了安全认证和基于角色的访问控制 (Role-Based Access Control, RBAC)。
 
 核心目标: 整合既有的 Java 软件包，并确保管理员、教师、学生和注册中心（教务人员）四个核心用例的正确执行和安全隔离。
 
-🌟 关键功能
+##🌟 关键功能
 
 安全认证: 用户登录与登出管理。
 
