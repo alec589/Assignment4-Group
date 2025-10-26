@@ -55,9 +55,9 @@ public void populateStudentAssignmentsTable(StudentProfile studentprofile, Strin
 
 
         if (studentRecord != null) {  
-            row[4] = studentRecord.getCompleted() ? "Yes (已提交)" : "No (未提交)";
+            row[4] = studentRecord.getCompleted() ? "Yes (submitted)" : "No (nonsubmitted)";
         } else {
-            row[4] = "No (未提交)"; 
+            row[4] = "No (nonsubmitted)"; 
 }
             model.addRow(row);
         }
