@@ -54,11 +54,20 @@ public class RegisterDirectory {
         }
         return null; 
     }
-    
+        public RegisterProfile findRegister(int id) {
+        for (RegisterProfile rp : registerlist) {
+            if (rp.getID()==id) {
+                return rp; // Found the matching profile
+            }
+        }
+        return null; 
+    }
     public ArrayList<RegisterProfile> getRegisterlist() {
     return registerlist;
 }
-
+    public void delete(RegisterProfile r){
+    registerlist.remove(r);
+    }
 
     public ArrayList<RegisterProfile> getRegistrarList() {
     return getRegisterlist();

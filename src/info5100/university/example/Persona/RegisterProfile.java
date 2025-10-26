@@ -79,6 +79,10 @@ public class RegisterProfile extends Profile{
     public void setID(int ID) {
         this.ID = ID;
     }
-      
+      @Override
+   public String toString(){
+   return String.valueOf(ID);
+   }
+    
     
 }

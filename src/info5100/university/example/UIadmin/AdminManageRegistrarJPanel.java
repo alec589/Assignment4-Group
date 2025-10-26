@@ -4,12 +4,11 @@
  */
 package info5100.university.example.UIadmin;
 
+
 import info5100.university.example.Department.Department;
-import info5100.university.example.Persona.Person;
-import info5100.university.example.Persona.Profile;
-import info5100.university.example.Persona.UserAccount;
+
 import info5100.university.example.Persona.RegisterProfile; 
-import info5100.university.example.Persona.UserAccountDirectory;
+
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
@@ -33,27 +32,20 @@ public class AdminManageRegistrarJPanel extends javax.swing.JPanel {
     }
     
   public void populateTable() {
-    DefaultTableModel model = (DefaultTableModel) tblRegistrar.getModel();
-    model.setRowCount(0);
 
-    if (department == null || department.getRegisterdirectory() == null) {
-        System.out.println("⚠ Department or RegisterDirectory is null");
-        return;
-    }
-
-    for (RegisterProfile rp : department.getRegisterdirectory().getRegisterlist()) {
-
-        if (rp != null && rp.getPerson() != null) {
-            String id = rp.getPerson().getPersonId(); 
-            String name = rp.getPerson().getName();
-            String email = rp.getEmail() != null ? rp.getEmail() : "N/A";
-            String dept = department.getName() != null ? department.getName() : "N/A";
-            String status = "Active";
-            model.addRow(new Object[]{id, name, email, dept, status});
+    DefaultTableModel model = (DefaultTableModel)tblRegistrar.getModel();
+       model.setRowCount(0);
+      
+       for(  RegisterProfile r: department.getRegisterdirectory().getRegisterlist()){ 
+           
+           Object[] row = new Object[4];
+           row[0] = r; 
+           row[1] = r.getPerson().getName();
+           row[2] = r.getEmail();
+           row[3] = department.getName();
+           
+          model.addRow(row);
         }
-    }
-
-    model.fireTableDataChanged();
 }
 
     /**
@@ -72,16 +64,21 @@ public class AdminManageRegistrarJPanel extends javax.swing.JPanel {
         btnSearch = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblRegistrar = new javax.swing.JTable();
-        btnUpdate = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
         btnBack = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         lblTitle.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 14)); // NOI18N
         lblTitle.setText("Manage Registrar");
 
         lblSearchBy.setText("Search By");
 
-        cmbSearchType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Faculty ID", "Name", "Email", "Department", "Status" }));
+        cmbSearchType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Registar ID", "Name", "Email", "Department", "Status" }));
+        cmbSearchType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbSearchTypeActionPerformed(evt);
+            }
+        });
 
         btnSearch.setText("Search");
         btnSearch.addActionListener(new java.awt.event.ActionListener() {
@@ -92,17 +89,17 @@ public class AdminManageRegistrarJPanel extends javax.swing.JPanel {
 
         tblRegistrar.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Registrar ID", "Name", "Email", "Departmrnt", "Status"
+                "Registrar ID", "Name", "Email", "Departmrnt"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -110,13 +107,6 @@ public class AdminManageRegistrarJPanel extends javax.swing.JPanel {
             }
         });
         jScrollPane1.setViewportView(tblRegistrar);
-
-        btnUpdate.setText("Update");
-        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnUpdateActionPerformed(evt);
-            }
-        });
 
         btnDelete.setText("Delete");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -129,6 +119,13 @@ public class AdminManageRegistrarJPanel extends javax.swing.JPanel {
         btnBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBackActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("view");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
             }
         });
 
@@ -154,9 +151,9 @@ public class AdminManageRegistrarJPanel extends javax.swing.JPanel {
                         .addGap(38, 38, 38)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(71, 71, 71)
-                        .addComponent(btnUpdate)
-                        .addGap(41, 41, 41)
+                        .addGap(63, 63, 63)
+                        .addComponent(jButton1)
+                        .addGap(50, 50, 50)
                         .addComponent(btnDelete)
                         .addGap(43, 43, 43)
                         .addComponent(btnBack)))
@@ -177,9 +174,9 @@ public class AdminManageRegistrarJPanel extends javax.swing.JPanel {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnUpdate)
                     .addComponent(btnDelete)
-                    .addComponent(btnBack))
+                    .addComponent(btnBack)
+                    .addComponent(jButton1))
                 .addContainerGap(130, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -220,129 +217,22 @@ public class AdminManageRegistrarJPanel extends javax.swing.JPanel {
         });
     }//GEN-LAST:event_btnSearchActionPerformed
 
-    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        // TODO add your handling code here:
-         int row = tblRegistrar.getSelectedRow();
-        if (row < 0) {
-            JOptionPane.showMessageDialog(this, "Please select a registrar to update.");
-            return;
-        }
-
-        JOptionPane.showMessageDialog(this, "Update feature coming soon!");
-         
-
-     
-    }//GEN-LAST:event_btnUpdateActionPerformed
-
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
         int selectedRow = tblRegistrar.getSelectedRow();
-        if (selectedRow < 0) {
-            JOptionPane.showMessageDialog(this, "Please select a registrar to delete.", "Warning", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        
-        DefaultTableModel model = (DefaultTableModel) tblRegistrar.getModel();
-        int modelRow = -1; 
-        try {
-             if(selectedRow >= tblRegistrar.getRowCount()){
-                  JOptionPane.showMessageDialog(this, "Selected row index is out of bounds for the current view. Please re-select.", "Error", JOptionPane.ERROR_MESSAGE);
-                  populateTable(); return;
-             }
-            modelRow = tblRegistrar.convertRowIndexToModel(selectedRow);
-        } catch (IndexOutOfBoundsException e){
-             JOptionPane.showMessageDialog(this, "Error converting table row index. Table might be inconsistent.", "Error", JOptionPane.ERROR_MESSAGE);
-             System.err.println("Error converting row index: " + e.getMessage());
-             populateTable(); return;
-        }
-        
-        if (modelRow < 0 || model.getRowCount() == 0 || modelRow >= model.getRowCount()) {
-            JOptionPane.showMessageDialog(this, "Selected row is no longer valid in the data model (maybe table refreshed?). Please re-select.", "Error", JOptionPane.ERROR_MESSAGE);
-            populateTable(); return;
-        }
-
-        String registrarPersonId;
-        String personIdStr = null; 
-        try {
-            // Now get the value using the validated modelRow (Column 0 should be Person ID)
-            Object value = model.getValueAt(modelRow, 0); 
-             if (value == null){
-                 throw new Exception("Registrar Person ID value in the selected row is null.");
-             }
-            personIdStr = value.toString();
+        if (selectedRow >=0){
+        int dialogButton = JOptionPane.YES_NO_OPTION;
+        int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete the selected accounts?", "Warning",dialogButton);
+        if(dialogResult ==JOptionPane.YES_OPTION){
             
-            if (personIdStr.trim().isEmpty()) {
-                 throw new Exception("Registrar Person ID is empty in the selected row.");
-            }
-            registrarPersonId = personIdStr; // Assign if valid
-        } catch (ArrayIndexOutOfBoundsException e) { 
-             JOptionPane.showMessageDialog(this, "Error accessing data column (Index 0). Table structure might be incorrect.", "Error", JOptionPane.ERROR_MESSAGE);
-             System.err.println("ArrayIndexOutOfBoundsException during getValueAt: " + e.getMessage());
-             return;
-        } catch (Exception e) {
-              JOptionPane.showMessageDialog(this, "Error retrieving Registrar ID from table: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-              System.err.println("Error during getValueAt or processing: " + e.toString());
-              return;
+        RegisterProfile rp = (RegisterProfile)tblRegistrar.getValueAt(selectedRow, 0);
+        department.getRegisterdirectory().delete(rp);
+        populateTable();
+            
         }
-
-        // --- The rest of the delete logic remains the same ---
-        RegisterProfile registerToDelete = department.getRegisterdirectory().findRegisterProfile(registrarPersonId);
-        if (registerToDelete == null) { /* ... handle not found ... */ populateTable(); return; }
-        Person personToDelete = registerToDelete.getPerson();
-        if (personToDelete == null) { /* ... handle no person ... */ return; }
-        UserAccount accountToDelete = null; // Find account logic...
-        UserAccountDirectory uaDirectory = department.getUseraccountdirectory();
-        if (uaDirectory != null && uaDirectory.getUserAccountDirectory() != null) {
-            for (UserAccount ua : uaDirectory.getUserAccountDirectory()) {
-                if (ua.getAssociatedPersonProfile() == registerToDelete) { 
-                    accountToDelete = ua;
-                    break; 
-                }
-            }
+        }else{
+            JOptionPane.showMessageDialog(null, "please select an register from the list", "warning", JOptionPane.WARNING_MESSAGE);
         }
-        int confirm = JOptionPane.showConfirmDialog( this, "Are you sure you want to permanently delete registrar '" + personToDelete.getName() + "'?\nThis will also delete their associated user account (if one exists).", "Confirm Deletion", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-        if (confirm == JOptionPane.YES_OPTION) {
-             boolean accountRemoved = true; 
-             boolean registrarRemoved = false;
-             boolean personRemoved = false;
-             
-             // Delete Account
-             if (accountToDelete != null) { 
-                  accountRemoved = department.getUseraccountdirectory().removeUserAccount(accountToDelete); 
-                  if(!accountRemoved) System.err.println("Warning: Could not remove user account for " + personToDelete.getName());
-                  else System.out.println("User account removed for " + personToDelete.getName());
-             } else {
-                 System.out.println("Info: No user account found for registrar " + personToDelete.getName());
-             }
-
-             // Delete Profile (Make sure RegisterDirectory has getRegisterlist and remove works)
-            try{
-                 registrarRemoved = department.getRegisterdirectory().getRegisterlist().remove(registerToDelete); 
-                 if (!registrarRemoved) System.err.println("Error: Could not remove registrar profile for " + personToDelete.getName());
-                 else System.out.println("Registrar profile removed for " + personToDelete.getName());
-            } catch (Exception e) {
-                 System.err.println("Exception removing registrar profile: " + e.getMessage());
-            }
-             
-             // Delete Person (Make sure PersonDirectory has removePerson)
-            try{
-                 personRemoved = department.getPersondirectory().removePerson(personToDelete); 
-                 if (!personRemoved) System.err.println("Warning: Could not remove person object for " + personToDelete.getName() + ". Linked elsewhere?");
-                 else System.out.println("Person object removed for " + personToDelete.getName());
-            } catch (Exception e) {
-                 System.err.println("Exception removing person object: " + e.getMessage());
-            }
-
-             populateTable(); // Refresh table AFTER deletions
-
-             // Final message
-             if (registrarRemoved && personRemoved) { 
-                  JOptionPane.showMessageDialog(this, "Registrar '" + personToDelete.getName() + "' deleted successfully.", "Deletion Successful", JOptionPane.INFORMATION_MESSAGE);
-             } else { 
-                  JOptionPane.showMessageDialog(this, "Deletion partially failed. Check logs for details.", "Deletion Warning", JOptionPane.WARNING_MESSAGE);
-             }
-        }
-       
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
@@ -352,13 +242,28 @@ public class AdminManageRegistrarJPanel extends javax.swing.JPanel {
         mainpanel.remove(this);
     }//GEN-LAST:event_btnBackActionPerformed
 
+    private void cmbSearchTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbSearchTypeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbSearchTypeActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        int selectedRow = tblRegistrar.getSelectedRow();
+        if (selectedRow >=0) {
+            RegisterProfile rp = (RegisterProfile) tblRegistrar.getValueAt(selectedRow, 0);
+        Registrar panel = new Registrar(mainpanel,department,rp);
+        mainpanel.add("Registrar", panel);
+        CardLayout layout = (CardLayout) mainpanel.getLayout();
+        layout.next(mainpanel);}
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnSearch;
-    private javax.swing.JButton btnUpdate;
     private javax.swing.JComboBox<String> cmbSearchType;
+    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblSearchBy;
     private javax.swing.JLabel lblTitle;
