@@ -36,9 +36,14 @@ public class StudentProfile extends Profile{
         
     }
     public void updateBalance(double changeAmount, String type, String description ,SeatAssignment seatassignment) {
+        if(type=="bill"){
         this.tuitionBalance = tuitionBalance + (-changeAmount); 
         PaymentTransaction transaction = new PaymentTransaction(changeAmount, type, description, this.tuitionBalance,seatassignment);
+        this.paymentHistory.add(transaction);}else{
+        this.tuitionBalance = tuitionBalance - (-changeAmount); 
+        PaymentTransaction transaction = new PaymentTransaction(changeAmount, type, description, this.tuitionBalance,seatassignment);
         this.paymentHistory.add(transaction);
+        }
     }
     public ArrayList<PaymentTransaction> getPaymentHistory() {
         return paymentHistory;
