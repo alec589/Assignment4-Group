@@ -166,7 +166,10 @@ public class SeatAssignment {
     public void setCourseload(CourseLoad courseload) {
         this.courseload = courseload;
     }
-    
+    @Override
+    public String toString (){
+        return Status;
+    }
     
     
 }

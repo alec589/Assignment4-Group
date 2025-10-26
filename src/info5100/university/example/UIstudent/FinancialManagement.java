@@ -41,8 +41,7 @@ StudentProfile studentprofile;
            Object[] row = new Object[4];
            row[0] = sa.getCourseOffer().getCourseName();
            row[1] = sa.getCourseOffer().getCourse().getCoursePrice();
-           row[2] = sa.getStatus();
-           row[3] = sa;
+           row[2] = sa;
           model.addRow(row);
         }
     }
@@ -117,24 +116,24 @@ StudentProfile studentprofile;
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(229, 229, 229)
-                .addComponent(jButton4))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(270, 270, 270)
+                        .addGap(30, 30, 30)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(229, 229, 229)
+                        .addComponent(jButton4))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(300, 300, 300)
                         .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(90, 90, 90)
-                .addComponent(jButton2)
-                .addGap(58, 58, 58)
-                .addComponent(jButton3)
-                .addGap(76, 76, 76)
-                .addComponent(jButton1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(90, 90, 90)
+                        .addComponent(jButton2)
+                        .addGap(58, 58, 58)
+                        .addComponent(jButton3)
+                        .addGap(76, 76, 76)
+                        .addComponent(jButton1))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 725, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(122, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -168,12 +167,13 @@ StudentProfile studentprofile;
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         int selectedRow = jTable1.getSelectedRow();
-        SeatAssignment sa = (SeatAssignment) jTable1.getValueAt(selectedRow, 4);
+        SeatAssignment sa = (SeatAssignment) jTable1.getValueAt(selectedRow, 2);
         if(studentprofile.getTuitionBalance()<sa.getCourseOffer().getTuitionFee()){
              JOptionPane.showMessageDialog(null, "not sufficient funds", "warning",JOptionPane.WARNING_MESSAGE);
         }else{
             studentprofile.updateBalance(sa.getCourseOffer().getTuitionFee(), "bill", "tuition",sa);
             sa.setStatus("paid");
+            JOptionPane.showMessageDialog(null, "pay success", "information",JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -188,7 +188,7 @@ StudentProfile studentprofile;
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         int selectedRow = jTable1.getSelectedRow();
-        SeatAssignment sa = (SeatAssignment) jTable1.getValueAt(selectedRow, 4);
+        SeatAssignment sa = (SeatAssignment) jTable1.getValueAt(selectedRow, 2);
         String selectedsemster = (String) jComboBox1.getSelectedItem().toString();
         CourseLoad courseload = studentprofile.getCourseLoadBySemester(selectedsemster);
         studentprofile.updateBalance(sa.getCourseOffer().getTuitionFee(), "refund", "tuition",sa);

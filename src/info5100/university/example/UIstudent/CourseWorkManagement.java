@@ -121,19 +121,22 @@ public void populateStudentAssignmentsTable(StudentProfile studentprofile, Strin
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(240, 240, 240)
-                .addComponent(jLabel1))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(230, 230, 230)
-                .addComponent(ComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 630, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(120, 120, 120)
-                .addComponent(jButton1)
-                .addGap(178, 178, 178)
-                .addComponent(jButton2))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(240, 240, 240)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(230, 230, 230)
+                        .addComponent(ComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 630, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(120, 120, 120)
+                        .addComponent(jButton1)
+                        .addGap(178, 178, 178)
+                        .addComponent(jButton2)))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,7 +150,8 @@ public void populateStudentAssignmentsTable(StudentProfile studentprofile, Strin
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton1)
-                    .addComponent(jButton2)))
+                    .addComponent(jButton2))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -164,7 +168,9 @@ public void populateStudentAssignmentsTable(StudentProfile studentprofile, Strin
         layout.previous(mainpanel);
         mainpanel.remove(this);
     }//GEN-LAST:event_jButton2ActionPerformed
-
+    public String getSelectedSemester() {
+    return (String) ComboBox2.getSelectedItem();
+    }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
           int selectedRow = table2.getSelectedRow();
@@ -178,7 +184,7 @@ public void populateStudentAssignmentsTable(StudentProfile studentprofile, Strin
             return;
         }
         SeatAssignment selectedSeatAssignment = currentCourseLoad.findSeatAssignmentByCourseName(courseName);
-            AssignmentDetail  panel = new AssignmentDetail(mainpanel,department, selectedassignment,studentprofile,selectedSeatAssignment);
+            AssignmentDetail  panel = new AssignmentDetail(mainpanel,department, selectedassignment,studentprofile,selectedSeatAssignment,this);
             mainpanel.add("AssignmentDetail", panel);
             CardLayout layout = (CardLayout) mainpanel.getLayout();
             layout.next(mainpanel);

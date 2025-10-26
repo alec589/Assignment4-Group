@@ -50,10 +50,12 @@ public class CourseLoad {
     
     public double getqualitypoints(){
         double sum = 0;
-        for (SeatAssignment sa: seatassignments){
-            sum = sum + sa.convertToGPA(sa.calculateFinalCourseScore())*sa.getCreditHours();
-            
+        for (SeatAssignment sa : seatassignments) {
+        Double finalScore = sa.calculateFinalCourseScore(); 
+        if (finalScore != null) {
+            sum = sum + sa.convertToGPA(finalScore.doubleValue()) * sa.getCreditHours();
         }
+    }
         return sum;
     }
     

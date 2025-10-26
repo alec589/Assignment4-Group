@@ -29,12 +29,13 @@ StudentProfile studentprofile;
         this.mainpanel=mainpanel;
         this.department=department;
         this.studentprofile = studentprofile;
+        populateTable1();
     }
-    private void populateTable1(String selectedsemster) {
+    private void populateTable1() {
         DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
         model.setRowCount(0);
         for(  PaymentTransaction pt : studentprofile.getPaymentHistory()){ 
-           Object[] row = new Object[4];
+           Object[] row = new Object[5];
            row[0] = pt.getSeatassignment().getCourseOffer().getCourseName();
            row[1] = pt.getSeatassignment().getCourseOffer().getTuitionFee();
            row[2] = pt.getType();

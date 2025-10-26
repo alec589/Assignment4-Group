@@ -168,6 +168,7 @@ public class ConfigureTheBusiness {
           spring_course1.setLocation(211, 1, 102);
           spring_course1.setTimeSchedule("Monday", 8, 10);
           spring_course1.setEnrollmentStatus(false);
+          spring_course1.setTuitionFee(6000);
           
           CourseOffer spring_course2 = springSchedule.newCourseOffer(course2.getCourseNumber());
           spring_course2.generatSeats(40);

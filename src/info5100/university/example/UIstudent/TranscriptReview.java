@@ -29,8 +29,11 @@ StudentProfile studentprofile;
         this.mainpanel=mainpanel;
         this.department=department;
         this.studentprofile = studentprofile;
-        overallgpa.setText(String.valueOf((double)studentprofile.getTranscript().getStudentTotalScore()));
-        
+        double gpa1 = (double)studentprofile.getTranscript().getStudentTotalScore();
+        String formattedGpa1 = String.format("%.1f", gpa1);
+        overallgpa.setText(formattedGpa1);  
+        String selectedsemster = (String) ComboBox3.getSelectedItem().toString();
+        populateTable1( selectedsemster);
     }
 
     /**
@@ -161,15 +164,24 @@ StudentProfile studentprofile;
         model.setRowCount(0);
         CourseLoad courseload = studentprofile.getCourseLoadBySemester(selectedsemster);
         for(  SeatAssignment sa : courseload.getSeatAssignments()){ 
-           Object[] row = new Object[4];
+           Object[] row = new Object[3];
            row[0] = sa.getCourseOffer().getCourseNumber();
            row[1] = sa.getCourseOffer().getCourseName();
-           row[2] = sa.convertToGPA(sa.calculateFinalCourseScore());
-         
+          Double finalScore = sa.calculateFinalCourseScore();
+        if (finalScore != null) {
+            if(sa.getStatus()=="paid"){
+            row[2] = sa.convertToGPA(finalScore.doubleValue());}else{
+            row[2] ="please pay tuition";
+            }
+        } else {
+            row[2] = "not grade"; 
+        }
           model.addRow(row);
         }
-        termgpa.setText(String.valueOf((double) courseload.getqualitypoints() / courseload.gettotalhours()));
-        txtas.setText(courseload.convertToLetter(courseload.getqualitypoints() / courseload.gettotalhours()));
+       double gpa = (double) courseload.getqualitypoints() / courseload.gettotalhours();
+       String formattedGpa = String.format("%.1f", gpa);
+       termgpa.setText(formattedGpa);
+       txtas.setText(courseload.convertToLetter(courseload.getqualitypoints() / courseload.gettotalhours()));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

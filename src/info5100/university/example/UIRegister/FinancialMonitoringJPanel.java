@@ -219,12 +219,19 @@ College college;
                 double courseTuition = co.getCourse().getCoursePrice();
                 
                 totalTuition += courseTuition;
-                if (sa.calculateFinalCourseScore() > 0) {
+                /*if (sa.calculateFinalCourseScore() > 0) {
                 paidTuition += courseTuition;
             } else {
                 unpaidTuition += courseTuition;
             }
-                
+             */
+                String status = sa.getStatus();
+            if (status != null && status.equalsIgnoreCase("paid")) {
+                paidTuition += courseTuition;
+            } else {
+                unpaidTuition += courseTuition;
+            }
+        
                 
         }
                 Object[] row = new Object[6];
@@ -260,10 +267,12 @@ College college;
                 double courseTuition = co.getCourse().getCoursePrice();//CoursePrice()=credits * price/per credits
                 total += courseTuition;
                 
-                if (sa.calculateFinalCourseScore() > 0)
+                String status = sa.getStatus();
+                if (status != null && status.equalsIgnoreCase("paid")) {
                     collected += courseTuition;
-                else
+                } else {
                     unpaid += courseTuition;
+                }
             }
         }
 
