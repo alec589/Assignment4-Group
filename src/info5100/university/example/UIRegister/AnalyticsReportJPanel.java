@@ -232,11 +232,11 @@ College college;
                  if (sa != null && sa.getSeat().isOccupied()) { 
                     
                      
-                     double studentScore = sa.getScore(); 
+                     double studentScore = sa.calculateFinalCourseScore(); 
                      double studentGPA =convertToGPA(studentScore);
                      
                      totalGPA += studentGPA;
-                     totalStudents++; // 统计有成绩的人数
+                     totalStudents++; 
                      
                      if (studentGPA >= 3.0) {
                          highGPAStudentCount++;
