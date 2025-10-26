@@ -193,6 +193,7 @@ StudentProfile studentprofile;
         CourseLoad courseload = studentprofile.getCourseLoadBySemester(selectedsemster);
         studentprofile.updateBalance(sa.getCourseOffer().getTuitionFee(), "refund", "tuition",sa);
         courseload.dropCourse(sa);
+        JOptionPane.showMessageDialog(null, "refund success", "information",JOptionPane.WARNING_MESSAGE);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
