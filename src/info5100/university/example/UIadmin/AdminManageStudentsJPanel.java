@@ -250,7 +250,7 @@ switch (type) {
         }
 
         // 1. Get Student's Person ID from the selected table row
-        //    (Assuming populateTable adds sp.getPerson().getPersonId() to column 0 as String)
+        
         String studentPersonId;
         try {
             // Use convertRowIndexToModel for safety with sorting/filtering
@@ -264,7 +264,7 @@ switch (type) {
         }
 
         // 2. Find the StudentProfile object using the Person ID
-        //    (StudentDirectory uses findStudent(personId))
+     
         StudentProfile studentToDelete = department.getStudentdirectory().findStudent(studentPersonId);  // Use findStudent, not findStudentProfile
         if (studentToDelete == null) {
             JOptionPane.showMessageDialog(this, "Selected student not found in the directory. Maybe already deleted?", "Error", JOptionPane.ERROR_MESSAGE);
@@ -291,7 +291,7 @@ switch (type) {
                 }
             }
         }
-        // *** Finding logic done ***
+     
 
         // 5. Show confirmation dialog
         int confirm = JOptionPane.showConfirmDialog(
