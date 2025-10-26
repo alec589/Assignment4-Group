@@ -241,7 +241,7 @@ public class AdminManageRegistrarJPanel extends javax.swing.JPanel {
         }
 
         // 1. Get Registrar's Person ID from the selected table row 
-        //    (populateTable adds rp.getPerson().getPersonId() to column 0)
+       
         String registrarPersonId;
         try {
             // Use convertRowIndexToModel for safety with sorting/filtering
@@ -255,7 +255,7 @@ public class AdminManageRegistrarJPanel extends javax.swing.JPanel {
         }
 
         // 2. Find the RegisterProfile object using the Person ID
-        //    (RegisterDirectory.findRegisterProfile searches by Person ID)
+        
         RegisterProfile registerToDelete = department.getRegisterdirectory().findRegisterProfile(registrarPersonId);
         if (registerToDelete == null) {
             JOptionPane.showMessageDialog(this, "Selected registrar not found in the directory. Maybe already deleted?", "Error", JOptionPane.ERROR_MESSAGE);
