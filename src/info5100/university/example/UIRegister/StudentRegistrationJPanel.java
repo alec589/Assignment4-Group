@@ -268,7 +268,19 @@ Department department;
 
     private void btnEnrollActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnrollActionPerformed
         // TODO add your handling code here:
-        
+         String semester = cmbSemester.getSelectedItem().toString();
+                CourseSchedule schedule = department.getCalendar().getCourseSchedule(semester);
+
+                if (schedule == null) {
+                    JOptionPane.showMessageDialog(null, "The selected semester schedule does not exist.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+         for (CourseOffer coCheck : schedule.getSchedule()) {
+                    if (!coCheck.isEnrollmentStatus()) {
+                        JOptionPane.showMessageDialog(null,"This semester closed, please choose other semester to enroll.","Warning", JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+                }   
         int selectedRow=tblStudent.getSelectedRow();
         if(selectedRow<0){
             JOptionPane.showMessageDialog(null, "please  selected a student from the list","Warning",JOptionPane.WARNING_MESSAGE);
@@ -286,8 +298,7 @@ Department department;
             
         int courseNumber= (Integer)tblCourseOffering.getValueAt(selectedRow1, 0);
         CourseOffer co= department.getCalendar().getCourseSchedule(cmbSemester.getSelectedItem().toString()).getCourseOfferByNumber(courseNumber);
-        
-        String semester = cmbSemester.getSelectedItem().toString();
+         
         CourseLoad cl=sp.getCourseLoadBySemester(semester);
         
         if (cl == null) {
@@ -323,6 +334,26 @@ Department department;
 
     private void btnDropActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDropActionPerformed
         // TODO add your handling code here:
+         if (cmbSemester.getSelectedItem() == null) {
+        JOptionPane.showMessageDialog(this, "Please select a semester first.", "Warning", JOptionPane.WARNING_MESSAGE);
+        return;
+        }         
+        String selectedSemester= cmbSemester.getSelectedItem().toString();
+        
+        CourseSchedule schedule = department.getCalendar().getCourseSchedule(selectedSemester);
+        if (schedule == null) {
+        JOptionPane.showMessageDialog(this, "The selected semester schedule does not exist.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+        }
+    
+        
+        for (CourseOffer cof : schedule.getSchedule()) {
+        if (!cof.isEnrollmentStatus()) {
+        JOptionPane.showMessageDialog(this,  "This semester was closed ,cousre can not be dropped.",  "Warning", JOptionPane.WARNING_MESSAGE);
+        return;
+        }
+        }
+        
         int selectedRow=tblStudent.getSelectedRow();
         if(selectedRow<0){
             JOptionPane.showMessageDialog(null, "please  selected a student from the list","Warning",JOptionPane.WARNING_MESSAGE);
@@ -335,14 +366,14 @@ Department department;
          JOptionPane.showMessageDialog(null, "please  selected a courseoffer from the list to enroll","Warning",JOptionPane.WARNING_MESSAGE);
         }else{
         int dialogButton=JOptionPane.YES_NO_OPTION;
-        int dialogResult=JOptionPane.showConfirmDialog(null, "Are u sure you want to assign this course to this student","Warning",dialogButton);
+        int dialogResult=JOptionPane.showConfirmDialog(null, "Are u sure you want to drop this course for this student","Warning",dialogButton);
         if(dialogResult==JOptionPane.YES_OPTION){
             
         int courseNumber= (Integer)tblCourseOffering.getValueAt(selectedRow1, 0);
-        CourseOffer co= department.getCalendar().getCourseSchedule(cmbSemester.getSelectedItem().toString()).getCourseOfferByNumber(courseNumber);
+        CourseOffer co= department.getCalendar().getCourseSchedule(selectedSemester).getCourseOfferByNumber(courseNumber);
         
-        String semester = cmbSemester.getSelectedItem().toString();
-        CourseLoad cl=sp.getCourseLoadBySemester(semester);
+        
+        CourseLoad cl=sp.getCourseLoadBySemester(selectedSemester);
         
         SeatAssignment foundSA = null;
         for (SeatAssignment sa : cl.getSeatAssignments()) {
@@ -362,11 +393,12 @@ Department department;
         foundSA.getSeat().setOccupied(false);
         foundSA.getSeat().setSeatassignment(null);
         
-        populateTableSearchStudent(semester);
-        populateTableCourseOffering(semester);
+        populateTableSearchStudent(selectedSemester);
+        populateTableCourseOffering(selectedSemester);
         }
         } 
         }
+        
     }//GEN-LAST:event_btnDropActionPerformed
 
 

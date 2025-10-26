@@ -398,13 +398,20 @@ CourseSchedule courseSchedule;
         return;
         }         
         String selectedSemester= cmbSemester.getSelectedItem().toString();
-      
+        
         CourseSchedule schedule = calendar.getCourseSchedule(selectedSemester);
         if (schedule == null) {
         JOptionPane.showMessageDialog(this, "The selected semester schedule does not exist.", "Error", JOptionPane.ERROR_MESSAGE);
         return;
         }
         
+        for (CourseOffer co : schedule.getSchedule()) {
+        if (!co.isEnrollmentStatus()) {
+        JOptionPane.showMessageDialog(this,  "This semester was closed ,it can be enrolled.",  "Warning", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+    }
+       
         String courseName=fieldCourseName.getText();
         int credits;    
        
@@ -428,7 +435,7 @@ CourseSchedule courseSchedule;
             course = department.getCoursecatalog().newCourse(courseName, credits);
         }
         CourseOffer newOffer = schedule.newCourseOffer(course.getCourseNumber());
-   
+        newOffer.setEnrollmentStatus(true);
          populateTableCourseOffering(selectedSemester);
          JOptionPane.showMessageDialog(null, "Successfully create a new courseoffering","Success",JOptionPane.INFORMATION_MESSAGE);
          fieldCourseName.setText("");
@@ -442,8 +449,19 @@ CourseSchedule courseSchedule;
          if (cmbSemester.getSelectedItem() == null) {
         JOptionPane.showMessageDialog(this, "Please select a semester first.", "Warning", JOptionPane.WARNING_MESSAGE);
         return;
-        }         
+        }   
+         
+         
         String selectedSemester= cmbSemester.getSelectedItem().toString();
+        CourseSchedule schedule = calendar.getCourseSchedule(selectedSemester);
+        for (CourseOffer cof : schedule.getSchedule()) {
+        if (!cof.isEnrollmentStatus()) {
+        JOptionPane.showMessageDialog(this,  "This semester was closed ,it can be updated.",  "Warning", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+        }
+        
+        
         int selectedRow=tblCourseOffering.getSelectedRow();
         if(selectedRow<0){
             JOptionPane.showMessageDialog(null, "please  selected a  courseoffer from the list","Warning",JOptionPane.WARNING_MESSAGE);
@@ -493,10 +511,18 @@ CourseSchedule courseSchedule;
         return;
         }         
         String selectedSemester= cmbSemester.getSelectedItem().toString();
+       
+        CourseSchedule schedule = calendar.getCourseSchedule(selectedSemester);
+        for (CourseOffer cof : schedule.getSchedule()) {
+        if (!cof.isEnrollmentStatus()) {
+        JOptionPane.showMessageDialog(this,  "This semester was closed ,it can be assigned a teacher for this course.",  "Warning", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+        }
         
         int selectedRow=tblCourseOffering.getSelectedRow();
         if(selectedRow<0){
-            JOptionPane.showMessageDialog(null, "please  selected a  product from the list","Warning",JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "please  selected a  course from the list","Warning",JOptionPane.WARNING_MESSAGE);
         }else{
         int dialogButton=JOptionPane.YES_NO_OPTION;
         int dialogResult=JOptionPane.showConfirmDialog(null, "Are u sure you want to assign a teacher for the selected courseoffering","Warning",dialogButton);
@@ -518,15 +544,26 @@ CourseSchedule courseSchedule;
         if (cmbSemester.getSelectedItem() == null) {
         JOptionPane.showMessageDialog(this, "Please select a semester first.", "Warning", JOptionPane.WARNING_MESSAGE);
         return;
-        }         
+        }  
+        
         String selectedSemester= cmbSemester.getSelectedItem().toString();
-        int selectedRow=tblCourseOffering.getSelectedRow();
+        CourseSchedule schedule = calendar.getCourseSchedule(selectedSemester);
+        for (CourseOffer co : schedule.getSchedule()) {
+        if (!co.isEnrollmentStatus()) {
+           JOptionPane.showMessageDialog(this, "This semester was closed, you cannot delete this courseoffer.", "Warning", JOptionPane.WARNING_MESSAGE);
+        return;
+        }
+        }      
+        
+        int selectedRow=tblCourseOffering.getSelectedRow(); 
         if(selectedRow<0){
             JOptionPane.showMessageDialog(null, "please  selected a courseoffer from the list","Warning",JOptionPane.WARNING_MESSAGE);
         }else{
         int dialogButton=JOptionPane.YES_NO_OPTION;
         int dialogResult=JOptionPane.showConfirmDialog(null, "Are u sure you want to delete the selected courseoffering","Warning",dialogButton);
         if(dialogResult==JOptionPane.YES_OPTION){
+           
+       
             int courseNumber= (Integer)tblCourseOffering.getValueAt(selectedRow, 0);
             courseSchedule=department.getCalendar().getCourseSchedule(selectedSemester);
             CourseOffer co= courseSchedule.getCourseOfferByNumber(courseNumber);
@@ -543,7 +580,7 @@ CourseSchedule courseSchedule;
         // TODO add your handling code here:
         
         if (cmbDate.getSelectedItem() == null) {
-        JOptionPane.showMessageDialog(this, "Please select a teacher first.", "Warning", JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Please select a Date first.", "Warning", JOptionPane.WARNING_MESSAGE);
         return;
         }  
         String dayOfweek=cmbDate.getSelectedItem().toString();
@@ -554,8 +591,27 @@ CourseSchedule courseSchedule;
         int startTime=(Integer)spnStartTime.getValue();
         int endTime=(Integer)spnEndTime.getValue();
         
+        if (cmbSemester.getSelectedItem() == null) {
+        JOptionPane.showMessageDialog(this, "Please select a semester first.", "Warning", JOptionPane.WARNING_MESSAGE);
+        return;
+        }    
+        String selectedSemester= cmbSemester.getSelectedItem().toString();
+        CourseSchedule schedule = calendar.getCourseSchedule(selectedSemester);
+        for (CourseOffer co : schedule.getSchedule()) {
+        if (!co.isEnrollmentStatus()) {
+           JOptionPane.showMessageDialog(this, "This semester was closed, you cannot set those information.", "Warning", JOptionPane.WARNING_MESSAGE);
+        return;
+        }
+        } 
         
-        try{  
+        int selectedRow=tblCourseOffering.getSelectedRow();
+        if(selectedRow<0){
+            JOptionPane.showMessageDialog(null, "please  selected a courseoffer from the list","Warning",JOptionPane.WARNING_MESSAGE);
+        }else{
+        int dialogButton=JOptionPane.YES_NO_OPTION;
+        int dialogResult=JOptionPane.showConfirmDialog(null, "Are u sure you want to set the location the selected courseoffering","Warning",dialogButton);
+        if(dialogResult==JOptionPane.YES_OPTION){
+             try{  
            seatNumber =Integer.parseInt(fieldSeatNumber.getText());
         }
         catch(NumberFormatException e){
@@ -584,23 +640,9 @@ CourseSchedule courseSchedule;
             JOptionPane.showMessageDialog(null, "Please check number input","Warning",JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
-          
-        if (cmbSemester.getSelectedItem() == null) {
-        JOptionPane.showMessageDialog(this, "Please select a semester first.", "Warning", JOptionPane.WARNING_MESSAGE);
-        return;
-        }         
-        String selectedSemester= cmbSemester.getSelectedItem().toString();
-        int selectedRow=tblCourseOffering.getSelectedRow();
-        if(selectedRow<0){
-            JOptionPane.showMessageDialog(null, "please  selected a courseoffer from the list","Warning",JOptionPane.WARNING_MESSAGE);
-        }else{
-        int dialogButton=JOptionPane.YES_NO_OPTION;
-        int dialogResult=JOptionPane.showConfirmDialog(null, "Are u sure you want to set the location the selected courseoffering","Warning",dialogButton);
-        if(dialogResult==JOptionPane.YES_OPTION){
             int courseNumber= (Integer)tblCourseOffering.getValueAt(selectedRow, 0);
-            courseSchedule=department.getCalendar().getCourseSchedule(selectedSemester);
-            CourseOffer co= courseSchedule.getCourseOfferByNumber(courseNumber);
+           
+            CourseOffer co= schedule.getCourseOfferByNumber(courseNumber);
             co.generatSeats(seatNumber);
             co.setLocation(buildingNumber, floorNumber, classroomNumber);
             co.setTimeSchedule(dayOfweek, startTime, endTime);
@@ -630,6 +672,15 @@ CourseSchedule courseSchedule;
         return;
         }
         String selectedSemester= cmbSemester.getSelectedItem().toString();
+        
+        
+        CourseSchedule schedule = calendar.getCourseSchedule(selectedSemester);
+        for (CourseOffer co : schedule.getSchedule()) {
+        if (!co.isEnrollmentStatus()) {
+           JOptionPane.showMessageDialog(this, "This semester was closed, you cannot save the updated information.", "Warning", JOptionPane.WARNING_MESSAGE);
+        return;
+        }
+        }
         
         if (cmbTeacher.getSelectedItem() == null) {
         JOptionPane.showMessageDialog(this, "Please select a teacher first.", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -754,7 +805,7 @@ CourseSchedule courseSchedule;
 
                             model.addRow(row);
             }
-
+        fieldSearchCourse.setText("");
     }//GEN-LAST:event_btnSearchCourseActionPerformed
 
 
@@ -861,42 +912,5 @@ CourseSchedule courseSchedule;
         spnEndTime.setEditor(endEditor);
     }
 
-  /* private void populateTableCourseOfferingBySearchTeacher(String semester) {
-        DefaultTableModel model = (DefaultTableModel)tblCourseOffering.getModel();
-        model.setRowCount(0);
-        String teacherName=fieldSearchTeacher.getText();
-        if (semester == null) { 
-        return; 
-    }
-        CourseSchedule cs = calendar.getCourseSchedule(semester);
-        
-            for (CourseOffer co : cs.getSchedule()) { 
-                 boolean isTeacherMatch = false;
-            if (co.getFacultyassignment() != null &&
-                co.getFacultyassignment().getFacultyProfile() != null) {
-            
-            FacultyProfile faculty = co.getFacultyassignment().getFacultyProfile();
-            String fullName = faculty.getFirstName() + " " + faculty.getLastName();
- 
-            if (fullName.toLowerCase().contains(teacherName.toLowerCase())) {
-                isTeacherMatch = true;
-            }
-        }
-                         if (isTeacherMatch){ 
-                         Object[] row = new Object[7];
-                            row[0] =co.getCourseNumber() ;  
-                            row[1] =co.getCourseName() ;
-                            row[2] = (co.getFacultyassignment() != null &&
-                                     co.getFacultyassignment().getFacultyProfile() != null) 
-                                      ? co.getFacultyassignment().getFacultyProfile().getFirstName()+" "+co.getFacultyassignment().getFacultyProfile().getLastName(): "Unassigned";
-                            row[3] =co.getCreditHours(); 
-                            row[4] =co.getClassroom()!=null?co.getClassroom():"Unassigned";
-                            
-                            row[5] =co.getSeatlist()!=null?co.getSeatlist().size():"Unassigned";
-                            row[6] =co.getTimeSchedule()!=null?co.getTimeSchedule():"Unassigned";
-
-                            model.addRow(row);
-            }
-        }    
-    }*/
+  
 }
