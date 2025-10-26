@@ -408,7 +408,7 @@ public class StudentManagementJPanel extends javax.swing.JPanel {
                 CourseOffer co = sa.getCourseOffer();
                 if (co == null) continue;
                 if (co.getCourseName().equals(courseName)) {
-                    model.addRow(new Object[]{sp, sp.getFirstName(), sp.getLastName()});
+                    model.addRow(new Object[]{sp, sp.getFirstName().trim(), sp.getLastName().trim()});
                     break;
                 }
             }
@@ -474,50 +474,49 @@ public class StudentManagementJPanel extends javax.swing.JPanel {
     private void btnTranscriptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTranscriptActionPerformed
         // TODO add your handling code here:
         String semester = (String) cmbSemester.getSelectedItem();
-        String courseName = (String) cmbCourse.getSelectedItem();
-        
         int selectedRow = tblStudent.getSelectedRow();
-        if (selectedRow<0){
+        if (selectedRow < 0) {
             JOptionPane.showMessageDialog(this, "Please select a student");
             return;
         }
-        
-        StudentProfile selectedStudent = (StudentProfile) tblStudent.getValueAt(selectedRow, 0);
-        Transcript t = selectedStudent.getTranscript();
+
+        StudentProfile sp = (StudentProfile) tblStudent.getValueAt(selectedRow, 0);
+        Transcript t = sp.getTranscript();
         CourseLoad cl = t.getCourseLoadBySemester(semester);
-        
+
         double termQP = 0.0;
         int termCredits = 0;
 
-        for (SeatAssignment seatAssignment : cl.getSeatAssignments()) {
-            Double finalScore = seatAssignment.calculateFinalCourseScore();
-            if (finalScore == null) continue;
-            double finalGPA = SeatAssignment.convertToGPA(finalScore);
-            int credits = seatAssignment.getSeat().getCourseOffer().getCourse().getCredits();
-            termQP += finalGPA * credits;
-            termCredits += credits;
+        for (SeatAssignment sa : cl.getSeatAssignments()) {
+            Double fs = sa.calculateFinalCourseScore();
+            if (fs == null || fs < 60) continue;
+            double g = SeatAssignment.convertToGPA(fs);
+            int c = sa.getSeat().getCourseOffer().getCourse().getCredits();
+            termQP += g * c;
+            termCredits += c;
         }
+
         double termGPA = termCredits == 0 ? 0.0 : termQP / termCredits;
         fieldTermGPA.setText(String.format("%.1f", termGPA));
-        
-        double totalQP = 0.0;  
+
+        double totalQP = 0.0;
         int totalCR = 0;
 
         for (CourseLoad eachCL : t.getCourseloadlist().values()) {
             for (SeatAssignment sa : eachCL.getSeatAssignments()) {
                 Double fs = sa.calculateFinalCourseScore();
-                if (fs == null) continue;
-                double gp = SeatAssignment.convertToGPA(fs);
-                int cr = sa.getSeat().getCourseOffer().getCourse().getCredits();
-                totalQP += gp * cr;
-                totalCR += cr;
+                if (fs == null || fs < 60) continue;
+                double g = SeatAssignment.convertToGPA(fs);
+                int c = sa.getSeat().getCourseOffer().getCourse().getCredits();
+                totalQP += g * c;
+                totalCR += c;
             }
         }
+
         double cumGPA = totalCR == 0 ? 0.0 : totalQP / totalCR;
         fieldCumGPA.setText(String.format("%.1f", cumGPA));
         fieldCredit.setText(String.valueOf(totalCR));
-        
-        
+
     }//GEN-LAST:event_btnTranscriptActionPerformed
 
     private void btnViewAssignmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewAssignmentActionPerformed

@@ -205,7 +205,7 @@ public class ConfigureTheBusiness {
           fall_course1.setTimeSchedule("Monday", 14, 16);
           fall_course1.setEnrollmentStatus(false);
           
-          CourseOffer fall_course2 = summerSchedule.newCourseOffer(course6.getCourseNumber());
+          CourseOffer fall_course2 = fallSchedule.newCourseOffer(course6.getCourseNumber());
           fall_course2.generatSeats(30);
           fall_course2.AssignAsTeacher(fa02);                                                                      // fall02 - fa02
           fall_course2.setLocation(513, 2,211);
