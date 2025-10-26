@@ -156,6 +156,9 @@ public class SeatAssignment {
             usedWeight += weight;
         }
         if (usedWeight == 0) return null;
+        if(total / usedWeight * 100.0>=60){
+           pass=true;
+        }
         return total / usedWeight * 100.0;
     }  
 

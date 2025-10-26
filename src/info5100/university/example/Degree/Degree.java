@@ -8,7 +8,6 @@ package info5100.university.example.Degree;
 import info5100.university.example.CourseCatalog.Course;
 import info5100.university.example.CourseSchedule.CourseLoad;
 import info5100.university.example.CourseSchedule.SeatAssignment;
-import info5100.university.example.Persona.Person;
 import info5100.university.example.Persona.StudentProfile;
 import java.util.ArrayList;
 
