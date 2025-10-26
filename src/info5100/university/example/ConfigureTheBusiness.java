@@ -176,6 +176,7 @@ public class ConfigureTheBusiness {
           spring_course2.setLocation(316, 1, 105);
           spring_course2.setTimeSchedule("Thursday", 7, 9);
           spring_course2.setEnrollmentStatus(false);
+          spring_course2.setTuitionFee(3000);
           
           // 2025 Summer
           CourseSchedule summerSchedule = new CourseSchedule("2025Summer", coursecatalog);
@@ -187,6 +188,7 @@ public class ConfigureTheBusiness {
           summer_course1.setLocation(113, 3,309);
           summer_course1.setTimeSchedule("Friday", 10, 11);
           summer_course1.setEnrollmentStatus(false);   
+          summer_course1.setTuitionFee(3000);
           
           CourseOffer summer_course2 = summerSchedule.newCourseOffer(course4.getCourseNumber());
           summer_course2.generatSeats(30);
@@ -194,7 +196,7 @@ public class ConfigureTheBusiness {
           summer_course2.setLocation(813, 7,732);
           summer_course2.setTimeSchedule("Friday", 13, 15);
           summer_course2.setEnrollmentStatus(false);
-          
+          summer_course2.setTuitionFee(3000);
           // 2025 fall
           CourseSchedule fallSchedule = new CourseSchedule("2025Fall", coursecatalog);
           calendar.addCourseSchedule("2025Fall", fallSchedule);
@@ -205,6 +207,7 @@ public class ConfigureTheBusiness {
           fall_course1.setLocation(413, 3,301);
           fall_course1.setTimeSchedule("Monday", 14, 16);
           fall_course1.setEnrollmentStatus(false);
+          fall_course1.setTuitionFee(3000);
           
           CourseOffer fall_course2 = fallSchedule.newCourseOffer(course6.getCourseNumber());
           fall_course2.generatSeats(30);
@@ -212,7 +215,7 @@ public class ConfigureTheBusiness {
           fall_course2.setLocation(513, 2,211);
           fall_course2.setTimeSchedule("Friday", 19, 20);
           fall_course2.setEnrollmentStatus(false);
-          
+          fall_course2.setTuitionFee(3000);
           // 2025 winter
           CourseSchedule winterSchedule = new CourseSchedule("2025Winter", coursecatalog);
           calendar.addCourseSchedule("2025Winter", winterSchedule);
@@ -223,6 +226,7 @@ public class ConfigureTheBusiness {
           winter_course1.setTimeSchedule("Saturday", 15, 16);
           winter_course1.setLocation(111, 2, 205);
           winter_course1.setEnrollmentStatus(true);
+          winter_course1.setTuitionFee(3000);
           
           CourseOffer winter_course2 = winterSchedule.newCourseOffer(course8.getCourseNumber());
           winter_course2.generatSeats(30);
@@ -230,7 +234,7 @@ public class ConfigureTheBusiness {
           winter_course2.setLocation(761, 6, 605); 
           winter_course2.setTimeSchedule("Sunday", 15, 17);
           winter_course2.setEnrollmentStatus(true);
-          
+          winter_course2.setTuitionFee(3000);
           
           // configure trancript and courseload, connect student
           // transcrip1
