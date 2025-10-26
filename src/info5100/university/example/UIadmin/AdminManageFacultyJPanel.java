@@ -254,7 +254,7 @@ public class AdminManageFacultyJPanel extends javax.swing.JPanel {
             return;
         }
 
-        // 1. Get Faculty ID
+
         int facultyId;
         try {
              
@@ -269,7 +269,7 @@ public class AdminManageFacultyJPanel extends javax.swing.JPanel {
         }
 
 
-        // 2. Find FacultyProfile
+ 
         FacultyProfile facultyToDelete = department.getFacultydirectory().findFacultyById(facultyId);
         if (facultyToDelete == null) {
             JOptionPane.showMessageDialog(this, "Selected faculty not found in the directory. Maybe already deleted?", "Error", JOptionPane.ERROR_MESSAGE);
@@ -299,7 +299,7 @@ public class AdminManageFacultyJPanel extends javax.swing.JPanel {
                 }
             }
         }
-        // *** Finding logic done ***
+    
 
         // 5. Show confirmation dialog
         int confirm = JOptionPane.showConfirmDialog(
@@ -331,7 +331,7 @@ public class AdminManageFacultyJPanel extends javax.swing.JPanel {
             }
 
             // Delete Faculty Profile
-            // Assuming FacultyDirectory needs a remove method or direct list access
+          
             facultyRemoved = department.getFacultydirectory().getTeacherlist().remove(facultyToDelete);
              if (!facultyRemoved) {
                   System.err.println("Error: Could not remove faculty profile for " + personToDelete.getName());
