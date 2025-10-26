@@ -175,13 +175,13 @@ public class StudentManagementJPanel extends javax.swing.JPanel {
 
         tblAssignment.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Assignment", "Weight", "Total Score", "Score"
+                "Assignment", "Content", "Weight", "Total Score", "Score"
             }
         ));
         jScrollPane2.setViewportView(tblAssignment);
@@ -545,11 +545,12 @@ public class StudentManagementJPanel extends javax.swing.JPanel {
         for (StudentAssignment stua : sa.getAssignmentRecords().values()){
             Assignment a = stua.getAssignment();
             
-            Object[] row = new Object[4];
+            Object[] row = new Object[5];
             row[0] = a.getAssignmentName();
-            row[1] = a.getWeight();
-            row[2] = a.getMaxPoints();
-            row[3] = stua.getScore();
+            row[1] = stua.getSubmissionContent();
+            row[2] = a.getWeight();
+            row[3] = a.getMaxPoints();
+            row[4] = stua.getScore();
             
             model.addRow(row);
             rowBindings.add(stua);
