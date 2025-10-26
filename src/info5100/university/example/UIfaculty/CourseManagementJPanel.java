@@ -31,6 +31,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -46,6 +47,7 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
     Department department;
     UserAccount currentUser;
     String currentSemester;
+   
     public CourseManagementJPanel(JPanel mainpanel, Department department, UserAccount currentUser) {
         initComponents();
         this.mainpanel = mainpanel;
@@ -58,6 +60,8 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
         
         cmbSemester.addActionListener(e -> populateTable());
 
+        fieldSyllabusPath.setEditable(false);
+        fieldSyllabusPath.setColumns(20);
     }
 
     /**
@@ -432,6 +436,7 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
             Files.copy(src.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
             co.setSyllabusFilePath(dest.getAbsolutePath());
             fieldSyllabusPath.setText(dest.getAbsolutePath());
+            fieldSyllabusPath.setCaretPosition(0);
             JOptionPane.showMessageDialog(this, "Syllabus uploaded and linked");
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "Upload failed: " + ex.getMessage());
