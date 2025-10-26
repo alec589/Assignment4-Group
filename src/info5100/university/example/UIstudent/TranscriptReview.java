@@ -32,6 +32,8 @@ StudentProfile studentprofile;
         double gpa1 = (double)studentprofile.getTranscript().getStudentTotalScore();
         String formattedGpa1 = String.format("%.1f", gpa1);
         overallgpa.setText(formattedGpa1);  
+        String selectedsemster = (String) ComboBox3.getSelectedItem().toString();
+        populateTable1( selectedsemster);
     }
 
     /**
@@ -167,9 +169,12 @@ StudentProfile studentprofile;
            row[1] = sa.getCourseOffer().getCourseName();
           Double finalScore = sa.calculateFinalCourseScore();
         if (finalScore != null) {
-            row[2] = sa.convertToGPA(finalScore.doubleValue());
+            if(sa.getStatus()=="paid"){
+            row[2] = sa.convertToGPA(finalScore.doubleValue());}else{
+            row[2] ="please pay tuition";
+            }
         } else {
-            row[2] = "未评分"; 
+            row[2] = "not grade"; 
         }
           model.addRow(row);
         }
