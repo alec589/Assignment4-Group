@@ -255,17 +255,58 @@ public class AdminManageUserAccountsJPanel extends javax.swing.JPanel {
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
-        int row = tblUserAccounts.getSelectedRow();
-        if (row < 0) {
-            JOptionPane.showMessageDialog(this, "Please select a user to delete.");
+        int selectedRow = tblUserAccounts.getSelectedRow();
+        if (selectedRow < 0) {
+            JOptionPane.showMessageDialog(this, "Please select a user account to delete.", "Warning", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure to delete this user?", "Confirm", JOptionPane.YES_NO_OPTION);
+        String usernameToDelete;
+        try {
+            
+            usernameToDelete = (String) tblUserAccounts.getValueAt(tblUserAccounts.convertRowIndexToModel(selectedRow), 0);
+             if (usernameToDelete == null || usernameToDelete.trim().isEmpty()) {
+                 throw new Exception("Username is empty in the selected row.");
+             }
+        } catch (Exception e) {
+              JOptionPane.showMessageDialog(this, "Error retrieving username from table: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+              return;
+        }
+
+        UserAccount accountToDelete = department.getUseraccountdirectory().findUserAccount(usernameToDelete); 
+        if (accountToDelete == null) {
+          
+            JOptionPane.showMessageDialog(this, "Selected user account ('" + usernameToDelete + "') not found in the directory. Maybe already deleted?", "Error", JOptionPane.ERROR_MESSAGE);
+            populateTable(); // Refresh table
+            return;
+        }
+        
+       
+        String associatedName = accountToDelete.getPersonName(); 
+
+        int confirm = JOptionPane.showConfirmDialog(
+            this, 
+            "Are you sure you want to permanently delete the user account for '" + usernameToDelete + "' (" + associatedName + ")?", 
+            "Confirm Deletion", 
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.WARNING_MESSAGE
+        );
+
         if (confirm == JOptionPane.YES_OPTION) {
-            DefaultTableModel model = (DefaultTableModel) tblUserAccounts.getModel();
-            model.removeRow(tblUserAccounts.convertRowIndexToModel(row));
-            JOptionPane.showMessageDialog(this, "User deleted successfully!");
+            boolean accountRemoved = false;
+
+            accountRemoved = department.getUseraccountdirectory().removeUserAccount(accountToDelete); 
+            
+            populateTable();
+            
+            if (accountRemoved) { 
+                 System.out.println("User account '" + usernameToDelete + "' removed successfully.");
+                 JOptionPane.showMessageDialog(this, "User account '" + usernameToDelete + "' deleted successfully.", "Deletion Successful", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                 // This might happen if the account was deleted between find and remove, or if remove failed
+                 System.err.println("Error: Could not remove user account '" + usernameToDelete + "'.");
+                 JOptionPane.showMessageDialog(this, "An error occurred trying to delete user account '" + usernameToDelete + "'.", "Deletion Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 

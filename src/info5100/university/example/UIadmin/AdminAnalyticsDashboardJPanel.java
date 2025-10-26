@@ -6,11 +6,14 @@ package info5100.university.example.UIadmin;
 
 import info5100.university.example.Department.Department;
 import info5100.university.example.Persona.*;
-
 import info5100.university.example.CourseSchedule.CourseOffer;
 import info5100.university.example.CourseSchedule.CourseSchedule;
 import info5100.university.example.Department.Calendar;
-import java.util.Collection; 
+
+import info5100.university.example.CourseSchedule.SeatAssignment; 
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.util.Collection;
 import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
@@ -35,29 +38,27 @@ public class AdminAnalyticsDashboardJPanel extends javax.swing.JPanel {
         this.department = department;
         this.mainpanel = mainpanel;
         
-        populateSemesterCombo(); 
+        populateSemesterCombo();
+        String selectedsemester = (String) jComboBox1.getSelectedItem().toString();
+        populateStudentDetailsTable(selectedsemester); 
+        
 
-        if (jComboBox1.getItemCount() > 0) {
-            jComboBox1.setSelectedIndex(0); 
-        } else {
-            // 如果没有学期，也运行一次以显示0
-            refreshAllData();
-        }
+       
     }
 
     
-    private void refreshAllData() {
+  private void refreshAllData() {
         String selectedSemester = (String) jComboBox1.getSelectedItem();
-     
-        populateSummaryMetrics(selectedSemester); 
 
-        populateRoleTable(); 
-    
-        populateCourseEnrollmentTable(selectedSemester); 
+        populateSummaryMetrics(selectedSemester);
+        populateRoleTable();
+        populateCourseEnrollmentTable(selectedSemester);
+        
+        
     }
     
     private void populateSemesterCombo() {
-        jComboBox1.removeAllItems(); // clean
+        jComboBox1.removeAllItems();
         Calendar calendar = department.getCalendar();
         if (calendar != null && calendar.getAllSemesterNames() != null) {
             Collection<String> semesterNames = calendar.getAllSemesterNames();
@@ -69,128 +70,116 @@ public class AdminAnalyticsDashboardJPanel extends javax.swing.JPanel {
 
   
     private void populateCourseEnrollmentTable(String semester) {
-        
         DefaultTableModel model = (DefaultTableModel) tblCourseEnrollment.getModel();
         model.setRowCount(0);
-        
+
         if (semester == null) {
             model.addRow(new Object[]{"Please select a semester", 0});
             return;
         }
 
         CourseSchedule schedule = department.getCalendar().getCourseSchedule(semester);
-        
+
         if (schedule != null && schedule.getSchedule() != null) {
-            
              lblCourseEnrollmentTitle.setText("Enrolled Students per Course (" + semester + ")");
             for (CourseOffer co : schedule.getSchedule()) {
                 model.addRow(new Object[]{
-                    co.getCourseName(), 
-                    co.getOcupiedSeatNumber() 
+                    co.getCourseName(),
+                    co.getOcupiedSeatNumber()
                 });
             }
         } else {
             lblCourseEnrollmentTitle.setText("Enrolled Students per Course");
             model.addRow(new Object[]{"No schedule found for " + semester, 0});
         }
-        
+
         tblCourseEnrollment.revalidate();
         tblCourseEnrollment.repaint();
     }
+    
+    private void populateStudentDetailsTable(String selectedsemster) {
+       DefaultTableModel model = (DefaultTableModel)tblStudentDetails.getModel();
+       model.setRowCount(0);
+       CourseSchedule courseschedule = department.getCalendar().getCourseSchedule(selectedsemster);
+       
+       for(CourseOffer courseoffer: courseschedule.getSchedule()){ 
+          
+           Object[] row = new Object[3];
+           row[0] = courseoffer.getCourseName(); 
+           row[1] = courseoffer.getOcupiedSeatNumber();
+           row[2] = courseoffer.getTotalCourseRevenues();
+         
+          model.addRow(row);
+        }
+    }
+
+    
+    private void clearStudentDetailsTable() {
+         DefaultTableModel model = (DefaultTableModel) tblStudentDetails.getModel();
+         model.setRowCount(0);
+         lblStudentDetailsTitle.setText("Student Details (Select a course above)");
+     }
 
 
     private void populateSummaryMetrics(String semester) {
-        
         int totalStudents = 0;
         int totalFaculty = 0;
         int totalRegistrar = 0;
         int totalAdmin = 0;
 
-     
         if (department.getUseraccountdirectory() != null) {
             for (UserAccount ua : department.getUseraccountdirectory().getUserAccountDirectory()) {
-                String role = ua.getRole().toLowerCase();
-                if (role.contains("student")) totalStudents++;
-                else if (role.contains("faculty")) totalFaculty++;
-                else if (role.contains("registrar")) totalRegistrar++;
-                else if (role.contains("admin")) totalAdmin++;
+                 String role = ua.getRole().toLowerCase();
+                 if (role.contains("student")) totalStudents++;
+                 else if (role.contains("faculty")) totalFaculty++;
+                 else if (role.contains("registrar")) totalRegistrar++;
+                 else if (role.contains("admin")) totalAdmin++;
             }
         }
 
-
-        int totalCoursesOfferedThisSemester = 0;
-        if (semester != null) {
-            CourseSchedule schedule = department.getCalendar().getCourseSchedule(semester);
-            if (schedule != null) {
-                totalCoursesOfferedThisSemester = schedule.getSchedule().size();
-            }
-        }
-       
-        
-        int totalEnrolledStudents = 5; 
-        
-        double totalTuitionRevenue = 0.0;
-        if (department.getStudentdirectory() != null) {
-            for (StudentProfile sp : department.getStudentdirectory().getStudentlist()) {
-                ArrayList<PaymentTransaction> transactions = sp.getPaymentHistory();
-                if (transactions != null) {
-                    for (PaymentTransaction tx : transactions) {
-                        if (tx.getAmount() > 0) {
-                            totalTuitionRevenue += tx.getAmount();
-                        }
-                    }
-                }
-            }
-        }
-    
         lblTotalUsersValue.setText(String.valueOf(totalStudents + totalFaculty + totalRegistrar + totalAdmin));
-        lblTotalCoursesValue.setText(String.valueOf(totalCoursesOfferedThisSemester)); 
-        lblTotalStudentsValue.setText(String.valueOf(totalEnrolledStudents)); 
-        lblTuitionRevenueValue.setText("$" + String.format("%,.2f", totalTuitionRevenue));
         
-        System.out.println("Metrics refreshed successfully!");
-        System.out.println("Total Tuition Revenue = $" + String.format("%,.2f", totalTuitionRevenue));
+        
     }
-
+ 
     
     private void populateRoleTable() {
         DefaultTableModel model = (DefaultTableModel) tblSummary.getModel();
         model.setRowCount(0);
-        
+
         int totalStudents = 0;
         int totalFaculty = 0;
         int totalRegistrar = 0;
         int totalAdmin = 0;
 
         if (department.getUseraccountdirectory() != null) {
-            for (UserAccount ua : department.getUseraccountdirectory().getUserAccountDirectory()) {
-                String role = ua.getRole().toLowerCase();
-                if (role.contains("student")) totalStudents++;
-                else if (role.contains("faculty")) totalFaculty++;
-                else if (role.contains("registrar")) totalRegistrar++;
-                else if (role.contains("admin")) totalAdmin++;
-            }
-        }
-        
-       
-        int totalEnrolledStudents = 5; 
-            
-        double totalTuitionRevenue = 0.0;
-        if (department.getStudentdirectory() != null) {
-             for (StudentProfile sp : department.getStudentdirectory().getStudentlist()) {
-                ArrayList<PaymentTransaction> transactions = sp.getPaymentHistory();
-                if (transactions != null) {
-                    for (PaymentTransaction tx : transactions) {
-                        if (tx.getAmount() > 0) {
-                            totalTuitionRevenue += tx.getAmount();
-                        }
-                    }
-                }
-            }
+             for (UserAccount ua : department.getUseraccountdirectory().getUserAccountDirectory()) {
+                 String role = ua.getRole().toLowerCase();
+                 if (role.contains("student")) totalStudents++;
+                 else if (role.contains("faculty")) totalFaculty++;
+                 else if (role.contains("registrar")) totalRegistrar++;
+                 else if (role.contains("admin")) totalAdmin++;
+             }
         }
 
-        // full the form
-        model.addRow(new Object[]{"Student", totalStudents, totalEnrolledStudents, totalStudents - totalEnrolledStudents}); // "Active" 列会显示 "5"
+        // Use the hardcoded value '5' as requested previously
+        int totalEnrolledStudents = 5;
+
+        double totalTuitionRevenue = 0.0;
+        if (department.getStudentdirectory() != null) {
+              for (StudentProfile sp : department.getStudentdirectory().getStudentlist()) {
+                 ArrayList<PaymentTransaction> transactions = sp.getPaymentHistory();
+                 if (transactions != null) {
+                     for (PaymentTransaction tx : transactions) {
+                         if (tx.getAmount() > 0) {
+                             totalTuitionRevenue += tx.getAmount();
+                         }
+                     }
+                 }
+             }
+        }
+
+        model.addRow(new Object[]{"Student", totalStudents, totalEnrolledStudents, totalStudents - totalEnrolledStudents}); // Active shows "5"
         model.addRow(new Object[]{"Faculty", totalFaculty, totalFaculty, 0});
         model.addRow(new Object[]{"Registrar", totalRegistrar, totalRegistrar, 0});
         model.addRow(new Object[]{"Admin", totalAdmin, totalAdmin, 0});
@@ -210,13 +199,7 @@ public class AdminAnalyticsDashboardJPanel extends javax.swing.JPanel {
 
         lblTitle = new javax.swing.JLabel();
         lblTotalUsers = new javax.swing.JLabel();
-        lblTotalCourses = new javax.swing.JLabel();
-        lblTotalStudents = new javax.swing.JLabel();
-        lblTuitionRevenue = new javax.swing.JLabel();
         lblTotalUsersValue = new javax.swing.JLabel();
-        lblTotalCoursesValue = new javax.swing.JLabel();
-        lblTotalStudentsValue = new javax.swing.JLabel();
-        lblTuitionRevenueValue = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblSummary = new javax.swing.JTable();
         btnRefresh = new javax.swing.JButton();
@@ -226,25 +209,16 @@ public class AdminAnalyticsDashboardJPanel extends javax.swing.JPanel {
         lblCourseEnrollmentTitle = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblCourseEnrollment = new javax.swing.JTable();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblStudentDetails = new javax.swing.JTable();
+        lblStudentDetailsTitle = new javax.swing.JLabel();
 
         lblTitle.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 14)); // NOI18N
         lblTitle.setText("University Analytics Dashboard");
 
         lblTotalUsers.setText("Total Active Users");
 
-        lblTotalCourses.setText("Total Courses Offered");
-
-        lblTotalStudents.setText("Total Enrolled Students");
-
-        lblTuitionRevenue.setText("Total Tuition Revenue");
-
         lblTotalUsersValue.setText("0");
-
-        lblTotalCoursesValue.setText("0");
-
-        lblTotalStudentsValue.setText("0");
-
-        lblTuitionRevenueValue.setText("$0");
 
         tblSummary.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -313,6 +287,29 @@ public class AdminAnalyticsDashboardJPanel extends javax.swing.JPanel {
         });
         jScrollPane2.setViewportView(tblCourseEnrollment);
 
+        tblStudentDetails.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Course Offered", "Enrolled Students", "Tuition Revenue"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(tblStudentDetails);
+
+        lblStudentDetailsTitle.setText("Student Details");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -324,24 +321,15 @@ public class AdminAnalyticsDashboardJPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(69, 69, 69)
+                        .addGap(100, 100, 100)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(lblTotalUsers)
-                            .addComponent(lblTotalCourses)
-                            .addComponent(lblTotalStudents)
-                            .addComponent(lblTuitionRevenue)
                             .addComponent(lblSelectSemester))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblTuitionRevenueValue, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(7, 7, 7)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(lblTotalUsersValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(lblTotalCoursesValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(lblTotalStudentsValue, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
-                                        .addGap(3, 3, 3))))
+                                .addComponent(lblTotalUsersValue, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(50, 50, 50)
@@ -356,7 +344,11 @@ public class AdminAnalyticsDashboardJPanel extends javax.swing.JPanel {
                             .addGap(39, 39, 39)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 668, Short.MAX_VALUE)
-                                .addComponent(jScrollPane1)))))
+                                .addComponent(jScrollPane1)
+                                .addComponent(jScrollPane3))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(49, 49, 49)
+                        .addComponent(lblStudentDetailsTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(93, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -372,19 +364,11 @@ public class AdminAnalyticsDashboardJPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTotalUsers)
                     .addComponent(lblTotalUsersValue))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblTotalCourses)
-                    .addComponent(lblTotalCoursesValue))
-                .addGap(7, 7, 7)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblTotalStudents)
-                    .addComponent(lblTotalStudentsValue))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblTuitionRevenueValue)
-                    .addComponent(lblTuitionRevenue))
-                .addGap(82, 82, 82)
+                .addGap(5, 5, 5)
+                .addComponent(lblStudentDetailsTitle)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(lblCourseEnrollmentTitle)
@@ -413,7 +397,12 @@ public class AdminAnalyticsDashboardJPanel extends javax.swing.JPanel {
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
+        if (jComboBox1.getSelectedItem() != null) {
+        populateStudentDetailsTable(jComboBox1.getSelectedItem().toString());
+    }
+    
         refreshAllData();
+        
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
 
@@ -423,18 +412,15 @@ public class AdminAnalyticsDashboardJPanel extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel lblCourseEnrollmentTitle;
     private javax.swing.JLabel lblSelectSemester;
+    private javax.swing.JLabel lblStudentDetailsTitle;
     private javax.swing.JLabel lblTitle;
-    private javax.swing.JLabel lblTotalCourses;
-    private javax.swing.JLabel lblTotalCoursesValue;
-    private javax.swing.JLabel lblTotalStudents;
-    private javax.swing.JLabel lblTotalStudentsValue;
     private javax.swing.JLabel lblTotalUsers;
     private javax.swing.JLabel lblTotalUsersValue;
-    private javax.swing.JLabel lblTuitionRevenue;
-    private javax.swing.JLabel lblTuitionRevenueValue;
     private javax.swing.JTable tblCourseEnrollment;
+    private javax.swing.JTable tblStudentDetails;
     private javax.swing.JTable tblSummary;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,8 +1,10 @@
 package info5100.university.example.UIadmin;
 import info5100.university.example.Department.Department;
+import info5100.university.example.Persona.Faculty.FacultyProfile;
 import info5100.university.example.Persona.Person;
 import info5100.university.example.Persona.PersonDirectory;
 import info5100.university.example.Persona.Profile;
+import info5100.university.example.Persona.StudentProfile;
 import java.awt.*;
 import javax.swing.*;
 /**
@@ -30,57 +32,69 @@ public class AdminPersonRegistrationJPanel extends javax.swing.JPanel {
         
 }
      
-  private void handleAddPerson() {
-    String name = txtName.getText().trim();
-    String email = txtEmail.getText().trim(); // get Email
-    String role = (String) cmbRole.getSelectedItem();
 
-    // Name 和 Email 均不能为空 
-    if (name.isEmpty() || email.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Please enter the full name and email!", "Warning", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-    
-    // 检查 Email 是否已存在
-    if (personDirectory.isEmailExists(email)) {
-        JOptionPane.showMessageDialog(this, "This email address is already registered!", "Warning", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
+     private void handleAddPerson() {
+        String name = txtName.getText().trim();
+        String email = txtEmail.getText().trim(); 
+        String role = (String) cmbRole.getSelectedItem();
 
-
-    Person newPerson = personDirectory.newPerson(name); 
-    newPerson.setEmail(email); 
-
-    Profile profile;
-    switch (role) {
-        case "Student":
-            profile = department.getStudentdirectory().newStudentProfile(newPerson);
-            break;
-        case "Faculty":
-            profile = department.getFacultydirectory().newFacultyProfile(newPerson);
-            break;
-        case "Registrar":
-            profile = department.getRegisterdirectory().newRegisterProfile(newPerson);
-            break;
-        default:
-            JOptionPane.showMessageDialog(this, "Unknown role: " + role);
-             
-            
+        
+        if (name.isEmpty() || email.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter the full name and email!", "Warning", JOptionPane.WARNING_MESSAGE);
             return;
+        }
+      
+        if (personDirectory.isEmailExists(email)) {
+            JOptionPane.showMessageDialog(this, "This email address is already registered!", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        Person newPerson = personDirectory.newPerson(name); 
+        newPerson.setEmail(email); 
+
+        Profile profile; 
+       
+        switch (role) {
+            case "Student":
+                profile = department.getStudentdirectory().newStudentProfile(newPerson);
+                break;
+            case "Faculty":
+                profile = department.getFacultydirectory().newFacultyProfile(newPerson);
+                break;
+            case "Registrar":
+                profile = department.getRegisterdirectory().newRegisterProfile(newPerson);
+                break;
+            default:
+                JOptionPane.showMessageDialog(this, "Unknown role: " + role);
+                 
+                 personDirectory.removePerson(newPerson); 
+                return;
+        }
+
+        
+        String displayId; 
+        if (profile instanceof StudentProfile) {
+          
+            displayId = String.valueOf(((StudentProfile) profile).getStudentID()); 
+        } else if (profile instanceof FacultyProfile) {
+            
+            displayId = String.valueOf(((FacultyProfile) profile).getID());
+        } else {
+           
+            displayId = newPerson.getPersonId(); 
+        }
+       
+        String username = generateUsername(newPerson, role);
+        String defaultPassword = "changeme";
+        department.getUseraccountdirectory().addUserAccount(profile, username, defaultPassword);
+
+        lblStatus.setText("<html>✔ Registered '" + newPerson.getName() + "' (ID: " + displayId + ") as " + role + "<br>(Username: " + username + ")</html>");
+        
+      
+        txtName.setText("");
+        txtEmail.setText(""); 
+        cmbRole.setSelectedIndex(0);
     }
-
-    String username = generateUsername(newPerson, role);
-    String defaultPassword = "changeme";
-    department.getUseraccountdirectory().addUserAccount(profile, username, defaultPassword);
-
-   
-    
-    lblStatus.setText("<html>✔ Registered '" + newPerson.getName() + "' (ID: " + newPerson.getPersonId() + ") as " + role + "<br>(Username: " + username + ")</html>");
-    
-    txtName.setText("");
-    txtEmail.setText(""); 
-    cmbRole.setSelectedIndex(0);
-}
 
     private String generateUsername(Person p, String role) {
     String base = p.getName().trim().toLowerCase().replaceAll("\\s+", "");
