@@ -7,7 +7,6 @@ package info5100.university.example.UIstudent;
 
 import info5100.university.example.Department.Department;
 import info5100.university.example.Persona.StudentProfile;
-
 import java.awt.CardLayout;
 import javax.swing.JPanel;
 

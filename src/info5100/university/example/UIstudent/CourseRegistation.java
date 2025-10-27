@@ -229,7 +229,7 @@ StudentProfile studentprofile;
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-          if(!txtname.getText().isBlank()){
+        if(!txtname.getText().isBlank()){
             String coursename = txtname.getText();
             String selectedsemster = (String) ComboBox1.getSelectedItem().toString();
             populateTable3(selectedsemster,coursename);
@@ -258,28 +258,18 @@ StudentProfile studentprofile;
         CourseOffer selectedcourse = (CourseOffer) Table1.getValueAt(selectedRow, 0);
         String selectedsemster = (String) ComboBox1.getSelectedItem().toString();
         CourseLoad currentCourseLoad = studentprofile.getCourseLoadBySemester(selectedsemster);
-      
         if (selectedcourse.isEnrollmentStatus() == true) {
-           
            SeatAssignment sa = currentCourseLoad.newSeatAssignment(selectedcourse, studentprofile);
-            
-           
             if (sa != null && currentCourseLoad.getsemestercreditshours() <= 8) {
-              
-                JOptionPane.showMessageDialog(null, "Enroll successfull!", "information", JOptionPane.INFORMATION_MESSAGE);
-              
+                JOptionPane.showMessageDialog(null, "Enroll successfull!", "information", JOptionPane.INFORMATION_MESSAGE); 
             } else {
-               
                 JOptionPane.showMessageDialog(null,  "Registration failed: The course is full, or you are not allowed to register for more than 8 credits this semester.", "warning", JOptionPane.WARNING_MESSAGE);
             }
 
-        } else {
-          
+        } else { 
             JOptionPane.showMessageDialog(null,  "Registration failed: This course is currently not available for enrollment.", "warning", JOptionPane.WARNING_MESSAGE);
         }
-
     } else {
-    
         JOptionPane.showMessageDialog(null, "Please select a course from the list and register for it.", "warning", JOptionPane.WARNING_MESSAGE);
     }
 
@@ -293,19 +283,14 @@ StudentProfile studentprofile;
           String selectedsemster = (String) ComboBox1.getSelectedItem().toString();
           CourseLoad currentCourseLoad = studentprofile.getCourseLoadBySemester(selectedsemster);
           SeatAssignment seatassignment1 = currentCourseLoad.getAssignmentByCourseOffer(selectedcourse);
-         
-         if (seatassignment1 != null) {
-           
-            boolean dropped = currentCourseLoad.dropCourse(seatassignment1);
-            
+        if (seatassignment1 != null) {
+            boolean dropped = currentCourseLoad.dropCourse(seatassignment1); 
             if (dropped) {
-                JOptionPane.showMessageDialog(null, "Drop successfully", "information",JOptionPane.INFORMATION_MESSAGE);
-              
+                JOptionPane.showMessageDialog(null, "Drop successfully", "information",JOptionPane.INFORMATION_MESSAGE); 
             } else {
                  JOptionPane.showMessageDialog(null, "Drop failed due to an unknown error.", "warning",JOptionPane.WARNING_MESSAGE);
             }
-        } else {
-           
+        } else { 
             JOptionPane.showMessageDialog(null, "You are not registered for this course or in this semester.", "warning",JOptionPane.WARNING_MESSAGE);
         }
         } else {
@@ -315,7 +300,6 @@ StudentProfile studentprofile;
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
-        
         CardLayout layout = (CardLayout) mainpanel.getLayout();
         layout.previous(mainpanel);
         mainpanel.remove(this);
@@ -326,10 +310,8 @@ StudentProfile studentprofile;
        CourseSchedule courseschedule = department.getCalendar().getCourseSchedule(selectedsemster);
        if (courseschedule == null) {
        JOptionPane.showMessageDialog(null, "No course schedule found for semester:", "warning",JOptionPane.WARNING_MESSAGE);
-        
     }
        for(  CourseOffer c : courseschedule.getSchedule()){ 
-           
            Object[] row = new Object[3];
            row[0] = c; 
            row[1] = c.getCourseName();
@@ -352,7 +334,6 @@ StudentProfile studentprofile;
            row[0] = c;
            row[1] = c.getCourseName();
            row[2] = c.getCreditHours();
-         
           model.addRow(row);
         }}}
     private void populateTable3(String selectedsemster,String selectedname) {

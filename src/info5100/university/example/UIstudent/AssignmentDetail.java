@@ -10,7 +10,6 @@ import info5100.university.example.Persona.Faculty.Assignment;
 import info5100.university.example.Persona.Faculty.StudentAssignment;
 import info5100.university.example.Persona.StudentProfile;
 import java.awt.CardLayout;
-import java.awt.Component;
 import java.awt.Image;
 import java.io.File;
 import java.net.MalformedURLException;
@@ -20,7 +19,6 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -178,7 +176,7 @@ public class AssignmentDetail extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-         int returnVal = fileChooser.showOpenDialog(this);
+        int returnVal = fileChooser.showOpenDialog(this);
         if(returnVal ==JFileChooser.APPROVE_OPTION){
             File file = fileChooser.getSelectedFile();
             URL url;
