@@ -16,6 +16,7 @@ public class RegisterProfile extends Profile{
     String offerHour;
     int ID;
     static int count=0;
+    String Status;
     
      public RegisterProfile(Person p){
      
@@ -23,7 +24,12 @@ public class RegisterProfile extends Profile{
         person = p;   
         count++;
         ID = count;
+        Status = "active";
      }
+
+    public String getStatus() {
+        return Status;
+    }
      
      public String getrole(){
         return  "Register";

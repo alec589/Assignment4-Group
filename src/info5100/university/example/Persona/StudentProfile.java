@@ -24,6 +24,7 @@ public class StudentProfile extends Profile{
     String firstName;
     String lastName;
     double tuitionBalance = 7000.0;
+    String status;
     ArrayList<PaymentTransaction> paymentHistory = new ArrayList<>();
     
     public StudentProfile(Person p) {
@@ -33,8 +34,13 @@ public class StudentProfile extends Profile{
         employmenthistory = new EmploymentHistroy();
         counter++;
         studentID = counter;
-        
+        status = "Avtive";
     }
+
+    public String getStatus() {
+        return status;
+    }
+    
     public void updateBalance(double changeAmount, String type, String description ,SeatAssignment seatassignment) {
         if(type=="bill"){
         this.tuitionBalance = tuitionBalance + (-changeAmount); 
