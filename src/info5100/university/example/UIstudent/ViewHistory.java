@@ -4,8 +4,6 @@
  */
 package info5100.university.example.UIstudent;
 
-import info5100.university.example.CourseSchedule.CourseLoad;
-import info5100.university.example.CourseSchedule.SeatAssignment;
 import info5100.university.example.Department.Department;
 import info5100.university.example.Persona.PaymentTransaction;
 import info5100.university.example.Persona.StudentProfile;

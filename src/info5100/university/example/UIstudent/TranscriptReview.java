@@ -9,7 +9,6 @@ import info5100.university.example.CourseSchedule.SeatAssignment;
 import info5100.university.example.Department.Department;
 import info5100.university.example.Persona.StudentProfile;
 import java.awt.CardLayout;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 
