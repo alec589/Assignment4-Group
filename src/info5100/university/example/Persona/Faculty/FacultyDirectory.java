@@ -86,5 +86,8 @@ public FacultyProfile findFacultyByName(String name) {
     }
     return null;
 }
+    public void delete(FacultyProfile fp) {
+         teacherlist.remove(fp);
+    }
     
 }

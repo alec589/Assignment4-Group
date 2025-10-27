@@ -13,7 +13,9 @@ import java.awt.event.*;
 import info5100.university.example.CourseSchedule.CourseOffer;
 import info5100.university.example.CourseSchedule.CourseSchedule;
 import info5100.university.example.Department.Calendar;
+import info5100.university.example.Persona.Faculty.FacultyDirectory;
 import info5100.university.example.Persona.Person;
+import info5100.university.example.Persona.RegisterProfile;
 import info5100.university.example.Persona.UserAccount;
 import info5100.university.example.Persona.UserAccountDirectory;
 import javax.swing.DefaultComboBoxModel;
@@ -34,10 +36,10 @@ public class AdminManageFacultyJPanel extends javax.swing.JPanel {
         this.department = department;
         this.mainpanel = mainpanel;
         populateTable(); 
-        setupTableSorter(); 
+        //setupTableSorter(); 
     }
     
-    public void populateTable() {
+    /*public void populateTable() {
     DefaultTableModel model = (DefaultTableModel) tblFaculty.getModel();
     model.setRowCount(0);
 
@@ -64,7 +66,25 @@ public class AdminManageFacultyJPanel extends javax.swing.JPanel {
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>((DefaultTableModel) tblFaculty.getModel());
         tblFaculty.setRowSorter(sorter);
 
-    }
+    }*/
+    
+    public void populateTable() {
+
+    DefaultTableModel model = (DefaultTableModel)tblFaculty.getModel();
+       model.setRowCount(0);
+      
+       for(  FacultyProfile r: department.getFacultydirectory().getTeacherlist()){ 
+           
+           Object[] row = new Object[5];
+           row[0] = r; 
+           row[1] = r.getPerson().getName();
+           row[2] = r.getEmail();
+           row[3] = department.getName();
+           row[4] = r.getStatus();
+          model.addRow(row);
+        }
+}
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -251,116 +271,21 @@ public class AdminManageFacultyJPanel extends javax.swing.JPanel {
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
+       
+       
         int selectedRow = tblFaculty.getSelectedRow();
-        if (selectedRow < 0) {
-            JOptionPane.showMessageDialog(this, "Please select a faculty member to delete.", "Warning", JOptionPane.WARNING_MESSAGE);
-            return;
+        if (selectedRow >=0){
+        int dialogButton = JOptionPane.YES_NO_OPTION;
+        int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete the selected accounts?", "Warning",dialogButton);
+        if(dialogResult ==JOptionPane.YES_OPTION){
+            
+        FacultyProfile fp = (FacultyProfile)tblFaculty.getValueAt(selectedRow, 0);
+        department.getFacultydirectory().delete(fp);
+        populateTable();
+            
         }
-
-
-        int facultyId;
-        try {
-             
-             String facultyIdStr = (String) tblFaculty.getValueAt(tblFaculty.convertRowIndexToModel(selectedRow), 0); 
-             facultyId = Integer.parseInt(facultyIdStr);
-        } catch (NumberFormatException | ClassCastException e) {
-              JOptionPane.showMessageDialog(this, "Invalid Faculty ID format in table.", "Error", JOptionPane.ERROR_MESSAGE);
-              return;
-        } catch (IndexOutOfBoundsException e) {
-             JOptionPane.showMessageDialog(this, "Error getting data from selected row.", "Error", JOptionPane.ERROR_MESSAGE);
-             return;
-        }
-
-
- 
-        FacultyProfile facultyToDelete = department.getFacultydirectory().findFacultyById(facultyId);
-        if (facultyToDelete == null) {
-            JOptionPane.showMessageDialog(this, "Selected faculty not found in the directory. Maybe already deleted?", "Error", JOptionPane.ERROR_MESSAGE);
-            populateTable(); 
-            return;
-        }
-
-        // 3. Get associated Person
-        Person personToDelete = facultyToDelete.getPerson();
-        if (personToDelete == null) {
-             JOptionPane.showMessageDialog(this, "Error: Faculty profile is not linked to a person.", "Error", JOptionPane.ERROR_MESSAGE);
-             return; 
-        }
-
-        // 4. Find the associated UserAccount
-        UserAccount accountToDelete = null;
-        UserAccountDirectory uaDirectory = department.getUseraccountdirectory();
-        // Check if the directory and its list exist before iterating
-        if (uaDirectory != null && uaDirectory.getUserAccountDirectory() != null) { 
-            // Iterate through the list obtained from getUserAccountDirectory()
-            for (UserAccount ua : uaDirectory.getUserAccountDirectory()) { 
-                // Compare the profile associated with the user account to the faculty profile we want to delete
-                // Use the correct method name getAssociatedPersonProfile()
-                if (ua.getAssociatedPersonProfile() == facultyToDelete) { 
-                    accountToDelete = ua; // Found the matching account
-                    break; 
-                }
-            }
-        }
-    
-
-        // 5. Show confirmation dialog
-        int confirm = JOptionPane.showConfirmDialog(
-            this, 
-            "Are you sure you want to permanently delete faculty member '" + personToDelete.getName() + "'?\nThis will also delete their associated user account (if one exists).", 
-            "Confirm Deletion", 
-            JOptionPane.YES_NO_OPTION,
-            JOptionPane.WARNING_MESSAGE
-        );
-
-        // 6. If confirmed, perform deletions
-        if (confirm == JOptionPane.YES_OPTION) {
-            boolean accountRemoved = false;
-            boolean facultyRemoved = false;
-            boolean personRemoved = false;
-
-            // Delete User Account (if found)
-            if (accountToDelete != null) {
-                // This relies on the removeUserAccount(UserAccount) method existing in UserAccountDirectory
-                accountRemoved = department.getUseraccountdirectory().removeUserAccount(accountToDelete); 
-                if (!accountRemoved) {
-                     System.err.println("Warning: Could not remove user account for " + personToDelete.getName());
-                } else {
-                     System.out.println("User account for " + personToDelete.getName() + " removed.");
-                }
-            } else {
-                 System.out.println("Info: No user account found associated with faculty " + personToDelete.getName() + " to delete.");
-                 accountRemoved = true; // No account existed, consider it 'removed'
-            }
-
-            // Delete Faculty Profile
-          
-            facultyRemoved = department.getFacultydirectory().getTeacherlist().remove(facultyToDelete);
-             if (!facultyRemoved) {
-                  System.err.println("Error: Could not remove faculty profile for " + personToDelete.getName());
-             } else {
-                 System.out.println("Faculty profile for " + personToDelete.getName() + " removed.");
-             }
-
-            // Delete Person object
-            // Assuming PersonDirectory has the public removePerson method we added
-            personRemoved = department.getPersondirectory().removePerson(personToDelete); 
-             if (!personRemoved) {
-                  System.err.println("Error: Could not remove person object for " + personToDelete.getName());
-             } else {
-                  System.out.println("Person object for " + personToDelete.getName() + " removed.");
-             }
-
-
-            // 7. Refresh the table
-            populateTable();
-
-            // 8. Show final status message
-            if (facultyRemoved && personRemoved && accountRemoved) { // Check if all core objects were removed (or didn't need removal)
-                 JOptionPane.showMessageDialog(this, "Faculty member '" + personToDelete.getName() + "' and associated data deleted successfully.", "Deletion Successful", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                 JOptionPane.showMessageDialog(this, "An error occurred during deletion. Some data might not have been removed. Please check logs.", "Deletion Error", JOptionPane.ERROR_MESSAGE);
-            }
+        }else{
+            JOptionPane.showMessageDialog(null, "please select the Faculty from the list", "warning", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 

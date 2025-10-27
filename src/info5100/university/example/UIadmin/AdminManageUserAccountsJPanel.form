@@ -110,7 +110,7 @@
                 <Column editable="true" title="User ID" type="java.lang.String"/>
                 <Column editable="true" title="Username" type="java.lang.String"/>
                 <Column editable="true" title="Role" type="java.lang.String"/>
-                <Column editable="true" title="Status" type="java.lang.String"/>
+                <Column editable="true" title="Email" type="java.lang.String"/>
               </Table>
             </Property>
           </Properties>

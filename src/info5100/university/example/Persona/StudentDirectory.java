@@ -68,4 +68,8 @@ public class StudentDirectory {
         return studentlist;
     }
     
+    public void delete(StudentProfile sp) {
+         studentlist.remove(sp);
+    }
+    
 }

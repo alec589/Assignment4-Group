@@ -26,33 +26,32 @@ public class AdminManageStudentsJPanel extends javax.swing.JPanel {
         this.department = department;
         this.mainpanel = mainpanel;
         populateTable();
-        setupTableSorter();
+        
     }
      
-     public void populateTable() {
-        DefaultTableModel model = (DefaultTableModel) tblStudents.getModel();
-    model.setRowCount(0);
-    // ... null checks ...
-    for (StudentProfile sp : department.getStudentdirectory().getStudentlist()) {
-        if (sp != null && sp.getPerson() != null) {
-
-             String id = sp.getPerson().getPersonId(); 
-            String name = sp.getPerson().getName();
-            String deptName = department.getName() != null ? department.getName() : "N/A";
-            String status = sp.getTuitionBalance() > 0 ? "Active" : "Inactive"; // Might be reversed logic? Usually balance > 0 means needs payment?
-            model.addRow(new Object[]{id, name, deptName, status}); // Adding int, String, String, String
+     
+    
+    public void populateTable() {
+        DefaultTableModel model = (DefaultTableModel)tblStudents.getModel();
+       model.setRowCount(0);
+      
+       for(  StudentProfile r: department.getStudentdirectory().getStudentlist()){ 
+           
+           Object[] row = new Object[4];
+           row[0] = r; 
+           row[1] = r.getPerson().getName();
+           row[2] = department.getName();
+           row[3] = r.getStatus();
+          
+           
+          model.addRow(row);
         }
+    
+    
+    
+    
     }
-    model.fireTableDataChanged();
-}
-     
-     
-     
-     private void setupTableSorter() {
-        TableRowSorter<TableModel> sorter = new TableRowSorter<>(tblStudents.getModel());
-        tblStudents.setRowSorter(sorter);
-    }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -233,160 +232,22 @@ switch (type) {
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
+      
         int selectedRow = tblStudents.getSelectedRow();
-        if (selectedRow < 0) {
-            JOptionPane.showMessageDialog(this, "Please select a student to delete.", "Warning", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        DefaultTableModel model = (DefaultTableModel) tblStudents.getModel();
-        int modelRow = -1; 
-        int currentViewRowCount = tblStudents.getRowCount(); // Get view row count *before* conversion
-        int currentModelRowCount = model.getRowCount(); // Get model row count *before* conversion
-
-        // Safely convert view row index to model row index
-        try {
-            // Check if view row is still valid within the current view row count
-            if (selectedRow >= currentViewRowCount) {
-                 System.err.println("Delete Error: View selectedRow (" + selectedRow + ") is >= initial view row count (" + currentViewRowCount + ")");
-                 JOptionPane.showMessageDialog(this, "Selected row index is out of bounds for the current view. Please re-select.", "Error", JOptionPane.ERROR_MESSAGE);
-                 populateTable(); 
-                 return;
-            }
-            modelRow = tblStudents.convertRowIndexToModel(selectedRow);
+        if (selectedRow >=0){
+        int dialogButton = JOptionPane.YES_NO_OPTION;
+        int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete the selected accounts?", "Warning",dialogButton);
+        if(dialogResult ==JOptionPane.YES_OPTION){
             
-            // Re-check model row validity immediately after conversion
-             if (modelRow < 0) {
-                 System.err.println("Delete Error: Converted modelRow (" + modelRow + ") is invalid.");
-                 JOptionPane.showMessageDialog(this, "Cannot determine the data row for the selected view row. Please re-select.", "Error", JOptionPane.ERROR_MESSAGE);
-                 populateTable(); 
-                 return;
-             }
-             // Check against the model row count we captured earlier
-             if (modelRow >= currentModelRowCount) {
-                 System.err.println("Delete Error: Converted modelRow (" + modelRow + ") is >= initial model row count (" + currentModelRowCount + ")");
-                 JOptionPane.showMessageDialog(this, "Selected row index is out of bounds for the data model. Please re-select.", "Error", JOptionPane.ERROR_MESSAGE);
-                 populateTable(); 
-                 return;
-             }
-
-        } catch (IndexOutOfBoundsException e) {
-             JOptionPane.showMessageDialog(this, "Error converting table row index. Table might be inconsistent.", "Error", JOptionPane.ERROR_MESSAGE);
-             System.err.println("Error converting row index: " + e.getMessage());
-             populateTable(); 
-             return;
-        }
-        
-        // --- Get Value Block ---
-        String studentPersonId;
-        String personIdStr = null; 
-        try {
-            // *** CRITICAL: Re-check model row count AGAIN right before accessing ***
-            int rowCountNow = model.getRowCount();
-            if (rowCountNow == 0) {
-                 System.err.println("Delete Error: Model row count became 0 right before getValueAt! Was trying to access index " + modelRow);
-                 throw new Exception("Data model became empty unexpectedly.");
-            }
-             if (modelRow >= rowCountNow) {
-                 System.err.println("Delete Error: modelRow (" + modelRow + ") became >= rowCountNow (" + rowCountNow + ") right before getValueAt!");
-                 throw new Exception("Model row index became invalid unexpectedly.");
-             }
-             
-            System.out.println("Attempting getValueAt(" + modelRow + ", 0) on model with " + rowCountNow + " rows."); // Debugging line
-            Object value = model.getValueAt(modelRow, 0); // Line 281 where error occurred
-             
-            if (value == null) {
-                 throw new Exception("Student Person ID value in the selected row ("+modelRow+") is null.");
-             }
-            personIdStr = value.toString();
+        StudentProfile sp = (StudentProfile)tblStudents.getValueAt(selectedRow, 0);
+        department.getStudentdirectory().delete(sp);
+        populateTable();
             
-            if (personIdStr.trim().isEmpty()) {
-                 throw new Exception("Student Person ID is empty in the selected row ("+modelRow+").");
-            }
-            studentPersonId = personIdStr; 
-            
-            System.out.println("Successfully retrieved Person ID: " + studentPersonId); // Debugging line
-            
-        } catch (ArrayIndexOutOfBoundsException e) { 
-             // This specific catch block handles the error you are seeing
-             JOptionPane.showMessageDialog(this, "Internal Error: Cannot access data at the specified index.\nModel might be empty or index is wrong.\nModel Row Count: " + model.getRowCount() + ", Index tried: " + modelRow, "Error", JOptionPane.ERROR_MESSAGE);
-             System.err.println("!!! ArrayIndexOutOfBoundsException during getValueAt(row=" + modelRow + ", col=0). Model rows=" + model.getRowCount() + ". Error: " + e.getMessage());
-             e.printStackTrace(); // Print stack trace for detailed debugging
-             return; // Stop execution
-        } catch (Exception e) {
-              JOptionPane.showMessageDialog(this, "Error retrieving Student ID from table: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-              System.err.println("Error during getValueAt(row=" + modelRow + ", col=0) or processing: " + e.toString());
-              return;
         }
-        
-        
-        
-        StudentProfile studentToDelete = department.getStudentdirectory().findStudent(studentPersonId); 
-        if (studentToDelete == null) { 
-             JOptionPane.showMessageDialog(this, "Student (Person ID: "+studentPersonId+") not found in directory.", "Error", JOptionPane.ERROR_MESSAGE);
-             populateTable(); 
-             return; 
+        }else{
+            JOptionPane.showMessageDialog(null, "please select the student from the list", "warning", JOptionPane.WARNING_MESSAGE);
         }
-        Person personToDelete = studentToDelete.getPerson();
-        if (personToDelete == null) { 
-             JOptionPane.showMessageDialog(this, "Error: Student profile is not linked to a person.", "Error", JOptionPane.ERROR_MESSAGE);
-             return; 
-        }
-        UserAccount accountToDelete = null; 
-        UserAccountDirectory uaDirectory = department.getUseraccountdirectory();
-        if (uaDirectory != null && uaDirectory.getUserAccountDirectory() != null) {
-            for (UserAccount ua : uaDirectory.getUserAccountDirectory()) {
-                if (ua.getAssociatedPersonProfile() == studentToDelete) { 
-                    accountToDelete = ua;
-                    break; 
-                }
-            }
-        }
-        int confirm = JOptionPane.showConfirmDialog(
-            this, 
-            "Are you sure you want to permanently delete student '" + personToDelete.getName() + "'?\nThis will also delete their associated user account (if one exists).", 
-            "Confirm Deletion", 
-            JOptionPane.YES_NO_OPTION,
-            JOptionPane.WARNING_MESSAGE
-        ); 
-        if (confirm == JOptionPane.YES_OPTION) { 
-            boolean accountRemoved = true; 
-            boolean studentRemoved = false;
-            boolean personRemoved = false;
-
-            if (accountToDelete != null) { 
-                accountRemoved = department.getUseraccountdirectory().removeUserAccount(accountToDelete); 
-                if(!accountRemoved) System.err.println("Warning: Could not remove user account for student " + personToDelete.getName());
-                else System.out.println("User account removed for student " + personToDelete.getName());
-            } else {
-                System.out.println("Info: No user account found for student " + personToDelete.getName());
-            }
-
-            try {
-                studentRemoved = department.getStudentdirectory().getStudentlist().remove(studentToDelete); 
-                if (!studentRemoved) System.err.println("Error: Could not remove student profile for " + personToDelete.getName());
-                else System.out.println("Student profile removed for " + personToDelete.getName());
-            } catch (Exception e) {
-                 System.err.println("Exception removing student profile: " + e.getMessage());
-            }
-             
-            try {
-                personRemoved = department.getPersondirectory().removePerson(personToDelete); 
-                if (!personRemoved) System.err.println("Warning: Could not remove person object for " + personToDelete.getName() + ". Linked elsewhere?");
-                else System.out.println("Person object removed for " + personToDelete.getName());
-            } catch (Exception e) {
-                 System.err.println("Exception removing person object: " + e.getMessage());
-            }
-
-            populateTable(); 
-
-            if (studentRemoved && personRemoved) { 
-                JOptionPane.showMessageDialog(this, "Student '" + personToDelete.getName() + "' deleted successfully.", "Deletion Successful", JOptionPane.INFORMATION_MESSAGE);
-            } else { 
-                JOptionPane.showMessageDialog(this, "Deletion partially failed. Check logs for details.", "Deletion Warning", JOptionPane.WARNING_MESSAGE);
-            }
-        } 
-    
+      
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed

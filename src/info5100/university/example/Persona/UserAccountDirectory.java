@@ -105,4 +105,7 @@ public class UserAccountDirectory {
         }
         return null; // Not found
     }
+    public void delete(UserAccount ua) {
+         UserAccountDirectory.remove(ua);
+    }
 }

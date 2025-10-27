@@ -24,6 +24,7 @@ public class UserAccount {
     String UserPassword;
     int ID;
     static int count=0;
+    String Email;
     
     public UserAccount(Profile profile,String username, String userpassword){
         this.profile = profile;
@@ -78,6 +79,14 @@ public class UserAccount {
 
     public void setID(int ID) {
         this.ID = ID;
+    }
+
+    public String getEmail() {
+        return Email;
+    }
+
+    public void setEmail(String Email) {
+        this.Email = Email;
     }
         
     
