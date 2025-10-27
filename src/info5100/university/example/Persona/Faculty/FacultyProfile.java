@@ -26,7 +26,7 @@ public class FacultyProfile extends Profile{
     String phoneNumber;
     String position;
     String officeLocation;
-    
+    String status;
     public FacultyProfile(Person p) {
         super(p);
         person = p;
@@ -34,7 +34,13 @@ public class FacultyProfile extends Profile{
         
         counter++;
         ID = counter;
+        status ="Active";
     }
+
+    public String getStatus() {
+        return status;
+    }
+    
     public  double getProfAverageOverallRating(){
         
         double sum = 0.0;
