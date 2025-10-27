@@ -182,34 +182,31 @@ public class AdminManageStudentsJPanel extends javax.swing.JPanel {
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         // TODO add your handling code here:
-        String type = (String) cmbSearchType.getSelectedItem();
-        String keyword = txtSearch.getText().trim();
+        String type = String.valueOf(cmbSearchType.getSelectedItem()).trim();
+    String keywordRaw = txtSearch.getText() == null ? "" : txtSearch.getText().trim();
 
-        TableRowSorter<? extends TableModel> sorter =
-                (TableRowSorter<? extends TableModel>) tblStudents.getRowSorter();
+    DefaultTableModel model = (DefaultTableModel) tblStudents.getModel();
+    TableRowSorter<DefaultTableModel> sorter = (TableRowSorter<DefaultTableModel>) tblStudents.getRowSorter();
+    if (sorter == null) {
+        sorter = new TableRowSorter<>(model);
+        tblStudents.setRowSorter(sorter);
+    }
 
-        if (keyword.isEmpty()) {
-            sorter.setRowFilter(null);
-            return;
-        }
+    if (keywordRaw.isEmpty()) {
+        sorter.setRowFilter(null);
+        return;
+    }
 
-        int colIndex;
-switch (type) {
-    case "ID":
-        colIndex = 0;
-        break;
-    case "Name":
-        colIndex = 1;
-        break;
-    case "Department":
-        colIndex = 3;
-        break;
-    default:
-        colIndex = 1;
-        break;
-}
+    int colIndex;
+    switch (type) {
+        case "ID":         colIndex = 0; break;
+        case "Name":       colIndex = 1; break;
+        case "Department": colIndex = 3; break;
+        default:           colIndex = 1; break;
+    }
 
-        sorter.setRowFilter(RowFilter.regexFilter("(?i)" + keyword, colIndex));
+    String keyword = java.util.regex.Pattern.quote(keywordRaw);
+    sorter.setRowFilter(RowFilter.regexFilter("(?i)" + keyword, colIndex));
         
     }//GEN-LAST:event_btnSearchActionPerformed
 

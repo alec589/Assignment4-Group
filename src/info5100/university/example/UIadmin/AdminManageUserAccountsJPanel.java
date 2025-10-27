@@ -58,11 +58,11 @@ public class AdminManageUserAccountsJPanel extends javax.swing.JPanel {
       
        for(  UserAccount r: department.getUseraccountdirectory().getUserAccountDirectory()){ 
            
-           Object[] row = new Object[4];
+           Object[] row = new Object[3];
            row[0] = r; 
            row[1] = r.getPersonName();
            row[2] = r.getRole();
-           row[3] = r.getEmail();
+          
            
           model.addRow(row);
         }
@@ -102,17 +102,17 @@ public class AdminManageUserAccountsJPanel extends javax.swing.JPanel {
 
         tblUserAccounts.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "User ID", "Username", "Role", "Email"
+                "User ID", "Username", "Role"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -210,7 +210,7 @@ public class AdminManageUserAccountsJPanel extends javax.swing.JPanel {
         Object[] fields = {
             "Username:", txtUsername,
             "Role:", cmbRole,
-            "Status:", cmbStatus
+            //"Status:", cmbStatus
         };
 
         int option = JOptionPane.showConfirmDialog(this, fields, "Create New User", JOptionPane.OK_CANCEL_OPTION);
@@ -225,7 +225,7 @@ public class AdminManageUserAccountsJPanel extends javax.swing.JPanel {
             DefaultTableModel model = (DefaultTableModel) tblUserAccounts.getModel();
             
             String userId = String.valueOf(model.getRowCount() + 1);
-            model.addRow(new Object[]{userId, username, cmbRole.getSelectedItem(), cmbStatus.getSelectedItem()});
+            model.addRow(new Object[]{userId, username, cmbRole.getSelectedItem()});   //, cmbStatus.getSelectedItem()}
             JOptionPane.showMessageDialog(this, "User created successfully!");
         }
     }//GEN-LAST:event_btnCreateActionPerformed
@@ -243,25 +243,25 @@ public class AdminManageUserAccountsJPanel extends javax.swing.JPanel {
 
         String username = (String) model.getValueAt(modelRow, 1);
         String role = (String) model.getValueAt(modelRow, 2);
-        String status = (String) model.getValueAt(modelRow, 3);
+        //String status = (String) model.getValueAt(modelRow, 3);
 
         JTextField txtUsername = new JTextField(username);
         JComboBox<String> cmbRole = new JComboBox<>(new String[]{"Student", "Faculty", "Registrar", "Admin"});
         cmbRole.setSelectedItem(role);
-        JComboBox<String> cmbStatus = new JComboBox<>(new String[]{"Active", "Inactive"});
-        cmbStatus.setSelectedItem(status);
+        //JComboBox<String> cmbStatus = new JComboBox<>(new String[]{"Active", "Inactive"});
+        //cmbStatus.setSelectedItem(status);
 
         Object[] fields = {
             "Username:", txtUsername,
             "Role:", cmbRole,
-            "Status:", cmbStatus
+            //"Status:", cmbStatus
         };
 
         int option = JOptionPane.showConfirmDialog(this, fields, "Modify User Account", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
             model.setValueAt(txtUsername.getText().trim(), modelRow, 1);
             model.setValueAt(cmbRole.getSelectedItem(), modelRow, 2);
-            model.setValueAt(cmbStatus.getSelectedItem(), modelRow, 3);
+            //model.setValueAt(cmbStatus.getSelectedItem(), modelRow, 3);
             JOptionPane.showMessageDialog(this, "User updated successfully!");
         }
         

@@ -132,7 +132,7 @@ public class AdminAnalyticsDashboardJPanel extends javax.swing.JPanel {
                  String role = ua.getRole().toLowerCase();
                  if (role.contains("student")) totalStudents++;
                  else if (role.contains("faculty")) totalFaculty++;
-                 else if (role.contains("registrar")) totalRegistrar++;
+                 else if (role.contains("register")) totalRegistrar++;
                  else if (role.contains("admin")) totalAdmin++;
             }
         }

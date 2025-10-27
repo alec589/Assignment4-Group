@@ -146,6 +146,9 @@ public class FacultyProfile extends Profile{
         return person;
     }
     
-    
+    @Override
+    public String toString(){
+        return String.valueOf(ID);
+    }
     
 }

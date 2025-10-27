@@ -233,17 +233,8 @@ public class AdminManageFacultyJPanel extends javax.swing.JPanel {
         return;
     }
     
-    int facultyId;
-    try {
-        String facultyIdStr = (String) tblFaculty.getValueAt(selectedRow, 0);
-        facultyId = Integer.parseInt(facultyIdStr);
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Invalid Faculty ID in table: " + tblFaculty.getValueAt(selectedRow, 0));
-        return;
-    } catch (ClassCastException e) {
-         JOptionPane.showMessageDialog(this, "Error casting Faculty ID. Expected String but found different type.");
-         return;
-    }
+    FacultyProfile fp = (FacultyProfile) tblFaculty.getValueAt(selectedRow, 0);
+    int facultyId = fp.getID();
 
     FacultyProfile faculty = department.getFacultydirectory().findFacultyById(facultyId);
 
@@ -312,23 +303,24 @@ public class AdminManageFacultyJPanel extends javax.swing.JPanel {
             return;
         }
 
-        int colIndex = -1;
-        for (int i = 0; i < tblFaculty.getColumnCount(); i++) {
-            String columnName = tblFaculty.getColumnName(i).trim().toLowerCase();
-            if (columnName.contains(type.toLowerCase().replace(" ", ""))) {
-                colIndex = i;
+        java.util.function.Function<String,String> norm = s -> s == null ? "" : s.toLowerCase().replace(" ","");
+
+        int modelCol = -1;
+        for (int i = 0; i < model.getColumnCount(); i++) {
+            if (norm.apply(model.getColumnName(i)).equals(norm.apply(type))) {
+                modelCol = i;
                 break;
             }
         }
-
-        if (colIndex == -1) {
-            colIndex = 1;
+        if (modelCol == -1) {
+            JOptionPane.showMessageDialog(this, "Unknown column: " + type);
+            return;
         }
 
-        final int colIndexFinal = colIndex;
-        sorter.setRowFilter(new RowFilter<DefaultTableModel, Object>() {
+        final int colIndexFinal = modelCol;
+        sorter.setRowFilter(new RowFilter<DefaultTableModel, Integer>() {
             @Override
-            public boolean include(RowFilter.Entry<? extends DefaultTableModel, ? extends Object> entry) {
+            public boolean include(Entry<? extends DefaultTableModel, ? extends Integer> entry) {
                 Object val = entry.getValue(colIndexFinal);
                 return val != null && val.toString().toLowerCase().contains(keyword);
             }
@@ -343,15 +335,9 @@ public class AdminManageFacultyJPanel extends javax.swing.JPanel {
             return;
         }
 
-        // 1. 获取选定的 FacultyProfile
-        int facultyId;
-        try {
-             String facultyIdStr = (String) tblFaculty.getValueAt(selectedRow, 0);
-             facultyId = Integer.parseInt(facultyIdStr);
-        } catch (NumberFormatException | ClassCastException e) {
-              JOptionPane.showMessageDialog(this, "Invalid Faculty ID format in table.");
-              return;
-        }
+        FacultyProfile fp = (FacultyProfile) tblFaculty.getValueAt(selectedRow, 0);
+        int facultyId = fp.getID();
+        
 
         FacultyProfile selectedFaculty = department.getFacultydirectory().findFacultyById(facultyId);
         if (selectedFaculty == null) {
@@ -359,11 +345,11 @@ public class AdminManageFacultyJPanel extends javax.swing.JPanel {
             return;
         }
 
-        // 2. 创建对话框组件
+        
         JComboBox<String> semesterComboBox = new JComboBox<>();
         JComboBox<CourseOffer> courseComboBox = new JComboBox<>();
 
-        // 3. 填充学期下拉框
+       
         Calendar calendar = department.getCalendar();
         DefaultComboBoxModel<String> semesterModel = new DefaultComboBoxModel<>();
         if(calendar.getAllSemesterNames() == null || calendar.getAllSemesterNames().isEmpty()){
@@ -375,7 +361,7 @@ public class AdminManageFacultyJPanel extends javax.swing.JPanel {
         }
         semesterComboBox.setModel(semesterModel);
 
-        // 4. 添加学期选择事件监听器以更新课程列表
+        
         semesterComboBox.addActionListener(e -> {
             String selectedSemester = (String) semesterComboBox.getSelectedItem();
             if (selectedSemester != null) {
@@ -383,7 +369,7 @@ public class AdminManageFacultyJPanel extends javax.swing.JPanel {
                 DefaultComboBoxModel<CourseOffer> courseModel = new DefaultComboBoxModel<>();
                 if (schedule != null) {
                     for (CourseOffer co : schedule.getSchedule()) {
-                        // CourseOffer.toString() 默认显示课程编号 (course number)
+                        
                         courseModel.addElement(co); 
                     }
                 }
@@ -391,12 +377,12 @@ public class AdminManageFacultyJPanel extends javax.swing.JPanel {
             }
         });
 
-         // 5. 初始填充课程列表（如果学期有默认选项）
+        
          if (semesterComboBox.getItemCount() > 0) {
-             semesterComboBox.setSelectedIndex(0); // 这将自动触发上面的 ActionListener
+             semesterComboBox.setSelectedIndex(0); 
          }
 
-        // 6. 显示对话框
+        
         Object[] message = {
             "Select Semester:", semesterComboBox,
             "Select Course Offering (by Course Number):", courseComboBox
@@ -404,15 +390,14 @@ public class AdminManageFacultyJPanel extends javax.swing.JPanel {
 
         int option = JOptionPane.showConfirmDialog(this, message, "Assign Course to " + selectedFaculty.getPerson().getName(), JOptionPane.OK_CANCEL_OPTION);
 
-        // 7. 执行分配
+        
         if (option == JOptionPane.OK_OPTION) {
             CourseOffer selectedCourseOffer = (CourseOffer) courseComboBox.getSelectedItem();
             if (selectedCourseOffer != null) {
-                // 执行分配
+                
                 selectedCourseOffer.AssignAsTeacher(selectedFaculty);
                 JOptionPane.showMessageDialog(this, "Faculty " + selectedFaculty.getPerson().getName() + " assigned to course " + selectedCourseOffer.getCourseName() + " successfully.");
-                // 可以在此刷新（如果需要）
-                // populateTable(); 
+               
             } else {
                 JOptionPane.showMessageDialog(this, "No course selected or no courses available for the selected semester.");
             }
