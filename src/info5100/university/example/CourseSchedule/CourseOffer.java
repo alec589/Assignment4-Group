@@ -91,7 +91,7 @@ public class CourseOffer {
     }
     
     public void generatSeats(int n) {
-
+        seatlist.clear(); 
         for (int i = 0; i < n; i++) {
             seatlist.add(new Seat(this, i));
         }

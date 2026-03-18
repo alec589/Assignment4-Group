@@ -23,7 +23,7 @@ public class StudentProfile extends Profile{
     int studentID;
     String firstName;
     String lastName;
-    double tuitionBalance = 7000.0;
+    double tuitionBalance = 70000.0;
     String status;
     ArrayList<PaymentTransaction> paymentHistory = new ArrayList<>();
     

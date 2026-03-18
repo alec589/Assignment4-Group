@@ -278,12 +278,15 @@ public class AdminManageUserAccountsJPanel extends javax.swing.JPanel {
             
         UserAccount ua = (UserAccount)tblUserAccounts.getValueAt(selectedRow, 0);
         department.getUseraccountdirectory().delete(ua);
-        populateTable();
+        
             
         }
         }else{
             JOptionPane.showMessageDialog(null, "please select an Useraccount from the list", "warning", JOptionPane.WARNING_MESSAGE);
         }
+        
+        populateTable();
+        
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed

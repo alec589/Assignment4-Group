@@ -73,7 +73,7 @@ public class AdminManageRegistrarJPanel extends javax.swing.JPanel {
 
         lblSearchBy.setText("Search By");
 
-        cmbSearchType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Registar ID", "Name", "Email", "Department", "Status" }));
+        cmbSearchType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Registar ID", "Name", "Email" }));
         cmbSearchType.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbSearchTypeActionPerformed(evt);

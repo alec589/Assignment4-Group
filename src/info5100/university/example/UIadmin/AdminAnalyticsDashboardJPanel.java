@@ -202,7 +202,6 @@ public class AdminAnalyticsDashboardJPanel extends javax.swing.JPanel {
         lblTotalUsersValue = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblSummary = new javax.swing.JTable();
-        btnRefresh = new javax.swing.JButton();
         btnBack = new javax.swing.JButton();
         lblSelectSemester = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
@@ -241,13 +240,6 @@ public class AdminAnalyticsDashboardJPanel extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(tblSummary);
 
-        btnRefresh.setText("Refresh Data");
-        btnRefresh.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRefreshActionPerformed(evt);
-            }
-        });
-
         btnBack.setText(">>Back");
         btnBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -274,7 +266,7 @@ public class AdminAnalyticsDashboardJPanel extends javax.swing.JPanel {
                 {null, null}
             },
             new String [] {
-                "Course Name", "Course Name"
+                "Course Name", "Enrollment Count"
             }
         ) {
             Class[] types = new Class [] {
@@ -334,11 +326,9 @@ public class AdminAnalyticsDashboardJPanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(50, 50, 50)
                         .addComponent(lblCourseEnrollmentTitle))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createSequentialGroup()
                             .addGap(94, 94, 94)
-                            .addComponent(btnRefresh)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnBack))
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                             .addGap(39, 39, 39)
@@ -375,18 +365,10 @@ public class AdminAnalyticsDashboardJPanel extends javax.swing.JPanel {
                 .addGap(27, 27, 27)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnRefresh)
-                    .addComponent(btnBack))
+                .addComponent(btnBack)
                 .addGap(40, 40, 40))
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
-        // TODO add your handling code here:
-        System.out.println("Refresh button clicked!"); 
-        refreshAllData();
-    }//GEN-LAST:event_btnRefreshActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // TODO add your handling code here:
@@ -408,7 +390,6 @@ public class AdminAnalyticsDashboardJPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
-    private javax.swing.JButton btnRefresh;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

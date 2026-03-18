@@ -77,7 +77,12 @@ public class AdminManageStudentsJPanel extends javax.swing.JPanel {
 
         lblSearchBy.setText("Search By：");
 
-        cmbSearchType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Name", "ID", "Department" }));
+        cmbSearchType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Name", "ID" }));
+        cmbSearchType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbSearchTypeActionPerformed(evt);
+            }
+        });
 
         btnSearch.setText("Search");
         btnSearch.addActionListener(new java.awt.event.ActionListener() {
@@ -253,6 +258,10 @@ public class AdminManageStudentsJPanel extends javax.swing.JPanel {
         layout.previous(mainpanel);
         mainpanel.remove(this);
     }//GEN-LAST:event_btnBackActionPerformed
+
+    private void cmbSearchTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbSearchTypeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbSearchTypeActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

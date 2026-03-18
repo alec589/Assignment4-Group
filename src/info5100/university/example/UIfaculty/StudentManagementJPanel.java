@@ -563,18 +563,18 @@ public class StudentManagementJPanel extends javax.swing.JPanel {
 
         model.addTableModelListener(e -> {
             if (e.getType() != TableModelEvent.UPDATE) return;
-            if (e.getColumn() != 3) return;
+            if (e.getColumn() != 4) return;
 
             int first = e.getFirstRow();
             int last = e.getLastRow();
 
             for (int row = first; row <= last; row++) {
-                Object v = model.getValueAt(row, 3);
+                Object v = model.getValueAt(row, 4);
                 StudentAssignment stua = rowBindings.get(row);
 
                 if (v == null) {
                     stua.clearScore();
-                    model.setValueAt(null, row, 3);
+                    model.setValueAt(null, row, 4);
                     continue;
                 }
 
